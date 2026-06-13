@@ -493,7 +493,7 @@ function renderSourcesTable(){
   let html=intro;
   cats.forEach(cat=>{
     const srcs=grouped[cat];
-    const isKorky=cat.startsWith("Korky");
+    const isKorky=cat.startsWith("Korky")||cat==="Textbooks";
     const catLabel=cat.replace("Korky — ","");
     html+=`<div style="margin-bottom:24px">
       <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${isKorky?"#92400e":"var(--navy)"};margin-bottom:8px;display:flex;align-items:center;gap:8px">
