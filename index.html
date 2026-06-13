@@ -274,15 +274,6 @@ main{max-width:1400px;margin:0 auto;padding:24px}
   <button class="tab-btn active" data-tab="quiz">Quiz</button>
   <button class="tab-btn" data-tab="progress">Progress</button>
   <button class="tab-btn" data-tab="sources">Sources</button>
-  <div style="display:flex;align-items:center;gap:8px;margin-left:auto;padding:0 8px;flex-shrink:0">
-    <label style="font-size:.75rem;font-weight:600;color:var(--g600);white-space:nowrap">Deck:</label>
-    <select id="deck-select" onchange="setGlobalSourceFilter(this.value)" style="padding:5px 10px;border:1px solid var(--g200);border-radius:6px;font-size:.78rem;background:#fff;font-family:inherit;cursor:pointer">
-      <option value="all">Full deck</option>
-      <option value="recall">Exam-likely</option>
-      <option value="korky">Korky folder</option>
-      <option value="web">Guidelines &amp; web</option>
-    </select>
-  </div>
 </nav>
 
 <main>
@@ -291,6 +282,13 @@ main{max-width:1400px;margin:0 auto;padding:24px}
   <div id="study-global-quiz" style="display:none;background:#fff;border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);padding:20px;max-width:700px;margin:0 auto">
     <button class="btn btn-secondary" onclick="exitGlobalQuiz()" style="margin-bottom:16px;font-size:.85rem">← Back to topic list</button>
     <div id="quiz-topic-select">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;flex-wrap:wrap;background:var(--g100);border-radius:6px;padding:5px">
+        <span style="font-size:.75rem;font-weight:600;color:var(--g600);padding:0 4px;flex-shrink:0">Deck:</span>
+        <button class="gsf-btn active" id="qf-all" data-gsf="all" onclick="setQuizFilter('all')">Full deck</button>
+        <button class="gsf-btn" id="qf-recall" data-gsf="recall" onclick="setQuizFilter('recall')">Exam-likely</button>
+        <button class="gsf-btn" id="qf-korky" data-gsf="korky" onclick="setQuizFilter('korky')">Korky folder</button>
+        <button class="gsf-btn" id="qf-web" data-gsf="web" onclick="setQuizFilter('web')">Guidelines only</button>
+      </div>
       <div style="font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:10px">Select topics to quiz:</div>
       <div id="quiz-topic-checkboxes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin-bottom:14px"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
@@ -322,11 +320,6 @@ main{max-width:1400px;margin:0 auto;padding:24px}
 
 <!-- SOURCES -->
 <div class="tab-panel" id="tab-sources">
-  <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
-    <input type="text" id="src-search" placeholder="Search sources…" style="flex:1;min-width:160px;padding:7px 12px;border:1px solid var(--g200);border-radius:var(--r);font-size:.85rem">
-    <select id="src-priority" style="padding:7px 10px;border:1px solid var(--g200);border-radius:var(--r);font-size:.82rem;background:#fff"><option value="">All priorities</option><option value="essential">Essential</option><option value="recommended">Recommended</option><option value="supplementary">Supplementary</option></select>
-    <select id="src-status" style="padding:7px 10px;border:1px solid var(--g200);border-radius:var(--r);font-size:.82rem;background:#fff"><option value="">All statuses</option><option value="not-started">Not started</option><option value="in-progress">In progress</option><option value="done">Done</option></select>
-  </div>
   <div id="sources-table-wrap"></div>
 </div>
 
@@ -486,36 +479,51 @@ function topicAutoScore(topicId){
 }
 function scoreCol(s){return s===null?"#9ca3af":s>=70?"#059669":s>=40?"#d97706":"#dc2626";}
 function renderSourcesTable(){
-  const q=(document.getElementById("src-search")?.value||"").toLowerCase();
-  const pri=document.getElementById("src-priority")?.value||"";
-  const st=document.getElementById("src-status")?.value||"";
-  const priOrder={essential:0,recommended:1,supplementary:2};
-  const f=SOURCES.filter(s=>{
-    const ss=state.sources[s.id];
-    if(pri&&s.priority!==pri)return false;
-    if(st&&ss.status!==st)return false;
-    if(q&&!s.name.toLowerCase().includes(q)&&!(s.notes||"").toLowerCase().includes(q))return false;
-    return true;
-  }).sort((a,b)=>(priOrder[a.priority]||0)-(priOrder[b.priority]||0)||a.name.localeCompare(b.name));
   const wrap=document.getElementById("sources-table-wrap");if(!wrap)return;
-  if(!f.length){wrap.innerHTML='<div class="empty">No sources match.</div>';return;}
-  const priStyle={essential:'background:#fee2e2;color:#991b1b',recommended:'background:#fef3c7;color:#92400e',supplementary:'background:var(--g100);color:var(--g600)'};
-  wrap.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:.8rem;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--g200)">
-  <thead><tr style="background:var(--g50);border-bottom:2px solid var(--g200)">
-    <th style="text-align:left;padding:9px 12px;font-weight:600;color:var(--navy)">Source</th>
-    <th style="text-align:left;padding:9px 8px;font-weight:600;color:var(--navy);white-space:nowrap">Priority</th>
-    <th style="text-align:left;padding:9px 8px;font-weight:600;color:var(--navy)">Status</th>
-    <th style="padding:9px 8px;font-weight:600;color:var(--navy)">PDF</th>
-  </tr></thead>
-  <tbody>${f.map((s,i)=>{const ss=state.sources[s.id];const sc=ss.status==="in-progress"?"s-ip":ss.status==="done"?"s-done":"";const bg=i%2===0?"#fff":"#fafafa";
-  return`<tr style="border-bottom:1px solid var(--g100);background:${bg}${!ss.enabled?";opacity:.45":""}">
-    <td style="padding:8px 12px;line-height:1.4">
-      <div style="font-weight:500;color:var(--g800)">${s.name}</div>
-      ${s.korky?'<span style="font-size:.65rem;background:#fef08a;color:#713f12;border:1px solid #eab308;padding:1px 5px;border-radius:100px;font-weight:700">Korky</span>':''}</td>
-    <td style="padding:8px;white-space:nowrap"><span style="font-size:.68rem;padding:2px 7px;border-radius:100px;font-weight:600;${priStyle[s.priority]||""}">${s.priority}</span></td>
-    <td style="padding:8px"><select class="status-sel ${sc}" style="font-size:.75rem;padding:3px 6px;width:100%;min-width:100px" onchange="setSrcStatus('${s.id}',this.value,this)"><option value="not-started" ${ss.status==="not-started"?"selected":""}>Not started</option><option value="in-progress" ${ss.status==="in-progress"?"selected":""}>In progress</option><option value="done" ${ss.status==="done"?"selected":""}>Done ✓</option></select></td>
-    <td style="padding:8px;text-align:center">${s.local?`<button class="btn btn-teal btn-sm" style="font-size:.68rem;padding:2px 7px" onclick="openPDF('${s.local}','${s.name.replace(/'/g,"\\'")}')">Open</button>`:'<span style="color:var(--g400);font-size:.75rem">—</span>'}</td>
-  </tr>`;}).join("")}</tbody></table>`;
+  const priStyle={essential:'background:#fee2e2;color:#991b1b',recommended:'background:#fef3c7;color:#92400e',supplementary:'background:var(--g100);color:var(--g600)',korky:'background:#fef08a;color:#713f12'};
+  const catOrder=["Official Exam","E-Learning","Clinical Guidelines","Textbooks","Neuroradiology","Neuroanatomy","Revision Courses","Korky — Key Papers","Korky — Aberdeen Course"];
+  const grouped={};
+  SOURCES.forEach(s=>{const c=s.category||"Other";if(!grouped[c])grouped[c]=[];grouped[c].push(s);});
+  const cats=[...catOrder.filter(c=>grouped[c]),...Object.keys(grouped).filter(c=>!catOrder.includes(c)&&grouped[c])];
+  const intro=`<div style="background:#fff;border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);padding:20px 22px;margin-bottom:22px;font-size:.84rem;line-height:1.75;color:var(--g800)">
+    <div style="font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:10px">About this revision tool</div>
+    <p>Built from the exam materials assembled by Korky for the FRCS (SN). Content comes from two streams: <strong>verified clinical guidelines</strong> (NICE, RCP, Society for Endocrinology — freely available PDFs stored in this app) and <strong>landmark papers and course notes</strong> from Korky's past-candidate folder.</p>
+    <p style="margin-top:8px">Cards and SBAs are weighted toward the topics with the highest <em>recall-bank frequency</em> — the themes that real candidates report testing most often. Neuro-oncology cranial, degenerative spine, and vascular aneurysm are the highest-priority areas. The "Exam-likely" deck filter surfaces only cards and questions directly inspired by recall-bank patterns. Every card carries a source reference and page number; the reference is the authority, not the card text.</p>
+  </div>`;
+  let html=intro;
+  cats.forEach(cat=>{
+    const srcs=grouped[cat];
+    const isKorky=cat.startsWith("Korky");
+    const catLabel=cat.replace("Korky — ","");
+    html+=`<div style="margin-bottom:24px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${isKorky?"#92400e":"var(--navy)"};margin-bottom:8px;display:flex;align-items:center;gap:8px">
+        ${isKorky?`<span style="background:#fef08a;color:#713f12;border:1px solid #eab308;padding:1px 8px;border-radius:100px;font-size:.68rem">Korky folder</span>`:""}
+        ${catLabel}
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:.8rem;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--g200)">
+      <thead><tr style="background:var(--g50);border-bottom:2px solid var(--g200)">
+        <th style="text-align:left;padding:8px 12px;font-weight:600;color:var(--navy)">Source</th>
+        <th style="padding:8px 8px;font-weight:600;color:var(--navy);white-space:nowrap">Priority</th>
+        <th style="padding:8px 8px;font-weight:600;color:var(--navy)">Status</th>
+        <th style="padding:8px 8px;font-weight:600;color:var(--navy)">PDF</th>
+      </tr></thead>
+      <tbody>${srcs.map((s,i)=>{
+        const ss=state.sources[s.id]||{status:"not-started"};
+        const sc=ss.status==="in-progress"?"s-ip":ss.status==="done"?"s-done":"";
+        const pStyle=isKorky?priStyle.korky:(priStyle[s.priority]||"");
+        return`<tr style="border-bottom:1px solid var(--g100);background:${i%2===0?"#fff":"#fafafa"}">
+          <td style="padding:8px 12px;line-height:1.45">
+            <div style="font-weight:500;color:var(--g800)">${s.name}</div>
+            ${s.notes?`<div style="font-size:.73rem;color:var(--g500);margin-top:2px">${s.notes}</div>`:""}
+          </td>
+          <td style="padding:8px;text-align:center;white-space:nowrap;vertical-align:top"><span style="font-size:.67rem;padding:2px 7px;border-radius:100px;font-weight:600;${pStyle}">${isKorky?"key paper":s.priority}</span></td>
+          <td style="padding:8px;vertical-align:top"><select class="status-sel ${sc}" style="font-size:.75rem;padding:3px 6px;width:100%;min-width:100px" onchange="setSrcStatus('${s.id}',this.value,this)"><option value="not-started" ${ss.status==="not-started"?"selected":""}>Not started</option><option value="in-progress" ${ss.status==="in-progress"?"selected":""}>In progress</option><option value="done" ${ss.status==="done"?"selected":""}>Done ✓</option></select></td>
+          <td style="padding:8px;text-align:center;vertical-align:top">${s.local?`<button class="btn btn-teal btn-sm" style="font-size:.68rem;padding:2px 7px" onclick="openPDF('${s.local}','${s.name.replace(/'/g,"\\'")}')">Open</button>`:'<span style="color:var(--g400);font-size:.75rem">—</span>'}</td>
+        </tr>`;
+      }).join("")}</tbody></table>
+    </div>`;
+  });
+  wrap.innerHTML=html;
 }
 ["src-search","src-priority","src-status"].forEach(id=>{const el=document.getElementById(id);if(el){el.addEventListener("input",renderSourcesTable);el.addEventListener("change",renderSourcesTable);}});
 // ── PROGRESS SUMMARY ─────────────────────────────────────────────────────
@@ -583,22 +591,17 @@ function resetProgress(){
   if(currentLearnTopic){const t=TOPICS.find(x=>x.id===currentLearnTopic);const ld=LEARN[currentLearnTopic];if(t&&ld)renderLearnContent(t,ld);}
 }
 // ── GLOBAL SOURCE FILTER ──────────────────────────────────────────────────
-let globalSourceFilter="all"; // "all" | "korky" | "web" | "recall"
-function setGlobalSourceFilter(v){
+let globalSourceFilter="all"; // quiz-only filter: "all" | "korky" | "web" | "recall"
+function setQuizFilter(v){
   globalSourceFilter=v;
-  const sel=document.getElementById("deck-select");if(sel)sel.value=v;
-  currentCard=0;
-  if(currentLearnTopic){const t=TOPICS.find(x=>x.id===currentLearnTopic);const ld=LEARN[currentLearnTopic];if(t&&ld)renderLearnContent(t,ld);}
-  renderLearnTopicList();
+  document.querySelectorAll("[id^='qf-']").forEach(b=>b.classList.toggle("active",b.dataset.gsf===v));
   renderQuizTopicCheckboxes();
 }
+function setGlobalSourceFilter(v){globalSourceFilter=v;renderQuizTopicCheckboxes();}
 // ── LEARN ──────────────────────────────────────────────────────────────────
 let currentLearnTopic=null;let currentCard=0;
 function srcEnabled(c){return !c.src_id||!state.sources[c.src_id]||state.sources[c.src_id].enabled;}
-function filteredCards(ld){
-  const base=globalSourceFilter==="korky"?ld.c.filter(c=>c.korky):globalSourceFilter==="web"?ld.c.filter(c=>!c.korky):globalSourceFilter==="recall"?ld.c.filter(c=>c.recall):ld.c;
-  return base.filter(srcEnabled);
-}
+function filteredCards(ld){return ld.c.filter(srcEnabled);}
 function filteredQs(qs){
   const base=globalSourceFilter==="korky"?qs.filter(q=>q.korky):globalSourceFilter==="web"?qs.filter(q=>!q.korky):globalSourceFilter==="recall"?qs.filter(q=>q.recall):qs;
   return base.filter(srcEnabled);
@@ -733,8 +736,8 @@ function renderTopicQuizStart(ld){
 function resetTopicQuiz(ld){document.getElementById("ltp-quiz").innerHTML=renderTopicQuizStart(ld);}
 function startTopicQuiz(){
   const ld=currentLearnTopicData();if(!ld)return;
-  const pool=filteredQs(ld.q);
-  if(!pool.length){alert(globalSourceFilter==="korky"?"No Korky folder questions for this topic yet.":globalSourceFilter==="recall"?"No recall-driven questions for this topic yet.":"No questions for this topic.");return;}
+  const pool=ld.q.filter(srcEnabled);
+  if(!pool.length){alert("No questions for this topic yet.");return;}
   tqState={qs:[...pool].sort(()=>Math.random()-.5),idx:0,correct:0,answered:false};
   renderTQ();
 }
