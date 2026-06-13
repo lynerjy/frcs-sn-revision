@@ -289,7 +289,7 @@ main{max-width:1400px;margin:0 auto;padding:24px}
 <!-- QUIZ -->
 <div class="tab-panel active" id="tab-quiz">
   <div id="study-global-quiz" style="display:none;background:#fff;border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);padding:20px;max-width:700px;margin:0 auto">
-    <button class="btn btn-secondary btn-sm" onclick="exitGlobalQuiz()" style="margin-bottom:16px">← Back to topics</button>
+    <button class="btn btn-secondary" onclick="exitGlobalQuiz()" style="margin-bottom:16px;font-size:.85rem">← Back to topic list</button>
     <div id="quiz-topic-select">
       <div style="font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:10px">Select topics to quiz:</div>
       <div id="quiz-topic-checkboxes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin-bottom:14px"></div>
@@ -303,9 +303,9 @@ main{max-width:1400px;margin:0 auto;padding:24px}
   </div>
   <div class="learn-layout" id="study-learn-layout">
     <div class="learn-topic-list">
-      <div class="learn-topic-list-title" style="display:flex;justify-content:space-between;align-items:center;padding-right:10px">
-        <span>Topics <span style="font-weight:400;color:var(--g400);font-size:.7rem">by exam freq</span></span>
-        <button class="btn btn-teal btn-sm" onclick="showGlobalQuiz()" style="font-size:.68rem;padding:3px 8px">Quiz all →</button>
+      <div class="learn-topic-list-title">Topics <span style="font-weight:400;color:var(--g400);font-size:.7rem">by exam freq</span></div>
+      <div style="padding:10px 10px 6px">
+        <button class="btn btn-teal" onclick="showGlobalQuiz()" style="width:100%;font-size:.88rem;padding:9px">Quiz all topics →</button>
       </div>
       <div id="learn-topic-list-items"></div>
     </div>
