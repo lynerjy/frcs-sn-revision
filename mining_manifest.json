@@ -1,0 +1,607 @@
+{
+  "sources": {
+    "paper-sivakumar-hyponatraemia": {
+      "pages_done": [
+        [
+          1,
+          9
+        ]
+      ],
+      "cards_added": 8,
+      "sessions": [
+        {
+          "date": "2026-05-26",
+          "pages": "1-9",
+          "cards": 8
+        }
+      ]
+    },
+    "paper-nascis3": {
+      "pages_done": [
+        [
+          1,
+          8
+        ]
+      ],
+      "cards_added": 8,
+      "sessions": [
+        {
+          "date": "2026-05-26",
+          "pages": "1-8",
+          "cards": 8
+        }
+      ]
+    },
+    "paper-casey-myelopathy": {
+      "pages_done": [
+        [
+          1,
+          4
+        ]
+      ],
+      "cards_added": 0,
+      "sessions": [
+        {
+          "date": "2026-05-26",
+          "pages": "1-4",
+          "cards": 0
+        }
+      ]
+    },
+    "recall-imp-topics": {
+      "pages_done": [
+        [
+          1,
+          1
+        ]
+      ],
+      "cards_added": 0,
+      "sessions": [
+        {
+          "date": "2026-05-26",
+          "pages": "1-1",
+          "cards": 0
+        }
+      ]
+    },
+    "recall-post-exam-notes": {
+      "pages_done": [
+        [
+          1,
+          1
+        ]
+      ],
+      "cards_added": 0,
+      "sessions": [
+        {
+          "date": "2026-05-26",
+          "pages": "1-1",
+          "cards": 0
+        }
+      ]
+    },
+    "paper-isuia": {
+      "pages_done": [
+        [
+          1,
+          14
+        ]
+      ],
+      "cards_added": 8,
+      "sessions": [
+        {
+          "date": "2026-05-26",
+          "pages": "1-14",
+          "cards": 8
+        }
+      ]
+    },
+    "paper-patchell": {
+      "pages_done": [
+        [
+          1,
+          6
+        ]
+      ],
+      "cards_added": 16,
+      "sessions": [
+        {
+          "date": "2026-05-27",
+          "pages": "1-6",
+          "cards": 16
+        }
+      ]
+    },
+    "paper-stupp": {
+      "pages_done": [
+        [
+          1,
+          10
+        ]
+      ],
+      "cards_added": 15,
+      "sessions": [
+        {
+          "date": "2026-05-27",
+          "pages": "1-10",
+          "cards": 15
+        }
+      ]
+    },
+    "paper-sport": {
+      "pages_done": [
+        [
+          1,
+          11
+        ]
+      ],
+      "cards_added": 10,
+      "sessions": [
+        {
+          "date": "2026-05-27",
+          "pages": "1-11",
+          "cards": 10
+        }
+      ]
+    },
+    "paper-berger": {
+      "pages_done": [
+        [
+          1,
+          8
+        ]
+      ],
+      "cards_added": 8,
+      "sessions": [
+        {
+          "date": "2026-05-27",
+          "pages": "1-8",
+          "cards": 8
+        }
+      ]
+    },
+    "paper-isat": {
+      "pages_done": [
+        [
+          1,
+          15
+        ]
+      ],
+      "cards_added": 6,
+      "sessions": [
+        {
+          "date": "2026-05-31",
+          "pages": "1-15",
+          "cards": 6
+        }
+      ]
+    },
+    "paper-santarius": {
+      "pages_done": [
+        [
+          1,
+          7
+        ]
+      ],
+      "cards_added": 5,
+      "sessions": [
+        {
+          "date": "2026-05-31",
+          "pages": "1-7",
+          "cards": 5
+        }
+      ]
+    },
+    "paper-smith-abscess": {
+      "pages_done": [
+        [
+          1,
+          6
+        ]
+      ],
+      "cards_added": 14,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-6",
+          "cards": 14
+        }
+      ]
+    },
+    "paper-hashimoto-desh": {
+      "pages_done": [
+        [
+          1,
+          11
+        ]
+      ],
+      "cards_added": 11,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-11",
+          "cards": 11
+        }
+      ]
+    },
+    "paper-kulkarni": {
+      "pages_done": [
+        [
+          1,
+          6
+        ]
+      ],
+      "cards_added": 8,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-6",
+          "cards": 8
+        }
+      ]
+    },
+    "paper-anand-mvd": {
+      "pages_done": [
+        [
+          1,
+          8
+        ]
+      ],
+      "cards_added": 8,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-8",
+          "cards": 8
+        }
+      ]
+    },
+    "paper-decra": {
+      "pages_done": [
+        [
+          1,
+          10
+        ]
+      ],
+      "cards_added": 9,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-10",
+          "cards": 9
+        }
+      ]
+    },
+    "paper-kumpe-iih-stents": {
+      "pages_done": [
+        [
+          1,
+          11
+        ]
+      ],
+      "cards_added": 9,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-11",
+          "cards": 9
+        }
+      ]
+    },
+    "paper-chesnut": {
+      "pages_done": [
+        [
+          1,
+          12
+        ]
+      ],
+      "cards_added": 8,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-12",
+          "cards": 8
+        }
+      ]
+    },
+    "paper-mautner-nf2": {
+      "pages_done": [
+        [
+          1,
+          5
+        ]
+      ],
+      "cards_added": 6,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-5",
+          "cards": 6
+        }
+      ]
+    },
+    "paper-couture-helmet": {
+      "pages_done": [
+        [
+          1,
+          6
+        ]
+      ],
+      "cards_added": 6,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-6",
+          "cards": 6
+        }
+      ]
+    },
+    "paper-delwel-nph": {
+      "pages_done": [
+        [
+          1,
+          6
+        ]
+      ],
+      "cards_added": 6,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-6",
+          "cards": 6
+        }
+      ]
+    },
+    "paper-hu-epilepsy": {
+      "pages_done": [
+        [
+          1,
+          9
+        ]
+      ],
+      "cards_added": 6,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-9",
+          "cards": 6
+        }
+      ]
+    },
+    "paper-jahangiri-redo-tss": {
+      "pages_done": [
+        [
+          1,
+          8
+        ]
+      ],
+      "cards_added": 6,
+      "sessions": [
+        {
+          "date": "2026-06-10",
+          "pages": "1-8",
+          "cards": 6
+        }
+      ]
+    },
+    "paper-aruba": {
+      "pages_done": [
+        [
+          1,
+          9
+        ]
+      ],
+      "cards_added": 6,
+      "sessions": [
+        {
+          "date": "2026-06-11",
+          "pages": "1-9",
+          "cards": 6
+        }
+      ]
+    },
+    "paper-destiny2": {
+      "pages_done": [
+        [
+          1,
+          10
+        ]
+      ],
+      "cards_added": 6,
+      "sessions": [
+        {
+          "date": "2026-06-11",
+          "pages": "1-10",
+          "cards": 6
+        }
+      ]
+    },
+    "paper-liu-dbs": {
+      "pages_done": [
+        [
+          1,
+          10
+        ]
+      ],
+      "cards_added": 5,
+      "sessions": [
+        {
+          "date": "2026-06-11",
+          "pages": "1-10",
+          "cards": 5
+        }
+      ]
+    },
+    "bank-neuro-surgery": {
+      "pages_done": [
+        [
+          1,
+          14
+        ]
+      ],
+      "cards_added": 12,
+      "sessions": [
+        {
+          "date": "2026-06-11",
+          "pages": "1-14",
+          "cards": 12
+        }
+      ]
+    },
+    "bank-neurosurgery-mcqs": {
+      "pages_done": [
+        [
+          1,
+          5
+        ]
+      ],
+      "cards_added": 2,
+      "sessions": [
+        {
+          "date": "2026-06-11",
+          "pages": "1-5",
+          "cards": 2
+        }
+      ]
+    },
+    "greenberg": {
+      "pages_done": [
+        [
+          659,
+          680
+        ],
+        [
+          795,
+          819
+        ],
+        [
+          1288,
+          1303
+        ],
+        [
+          1368,
+          1380
+        ],
+        [
+          1362,
+          1368
+        ],
+        [
+          1319,
+          1345
+        ],
+        [
+          372,
+          395
+        ],
+        [
+          1263,
+          1290
+        ],
+        [
+          1242,
+          1263
+        ],
+        [
+          272,
+          295
+        ],
+        [
+          841,
+          865
+        ]
+      ],
+      "cards_added": 64,
+      "sessions": [
+        {
+          "date": "2026-06-12",
+          "pages": "659-680",
+          "cards": 16
+        },
+        {
+          "date": "2026-06-12",
+          "pages": "795-819",
+          "cards": 16
+        },
+        {
+          "date": "2026-06-12",
+          "pages": "1288-1303",
+          "cards": 7
+        },
+        {
+          "date": "2026-06-12",
+          "pages": "1368-1380",
+          "cards": 5
+        },
+        {
+          "date": "2026-06-12",
+          "pages": "1362-1368",
+          "cards": 3
+        },
+        {
+          "date": "2026-06-12",
+          "pages": "1319-1345",
+          "cards": 4
+        },
+        {
+          "date": "2026-06-12",
+          "pages": "372-395",
+          "cards": 4
+        },
+        {
+          "date": "2026-06-12",
+          "pages": "1263-1290",
+          "cards": 3
+        },
+        {
+          "date": "2026-06-12",
+          "pages": "1242-1263",
+          "cards": 3
+        },
+        {
+          "date": "2026-06-12",
+          "pages": "272-295",
+          "cards": 2
+        },
+        {
+          "date": "2026-06-12",
+          "pages": "841-865",
+          "cards": 1
+        }
+      ]
+    },
+    "aberdeen-cerebral-physiology": {
+      "pages_done": [
+        [
+          1,
+          6
+        ]
+      ],
+      "cards_added": 13,
+      "sessions": [
+        {
+          "date": "2026-06-13",
+          "pages": "1-6",
+          "cards": 13
+        }
+      ]
+    },
+    "aberdeen-rescueicp": {
+      "pages_done": [
+        [
+          1,
+          11
+        ]
+      ],
+      "cards_added": 9,
+      "sessions": [
+        {
+          "date": "2026-06-13",
+          "pages": "1-11",
+          "cards": 9
+        }
+      ]
+    }
+  },
+  "sessions": []
+}

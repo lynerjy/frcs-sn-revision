@@ -1,0 +1,10 @@
+# Source PDFs — only needed for local mining, not for the web app
+guidelines/
+*.pdf
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
