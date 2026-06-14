@@ -287,6 +287,19 @@ main{max-width:1400px;margin:0 auto;padding:24px}
 .dur-row input{width:70px;padding:5px 8px;border:1.5px solid var(--g200);border-radius:4px;font-size:.88rem}
 .modal-notes-ta{width:100%;padding:7px 9px;border:1.5px solid var(--g200);border-radius:4px;font-size:.82rem;font-family:inherit;resize:vertical;min-height:65px;margin-top:8px}
 .modal-footer{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+/* ── FLAG UI ─────────────────────────────────────────────────────────────── */
+.flag-btn{background:none;border:1.5px solid var(--g200);border-radius:4px;padding:4px 11px;font-size:.75rem;color:var(--g400);cursor:pointer;transition:all .15s;font-family:inherit}
+.flag-btn:hover{border-color:#f59e0b;color:#d97706;background:#fffbeb}
+.flag-btn.flagged{border-color:#dc2626;color:#dc2626;background:#fef2f2}
+.flag-form{background:var(--g50);border:1.5px solid var(--g200);border-radius:4px;padding:10px;margin-top:8px}
+.flag-note{width:100%;padding:6px 9px;border:1.5px solid var(--g200);border-radius:4px;font-size:.82rem;font-family:inherit;resize:vertical;min-height:50px;display:block}
+.flag-note:focus{outline:none;border-color:var(--g800)}
+.flagged-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.flagged-item{background:#fff;border:1.5px solid #fde68a;border-radius:var(--r);padding:12px 14px;box-shadow:2px 2px 0 rgba(245,158,11,.3)}
+.flagged-item-q{font-size:.83rem;font-weight:600;color:var(--g800);margin-bottom:6px;line-height:1.4}
+.flagged-item-note{font-size:.78rem;color:var(--g600);line-height:1.5;margin-bottom:8px;font-style:italic}
+.flagged-item-note:empty::before{content:"(no note)";color:var(--g400)}
+.flagged-item-meta{font-size:.7rem;color:var(--g400)}
 /* ── GAME UI ────────────────────────────────────────────────────────────── */
 /* XP float pop */
 .xp-float{position:fixed;font-family:var(--pf);font-size:.52rem;color:#fbbf24;background:#111;padding:3px 9px;border-radius:3px;border:1px solid rgba(251,191,36,.5);pointer-events:none;z-index:9999;white-space:nowrap;animation:xp-rise 1.1s ease-out forwards}
@@ -490,10 +503,10 @@ const RECALL_COUNTS=(()=>{const c={};RECALL.forEach(r=>{c[r.topic]=(c[r.topic]||
 function recallBadge(topicId){const n=RECALL_COUNTS[topicId]||0;if(!n)return'';const col=n>=40?'#dc2626':n>=20?'#d97706':n>=10?'#2563eb':'#6b7280';return`<span style="font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:100px;background:${col}18;color:${col};border:1px solid ${col}40;white-space:nowrap">${n} recalls</span>`;}
 
 // ── STATE ──────────────────────────────────────────────────────────────────
-let state={sources:{},topics:{},log:{},goals:[],examDate:"",cards:{},sbaResults:{}};
+let state={sources:{},topics:{},log:{},goals:[],examDate:"",cards:{},sbaResults:{},flags:{}};
 function normalizeState(){
   if(!state.sources)state.sources={};if(!state.topics)state.topics={};
-  if(!state.cards)state.cards={};if(!state.sbaResults)state.sbaResults={};
+  if(!state.cards)state.cards={};if(!state.sbaResults)state.sbaResults={};if(!state.flags)state.flags={};
   if(!state.log)state.log={};if(!state.goals)state.goals=[];
   SOURCES.forEach(s=>{if(!state.sources[s.id])state.sources[s.id]={enabled:true,status:"not-started"};});
   TOPICS.forEach(t=>{if(!state.topics[t.id])state.topics[t.id]={confidence:0,status:"not-started",notes:""};});
@@ -685,7 +698,11 @@ function renderProgressSummary(){
       <td style="padding:9px 8px;text-align:center;color:var(--g600)">${cardLabel}</td>
       <td style="padding:9px 8px;text-align:center;font-weight:600;color:${r.sSt.seen?scoreCol(r.sSt.pct):"var(--g400)"}">${sbaLabel}</td>
       <td style="padding:9px 8px;text-align:center;color:var(--g400)">${speedLabel}</td>
-    </tr>`;}).join("")}</tbody></table>`;
+    </tr>`;}).join("")}</tbody></table>
+  <div style="margin-top:24px">
+    <div style="font-family:var(--pf);font-size:.55rem;color:var(--g800);margin-bottom:10px;letter-spacing:.04em">🚩 FLAGGED QUESTIONS (${Object.keys(state.flags).length})</div>
+    <div id="flagged-section">${renderFlagged()}</div>
+  </div>`;
 }
 function resetProgress(){
   if(!confirm("Reset all flashcard and SBA progress? This clears all mastery and accuracy data."))return;
@@ -800,7 +817,8 @@ function renderCards(ld,idx){
   <div class="card-nav">
     <button class="btn btn-secondary btn-sm" onclick="navCard(${idx-1},currentLearnTopicData())" ${idx===0?"disabled":""}>← Prev</button>
     <button class="btn btn-secondary btn-sm" onclick="navCard(${idx+1},currentLearnTopicData())" ${idx===cards.length-1?"disabled":""}>Next →</button>
-  </div>`;
+  </div>
+  <div id="card-flag-wrap" style="text-align:center;margin-top:10px;display:none">${flagHtml(card.q)}</div>`;
 }
 function flipAndShowJudge(){
   const fc=document.getElementById("flip-card");
@@ -809,6 +827,7 @@ function flipAndShowJudge(){
   if(fc.classList.contains("flipped")){
     const j=document.getElementById("card-judge");if(j)j.classList.add("show");
     const h=document.getElementById("card-hint");if(h)h.style.display="none";
+    const fw=document.getElementById("card-flag-wrap");if(fw)fw.style.display="block";
   }
 }
 function judgeCard(correct){
@@ -889,7 +908,8 @@ function sbaSourceHtml(q){
   } else if(q.ref){
     html+=`<div style="margin-top:8px;font-size:.72rem;color:var(--g600);font-style:italic">Ref: ${q.ref}</div>`;
   }
-  if(q.recall)html+=`<div style="margin-top:6px"><span style="font-size:.68rem;background:#dcfce7;color:#166534;border:1px solid #86efac;border-radius:100px;padding:2px 8px;font-weight:600">Recall-aligned</span></div>`;
+  if(q.recall)html+=`<div style="margin-top:6px"><span style="font-size:.68rem;background:#dcfce7;color:#166534;border:1px solid #86efac;border-radius:3px;padding:2px 8px;font-weight:600">Recall-aligned</span></div>`;
+  html+=flagHtml(q.stem);
   return html;
 }
 // ── GLOBAL QUIZ ────────────────────────────────────────────────────────────
@@ -952,6 +972,67 @@ function nextGQ(){quizState.idx++;quizState.answered=false;renderGQ();}
 function restartGQ(){document.getElementById("quiz-topic-select").style.display="block";document.getElementById("quiz-area").style.display="none";renderQuizTopicCheckboxes();showGlobalQuiz();}
 function toKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 function formatDate(k){if(!k)return"";const[y,m,d]=k.split("-");const mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return`${parseInt(d)} ${mo[parseInt(m)-1]} ${y}`;}
+// ── FLAG SYSTEM ────────────────────────────────────────────────────────────
+function qFlagId(text){return "fl::"+text.substring(0,60).replace(/[^a-zA-Z0-9]/g,"_");}
+function isFlagged(id){return !!state.flags[id];}
+function flagHtml(text){
+  const id=qFlagId(text);
+  const flagged=isFlagged(id);
+  const note=(state.flags[id]?.note||"").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+  const esc=text.replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  return`<div style="margin-top:10px">
+    <button id="fb-${id}" class="flag-btn${flagged?" flagged":""}" onclick="toggleFlagForm('${id}')">${flagged?"🚩 Flagged":"🏳 Flag"}</button>
+    <span id="fs-${id}" style="display:none" data-stem="${esc}"></span>
+    <div id="ff-${id}" class="flag-form" style="display:none">
+      <textarea id="fn-${id}" class="flag-note" placeholder="What's unclear, confusing, or wrong? (optional)">${note}</textarea>
+      <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-primary" onclick="saveFlagNote('${id}')">Save flag</button>
+        ${flagged?`<button class="btn btn-sm btn-secondary" onclick="removeFlagById('${id}')">Remove flag</button>`:""}
+      </div>
+    </div>
+  </div>`;
+}
+function toggleFlagForm(id){
+  const f=document.getElementById("ff-"+id);if(!f)return;
+  f.style.display=f.style.display==="none"?"block":"none";
+  if(f.style.display==="block"){const ta=document.getElementById("fn-"+id);if(ta)ta.focus();}
+}
+function saveFlagNote(id){
+  const ta=document.getElementById("fn-"+id);
+  const note=ta?ta.value.trim():"";
+  const spanEl=document.getElementById("fs-"+id);
+  const stem=spanEl?spanEl.dataset.stem:"";
+  state.flags[id]={stem,note,ts:Date.now()};save();
+  const btn=document.getElementById("fb-"+id);
+  if(btn){btn.textContent="🚩 Flagged";btn.classList.add("flagged");}
+  document.getElementById("ff-"+id).style.display="none";
+  // Refresh remove button visibility
+  const ff=document.getElementById("ff-"+id);
+  if(ff){const row=ff.querySelector("div");if(row&&!row.querySelector(".btn-secondary")){row.insertAdjacentHTML("beforeend",`<button class="btn btn-sm btn-secondary" onclick="removeFlagById('${id}')">Remove flag</button>`);}}
+}
+function removeFlagById(id){
+  delete state.flags[id];save();
+  const btn=document.getElementById("fb-"+id);
+  if(btn){btn.textContent="🏳 Flag";btn.classList.remove("flagged");}
+  const ff=document.getElementById("ff-"+id);if(ff)ff.style.display="none";
+}
+function renderFlagged(){
+  const ids=Object.keys(state.flags);
+  if(!ids.length)return`<div style="color:var(--g400);font-size:.85rem;padding:16px 0">No flagged questions yet. Hit <strong>🏳 Flag</strong> on any question or card to review it later.</div>`;
+  const rows=ids.sort((a,b)=>state.flags[b].ts-state.flags[a].ts).map(id=>{
+    const f=state.flags[id];
+    const date=new Date(f.ts).toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+    return`<div class="flagged-item">
+      <div class="flagged-item-q">🚩 ${f.stem||"(question text not saved)"}</div>
+      ${f.note?`<div class="flagged-item-note">${f.note.replace(/</g,"&lt;")}</div>`:""}
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <span class="flagged-item-meta">Flagged ${date}</span>
+        <button class="btn btn-sm btn-secondary" onclick="removeFlagById('${id}');document.getElementById('flagged-section').innerHTML=renderFlagged()">Remove</button>
+      </div>
+    </div>`;
+  }).join("");
+  return rows;
+}
 // ── GAME SYSTEM ────────────────────────────────────────────────────────────
 const DAILY_GOAL=5;
 const LEVELS=[
