@@ -263,3 +263,43 @@
 - Greenberg paeds re-mining: run `python3 mine.py extract greenberg <pages>` targeting paeds chapters
 - TJones Revision Notes (79pp) still queued after paeds Greenberg
 - Non-Korky sources: verify all have `url` populated so Visit ↗ renders everywhere
+
+---
+
+## 2026-06-16 — Sources mining badges everywhere + brain/XP bar layout + daily goal (session 10)
+
+### What was built / changed
+
+**Mining status badges — all sources**
+- Previous sessions partially implemented badges gated on `s.korky` (object flag) or `isKorky` (category), neither of which caught all cases (e.g. Greenberg in Textbooks category had `s.korky` undefined, so no badge)
+- Final fix: badges now appear on every non-AI source, unconditionally, using four branches:
+  - ✓ N cards (green) — content in app, counted live from `LEARN` via `liveCountBySrc` map
+  - partial — N cards (amber) — `s.partial:true` set on source (e.g. Greenberg: 64 cards)
+  - not yet mined (gray) — has `s.local` PDF or `isKorky` but zero extracted content
+  - reference only (blue) — external link only, never a content source (eBrain, JCIE, etc.)
+- `liveCountBySrc` built at render time by iterating all `LEARN` topics' `.c` and `.q` arrays — so NICE guidelines auto-show correct counts without needing `s.cards` set
+- `effectiveCards = s.cards || liveCountBySrc[s.id]` — explicit `s.cards` takes priority (Korky papers); live count used as fallback (guidelines, Greenberg partial override)
+- AI-Generated category explicitly excluded from badge logic
+
+**Sources readme updated** — badge legend now shows all four badge styles inline with actual rendered colours; wording changed from "Korky-folder sources" to "every source"
+
+**Brain / XP bar layout**
+- Brain canvas (39px tall above bar) was overlapping the exam date row
+- Fix: added `margin-top: 42px` to `.xp-row` — lowers XP bar enough to clear the brain's full height
+- Redundant `exam-date-label` span removed (was echoing the date picker value as formatted text — unnecessary duplication)
+
+**Configurable daily basket goal**
+- `const DAILY_GOAL=5` replaced with `function getDailyGoal()` reading `state.dailyGoal` (defaults to 5)
+- All five `DAILY_GOAL` references replaced with `getDailyGoal()` calls
+- 🏀 Daily goal: number input added to `.hdr-bot` row (same line as exam date), range 1–50
+- Saves to `state.dailyGoal` on change, calls `renderDailyHoops()` immediately
+- Bug found and fixed in same session: initial wiring called `renderHoops()` (nonexistent) instead of `renderDailyHoops()`
+
+### Key decisions
+- "Reference only" blue badge chosen over no badge for external-link sources — user wants them listed for future login/payment unlock potential
+- `liveCountBySrc` computed at render time (not cached) — acceptable since Sources table is not re-rendered frequently and LEARN is small enough
+
+### Open questions / next session
+- Greenberg paeds re-mining still URGENT — craniosynostosis ~pp1140s, NTDs ~pp200s, paeds tumours ~pp750s
+- TJones Revision Notes (79pp) queued after paeds Greenberg
+- Non-Korky sources: verify all have `url` fields so Visit ↗ renders everywhere
