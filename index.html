@@ -610,20 +610,17 @@ function renderSourcesTable(){
       <table style="width:100%;border-collapse:collapse;font-size:.8rem;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--g200)">
       <thead><tr style="background:var(--g50);border-bottom:2px solid var(--g200)">
         <th style="text-align:left;padding:8px 12px;font-weight:600;color:var(--navy)">Source</th>
-        <th style="padding:8px 8px;font-weight:600;color:var(--navy);white-space:nowrap">Priority</th>
         <th style="padding:8px 8px;font-weight:600;color:var(--navy)">Status</th>
         <th style="padding:8px 8px;font-weight:600;color:var(--navy)">PDF</th>
       </tr></thead>
       <tbody>${srcs.map((s,i)=>{
         const ss=state.sources[s.id]||{status:"not-started"};
         const sc=ss.status==="in-progress"?"s-ip":ss.status==="done"?"s-done":"";
-        const pStyle=isKorky?priStyle.korky:(priStyle[s.priority]||"");
         return`<tr style="border-bottom:1px solid var(--g100);background:${i%2===0?"#fff":"#fafafa"}">
           <td style="padding:8px 12px;line-height:1.45">
             <div style="font-weight:500;color:var(--g800)">${s.name}</div>
             ${s.notes?`<div style="font-size:.73rem;color:var(--g500);margin-top:2px">${s.notes}</div>`:""}
           </td>
-          <td style="padding:8px;text-align:center;white-space:nowrap;vertical-align:top"><span style="font-size:.67rem;padding:2px 7px;border-radius:100px;font-weight:600;${pStyle}">${isKorky?"key paper":s.priority}</span></td>
           <td style="padding:8px;vertical-align:top"><select class="status-sel ${sc}" style="font-size:.75rem;padding:3px 6px;width:100%;min-width:100px" onchange="setSrcStatus('${s.id}',this.value,this)"><option value="not-started" ${ss.status==="not-started"?"selected":""}>Not started</option><option value="in-progress" ${ss.status==="in-progress"?"selected":""}>In progress</option><option value="done" ${ss.status==="done"?"selected":""}>Done ✓</option></select></td>
           <td style="padding:8px;text-align:center;vertical-align:top">${s.local?`<button class="btn btn-teal btn-sm" style="font-size:.68rem;padding:2px 7px" onclick="openPDF('${s.local}','${s.name.replace(/'/g,"\\'")}')">Open</button>`:'<span style="color:var(--g400);font-size:.75rem">—</span>'}</td>
         </tr>`;
@@ -773,10 +770,39 @@ function renderLearnContent(t,ld){
   <div class="learn-tab-panel" id="ltp-quiz">${renderTopicQuizStart(ld)}</div>`;
   document.querySelectorAll(".learn-tab").forEach(b=>{b.addEventListener("click",()=>{document.querySelectorAll(".learn-tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".learn-tab-panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById("ltp-"+b.dataset.ltab).classList.add("active");if(b.dataset.ltab==="cards")refreshCards(ld);if(b.dataset.ltab==="quiz")resetTopicQuiz(ld);});});
 }
+function topicSources(ld){
+  const ids=new Set();
+  (ld.c||[]).forEach(c=>{if(c.src_id)ids.add(c.src_id);});
+  (ld.q||[]).forEach(q=>{if(q.src_id)ids.add(q.src_id);});
+  return[...ids].map(id=>({src:SOURCES.find(s=>s.id===id)||{id,name:id},id}));
+}
 function renderNotes(ld){
-  const src=`<div style="font-size:.8rem;color:var(--g600);background:var(--g50);padding:12px 14px;border-radius:var(--r);border:1px solid var(--g200);margin-bottom:14px">📄 <strong>Source:</strong> ${ld.src}<br><span style="font-size:.75rem;opacity:.8">Open the source PDF from the <strong>Sources</strong> tab to read the full guideline.</span></div>`;
-  if(!ld.n||!ld.n.length)return src+'<div class="empty" style="padding:20px">No summary notes for this topic yet — use the PDF viewer in Sources, then test yourself with Flashcards and Quiz.</div>';
-  return src+ld.n.map(s=>`<div class="notes-section"><div class="notes-heading">${s.h}</div><ul class="notes-list">${s.pts.map(p=>`<li>${p}</li>`).join("")}</ul></div>`).join("");
+  const allSrcs=topicSources(ld);
+  const realSrcs=allSrcs.filter(({id})=>id!=='claude-ai').map(({src})=>src);
+  const aiCards=(ld.c||[]).filter(c=>c.src_id==='claude-ai').length;
+  const aiSBAs=(ld.q||[]).filter(q=>q.src_id==='claude-ai').length;
+  const hasAI=aiCards>0||aiSBAs>0;
+  let srcHtml=`<div style="font-size:.8rem;background:var(--g50);padding:12px 14px;border-radius:var(--r);border:1px solid var(--g200);margin-bottom:14px">`;
+  srcHtml+=`<div style="font-weight:700;color:var(--navy);margin-bottom:8px">📄 Sources for this topic</div>`;
+  if(realSrcs.length){
+    srcHtml+=`<ul style="margin:0 0 6px 0;padding-left:16px;line-height:1.9">`;
+    realSrcs.forEach(s=>{
+      const badge=s.korky?`<span style="background:#fef08a;color:#713f12;border:1px solid #eab308;padding:0 6px;border-radius:3px;font-size:.65rem;font-weight:700;margin-left:5px">Korky</span>`:``;
+      srcHtml+=`<li style="color:var(--g700)">${s.name}${badge}</li>`;
+    });
+    srcHtml+=`</ul>`;
+  }else{
+    srcHtml+=`<p style="color:var(--g500);font-style:italic;font-size:.78rem;margin-bottom:6px">No verified sources mined yet.</p>`;
+  }
+  if(hasAI){
+    const parts=[];
+    if(aiCards)parts.push(`${aiCards} flashcard${aiCards>1?'s':''}`);
+    if(aiSBAs)parts.push(`${aiSBAs} SBA${aiSBAs>1?'s':''}`);
+    srcHtml+=`<div style="margin-top:6px;padding:6px 10px;background:#fef3c7;border-left:3px solid #f59e0b;border-radius:3px;font-size:.76rem;color:#92400e"><strong>⚠ ${parts.join(' and ')} AI-generated</strong> — written from training knowledge, not a verified source document. Treat with caution and cross-check before exam.</div>`;
+  }
+  srcHtml+=`</div>`;
+  if(!ld.n||!ld.n.length)return srcHtml+'<div class="empty" style="padding:20px">No summary notes for this topic yet — use the PDF viewer in Sources, then test yourself with Flashcards and Quiz.</div>';
+  return srcHtml+ld.n.map(s=>`<div class="notes-section"><div class="notes-heading">${s.h}</div><ul class="notes-list">${s.pts.map(p=>`<li>${p}</li>`).join("")}</ul></div>`).join("");
 }
 let useSmartOrder=true;
 function renderCards(ld,idx){
@@ -802,7 +828,7 @@ function renderCards(ld,idx){
   <div class="card-hint" id="card-hint">Click card to reveal answer</div>
   <div class="card-wrapper"><div class="flip-card" id="flip-card" onclick="flipAndShowJudge()">
     <div class="card-face card-front"><div class="card-label">Question</div><div class="card-text">${card.q}</div></div>
-    <div class="card-face card-back"><div class="card-label">Answer</div><div class="card-text">${card.a}</div>${korkBadge}${card.ref?`<div class="card-ref">${card.ref}</div>`:""}</div>
+    <div class="card-face card-back"><div class="card-label">Answer</div><div class="card-text">${card.a}</div>${korkBadge}${(card.ref&&card.ref!=='claude'&&!card.ref.startsWith('claude'))?`<div class="card-ref">${card.ref}</div>`:""}${card.src_id==='claude-ai'?`<div style="margin-top:8px;padding:6px 10px;background:#fef3c7;border-radius:3px;border:1.5px solid #f59e0b;font-size:.73rem;color:#92400e"><strong>⚠ AI-generated</strong> — not verified against a source document. Check against Greenberg or a guideline before trusting.</div>`:""}</div>
   </div></div>
   <div class="card-judge" id="card-judge">
     <button class="btn-got-it" onclick="judgeCard(true)">Got it</button>
@@ -1153,6 +1179,7 @@ const PXBRAIN=(function(){
   }
   function dbl(by2){if(by2<-1||by2>12)return;cx.fillStyle=CK;cx.fillRect(px(5),px(by2),SC*2,SC*2);}
   function frame(){
+    repos();
     cx.clearRect(0,0,cv.width,cv.height);
     if(st==='idle'){it++;const dy=Math.sin(it/22)>.7?-1:0;dbr(BY+dy);}
     else if(st==='dunk'){dt++;const t=dt;
@@ -1174,15 +1201,15 @@ const PXBRAIN=(function(){
     const fill=document.getElementById('xp-fill');
     if(!fill)return;
     const r=fill.getBoundingClientRect();
-    const bw=cv.width,bh=cv.height;
-    // Brain stands on the XP bar — feet at bar top, centred on fill's right edge
+    const bw=cv.width;
+    // Feet at bar top edge, centred on fill's right edge
     cv.style.left=Math.min(window.innerWidth-bw,Math.max(0,r.right-bw/2))+'px';
-    cv.style.top=(r.top-bh+10)+'px';
+    cv.style.top=(r.top-(BY+BODY.length+LEGS.length)*SC)+'px';
   }
   return{
     init(){
       cv=document.createElement('canvas');
-      cv.id='brain-canvas';cv.width=36;cv.height=42;
+      cv.id='brain-canvas';cv.width=36;cv.height=56;
       cv.style.cssText='position:fixed;z-index:500;pointer-events:none;image-rendering:pixelated;image-rendering:crisp-edges';
       document.body.appendChild(cv);
       cx=cv.getContext('2d');cx.imageSmoothingEnabled=false;

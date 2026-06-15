@@ -42,3 +42,16 @@ The goal is zero claude-ai SBAs by the time all textbooks are mined. Track progr
 ```bash
 grep -c 'src_id:"claude-ai"' content.js
 ```
+
+---
+
+## MANDATORY: End-of-session log update
+
+**Every session that touches this project must end with an entry in `project_log.md`.**
+
+This is not optional. Before finishing any session:
+1. Append a new dated entry to `~/frcs-sn-revision/project_log.md`
+2. Include: what was built or mined, key decisions, card/SBA counts changed, open questions, what's next
+3. If UI features were added: describe them specifically enough that a future session can recall them without reading the code (e.g. "NR badge in topic list sidebar, derived from RECALL_COUNTS, sorted descending")
+
+The project log is the source of truth for project state between sessions. The memory files in ~/.claude supplement it but cannot replace it. A session without a log entry is incomplete.
