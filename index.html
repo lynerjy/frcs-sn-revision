@@ -30,7 +30,7 @@ header::after{content:'';position:absolute;inset:0;background:repeating-linear-g
 .anim-btn:hover{background:rgba(255,255,255,.16)}.anim-btn.off{color:rgba(255,255,255,.3);border-color:rgba(255,255,255,.1)}
 .logout-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.65);padding:4px 10px;border-radius:3px;font-size:.72rem;cursor:pointer;white-space:nowrap}
 /* Pixel art brain canvas */
-#brain-canvas{display:block;flex-shrink:0;image-rendering:pixelated;image-rendering:crisp-edges;cursor:default;position:relative;z-index:1}
+#brain-canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
 /* XP / daily row */
 .hdr-bot{display:flex;align-items:center;gap:16px;margin-bottom:6px;position:relative;z-index:1;flex-wrap:wrap}
 .exam-inp{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 8px;border-radius:3px;font-size:.78rem}
@@ -46,10 +46,9 @@ header::after{content:'';position:absolute;inset:0;background:repeating-linear-g
 /* Daily goal hoop */
 .daily-row{display:flex;align-items:center;gap:8px;position:relative;z-index:1;margin-top:2px}
 .daily-label{font-family:var(--pf);font-size:.68rem;opacity:.55;white-space:nowrap;flex-shrink:0}
-.daily-hoops{display:flex;gap:4px;align-items:center}
-.hoop{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:.6rem;transition:all .25s}
-.hoop.scored{border-color:#f59e0b;background:rgba(245,158,11,.2);animation:hoop-pop .3s ease}
-.hoop.scored::after{content:'🏀'}
+.daily-hoops{display:flex;gap:6px;align-items:flex-end}
+.hoop{display:inline-flex;align-items:center;justify-content:center}
+.hoop.scored{animation:hoop-pop .3s ease}
 @keyframes hoop-pop{0%{transform:scale(.7)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
 .daily-done-msg{font-family:var(--pf);font-size:.7rem;color:#fbbf24;animation:flash-msg 1s ease infinite alternate;display:none}
 .daily-done-msg.show{display:block}
@@ -345,7 +344,6 @@ main{max-width:1400px;margin:0 auto;padding:24px}
       <div class="stat"><div class="stat-val" id="stat-days">—</div><div class="stat-lbl">Days left</div></div>
     </div>
     <div class="hdr-right">
-      <canvas id="brain-canvas" width="36" height="42" title="Your study brain"></canvas>
       <button id="anim-btn" class="anim-btn" onclick="toggleAnim()">⚡ FX ON</button>
       <button class="logout-btn" onclick="doLogout()">Sign out · <span id="hdr-user" style="opacity:.6"></span></button>
     </div>
@@ -1062,6 +1060,18 @@ function incDailyCount(){
   renderDailyHoops();
   if(prev+1===DAILY_GOAL&&animEnabled())showGoalSmash();
 }
+function hoopSVG(scored){
+  const rc=scored?'#f59e0b':'rgba(255,255,255,0.3)';
+  const nc=scored?'#ca8a04':'rgba(255,255,255,0.18)';
+  const nf=scored?'rgba(245,158,11,0.1)':'none';
+  const ball=scored?`<circle cx="10" cy="3.5" r="3.5" fill="#f59e0b"/>
+<line x1="8.5" y1="1.5" x2="8.5" y2="6.5" stroke="#ca8a04" stroke-width="0.7"/>
+<line x1="6.5" y1="3.5" x2="13.5" y2="3.5" stroke="#ca8a04" stroke-width="0.7"/>
+<path d="M7 1.5 Q10 4 13 1.5" stroke="#ca8a04" stroke-width="0.6" fill="none"/>
+<path d="M7 5.5 Q10 3 13 5.5" stroke="#ca8a04" stroke-width="0.6" fill="none"/>`:
+`<rect x="2" y="1" width="16" height="3" rx="1" fill="rgba(255,255,255,0.06)"/>`;
+  return `<svg width="20" height="26" viewBox="0 0 20 26" fill="none" xmlns="http://www.w3.org/2000/svg">${ball}<rect x="0" y="8" width="20" height="2.5" rx="1" fill="${rc}"/><path d="M1 10.5 L4.5 24 L15.5 24 L19 10.5 Z" stroke="${rc}" stroke-width="1.3" fill="${nf}"/><line x1="7.5" y1="10.5" x2="6.5" y2="24" stroke="${nc}" stroke-width="0.9"/><line x1="12.5" y1="10.5" x2="13.5" y2="24" stroke="${nc}" stroke-width="0.9"/><line x1="2" y1="15.5" x2="18" y2="15.5" stroke="${nc}" stroke-width="0.8"/><line x1="3" y1="20" x2="17" y2="20" stroke="${nc}" stroke-width="0.8"/></svg>`;
+}
 function renderDailyHoops(){
   const el=document.getElementById("daily-hoops");
   const msg=document.getElementById("daily-done-msg");
@@ -1069,7 +1079,7 @@ function renderDailyHoops(){
   if(!el)return;
   const count=getDailyCount();
   let html='';
-  for(let i=0;i<DAILY_GOAL;i++)html+=`<div class="hoop${i<count?" scored":""}"></div>`;
+  for(let i=0;i<DAILY_GOAL;i++)html+=`<div class="hoop${i<count?" scored":""}">${hoopSVG(i<count)}</div>`;
   el.innerHTML=html;
   if(msg){if(count>=DAILY_GOAL){msg.classList.add("show");}else{msg.classList.remove("show");}}
   if(more){const rem=DAILY_GOAL-count;more.textContent=count<DAILY_GOAL?`${rem} more to goal`:(count>DAILY_GOAL?`+${count-DAILY_GOAL} bonus`:"");}
@@ -1116,14 +1126,13 @@ function updateXPBar(){
     if(fill)fill.style.width="100%";
     if(lbl)lbl.textContent=gameState.xp+" XP · MAX";
   }
+  PXBRAIN.reposition();
 }
 // ── PIXEL ART BRAIN ────────────────────────────────────────────────────────
 const PXBRAIN=(function(){
   const SC=3,BX=1,BY=3;
   const CB='#f5c59c',CF='#c4784a',CL='#fda4af',CK='#f59e0b';
-  // Brain body 10×8
   const BODY=[[0,0,1,1,1,1,1,1,0,0],[0,1,1,1,1,1,1,1,1,0],[0,1,2,1,1,2,1,1,1,0],[1,1,1,1,1,1,1,1,1,1],[1,1,2,1,1,1,1,2,1,1],[1,1,1,1,1,1,1,1,1,1],[0,1,1,1,1,1,1,1,1,0],[0,0,1,1,1,1,1,1,0,0]];
-  // Legs 10×2
   const LEGS=[[0,0,1,1,0,0,0,1,1,0],[0,0,1,1,0,0,0,1,1,0]];
   let cv,cx,raf,st='idle',it=0,dt=0,mt=0;
   function px(n){return n*SC;}
@@ -1149,12 +1158,31 @@ const PXBRAIN=(function(){
     }
     raf=requestAnimationFrame(frame);
   }
+  function repos(){
+    if(!cv)return;
+    const fill=document.getElementById('xp-fill');
+    if(!fill)return;
+    const r=fill.getBoundingClientRect();
+    const bw=cv.width,bh=cv.height;
+    // Brain stands on the XP bar — feet at bar top, centred on fill's right edge
+    cv.style.left=Math.min(window.innerWidth-bw,Math.max(0,r.right-bw/2))+'px';
+    cv.style.top=(r.top-bh+10)+'px';
+  }
   return{
-    init(){cv=document.getElementById('brain-canvas');if(!cv)return;cx=cv.getContext('2d');cx.imageSmoothingEnabled=false;raf=requestAnimationFrame(frame);},
+    init(){
+      cv=document.createElement('canvas');
+      cv.id='brain-canvas';cv.width=36;cv.height=42;
+      cv.style.cssText='position:fixed;z-index:500;pointer-events:none;image-rendering:pixelated;image-rendering:crisp-edges';
+      document.body.appendChild(cv);
+      cx=cv.getContext('2d');cx.imageSmoothingEnabled=false;
+      repos();
+      raf=requestAnimationFrame(frame);
+    },
     dunk(){if(cv&&st!=='dunk'){st='dunk';dt=0;}},
     miss(){if(cv&&st!=='miss'){st='miss';mt=0;}},
-    stop(){if(raf){cancelAnimationFrame(raf);raf=null;}if(cx){cx.clearRect(0,0,cv.width,cv.height);dbr(BY);}},
-    start(){if(!raf&&cv){raf=requestAnimationFrame(frame);}}
+    reposition(){repos();},
+    stop(){if(raf){cancelAnimationFrame(raf);raf=null;}if(cx&&cv){cx.clearRect(0,0,cv.width,cv.height);dbr(BY);}},
+    start(){if(!raf&&cv){raf=requestAnimationFrame(frame);}},
   };
 })();
 function animEnabled(){return !document.body.classList.contains("no-anim");}
@@ -1245,8 +1273,8 @@ examInp.addEventListener("change",()=>{state.examDate=examInp.value;save();updat
     const h=document.querySelector("header");
     if(h)document.documentElement.style.setProperty("--hdr-h",h.offsetHeight+"px");
   }
-  document.fonts.ready.then(syncHdrHeight);
-  window.addEventListener("resize",syncHdrHeight);
+  document.fonts.ready.then(()=>{syncHdrHeight();PXBRAIN.reposition();});
+  window.addEventListener("resize",()=>{syncHdrHeight();PXBRAIN.reposition();});
 
   const savedUser=localStorage.getItem("frcs_user");
   if(savedUser){
