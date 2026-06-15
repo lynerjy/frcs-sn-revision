@@ -26,6 +26,19 @@ ref:"cerebral-physiology.pdf p6" // Aberdeen PDF: filename + page
 
 No page number = not acceptable. No source = not acceptable.
 
-### The 284 claude-ai tagged SBAs
+### The 284 claude-ai tagged SBAs — mandatory verification during mining
 
-A prior session violated this rule and generated 284 SBAs from AI training knowledge. These are tagged `src_id:"claude-ai"` and shown with a warning on the live site. They must be verified or replaced during textbook mining. Do not add more.
+A prior session violated this rule and generated 284 SBAs from AI training knowledge. These are tagged `src_id:"claude-ai"` and shown with a warning on the live site.
+
+**Every mining session must include a verification step:**
+
+After mining a source, before marking it done:
+1. Run: `grep 'src_id:"claude-ai"' content.js | grep -i "<topic keyword>"` to find claude-ai SBAs in that topic area
+2. For each one found: check whether the source just mined covers that content
+3. If yes: rewrite the SBA from the source text, replace `src_id:"claude-ai"` with the real `src_id`, and update `ref:` to include a real page number
+4. If the source doesn't cover it: leave it tagged claude-ai for now — do not verify from memory
+
+The goal is zero claude-ai SBAs by the time all textbooks are mined. Track progress by running:
+```bash
+grep -c 'src_id:"claude-ai"' content.js
+```
