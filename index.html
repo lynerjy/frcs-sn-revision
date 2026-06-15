@@ -38,15 +38,14 @@ header::after{content:'';position:absolute;inset:0;background:repeating-linear-g
 /* Level + XP bar */
 .xp-row{display:flex;align-items:center;gap:10px;position:relative;z-index:1;margin-top:42px}
 .level-pill{font-family:var(--pf);font-size:.65rem;font-weight:700;color:#fbbf24;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.35);padding:3px 9px;border-radius:2px;white-space:nowrap;flex-shrink:0}
-.xp-bar-wrap{flex:1;min-width:120px}
+.xp-bar-wrap{flex:1;min-width:60px;max-width:160px}
 .xp-bar{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:2px;height:7px;overflow:hidden;position:relative}
 .xp-fill{background:linear-gradient(90deg,#0891b2,#38bdf8);height:100%;border-radius:0;transition:width .5s ease;position:relative}
 .xp-fill::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 5px,rgba(255,255,255,.18) 5px,rgba(255,255,255,.18) 10px)}
 .xp-lbl{font-family:var(--pf);font-size:.6rem;font-weight:700;opacity:.5;white-space:nowrap;flex-shrink:0}
 /* Daily goal hoop */
-.daily-row{display:flex;align-items:center;gap:8px;position:relative;z-index:1;margin-top:2px}
 .daily-label{font-family:var(--pf);font-size:.68rem;opacity:.55;white-space:nowrap;flex-shrink:0}
-.daily-hoops{display:flex;gap:6px;align-items:flex-end}
+.daily-hoops{display:flex;gap:4px;align-items:flex-end}
 .hoop{display:inline-flex;align-items:center;justify-content:center}
 .hoop.scored{animation:hoop-pop .3s ease}
 @keyframes hoop-pop{0%{transform:scale(.7)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
@@ -360,8 +359,6 @@ main{max-width:1400px;margin:0 auto;padding:24px}
       <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
     </div>
     <span class="xp-lbl" id="xp-lbl">0 XP</span>
-  </div>
-  <div class="daily-row" style="margin-top:6px">
     <span class="daily-label">TODAY:</span>
     <div class="daily-hoops" id="daily-hoops"></div>
     <span class="daily-done-msg" id="daily-done-msg">DAILY GOAL! 🏀</span>
