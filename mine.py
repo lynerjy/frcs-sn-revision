@@ -588,6 +588,7 @@ CONTENT_SOURCE_MAP = {
     "bank-neurosurgery-mcqs":        "k-bank-mcqs",
     "aberdeen-neuro-death":          "aberdeen-neuro-death",
     "aberdeen-tcd":                  "aberdeen-tcd",
+    "aberdeen-aeds":                 "aberdeen-aeds",
     # Future papers — add entry here when source is added to content.js SOURCES array
 }
 
