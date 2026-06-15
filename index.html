@@ -625,10 +625,13 @@ function renderSourcesTable(){
       <tbody>${srcs.map((s,i)=>{
         const ss=state.sources[s.id]||{enabled:true};
         const enabled=ss.enabled!==false;
-        const unmined=s.korky&&(!s.cards||s.cards===0);
-        const miningBadge=unmined?`<span style="background:var(--g100);color:var(--g600);border:1px solid var(--g200);padding:1px 6px;border-radius:3px;font-size:.62rem;font-weight:600;margin-left:6px;vertical-align:middle">not yet mined</span>`:``;
+        const miningBadge=!s.korky?'':(!s.cards||s.cards===0)
+          ?`<span style="background:var(--g100);color:var(--g600);border:1px solid var(--g200);padding:1px 6px;border-radius:3px;font-size:.62rem;font-weight:600;margin-left:6px;vertical-align:middle">not yet mined</span>`
+          :s.partial
+            ?`<span style="background:#fffbeb;color:#92400e;border:1px solid #f59e0b;padding:1px 6px;border-radius:3px;font-size:.62rem;font-weight:600;margin-left:6px;vertical-align:middle">partial — ${s.cards} cards</span>`
+            :`<span style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;padding:1px 6px;border-radius:3px;font-size:.62rem;font-weight:600;margin-left:6px;vertical-align:middle">✓ ${s.cards} cards</span>`;
         const pdfBtn=s.local?`<button class="btn btn-teal btn-sm" style="font-size:.68rem;padding:2px 7px;white-space:nowrap" onclick="openPDF('${s.local}','${s.name.replace(/'/g,"\\'")}')">PDF</button>`:'';
-        const urlBtn=(!s.korky&&s.url)?`<a href="${s.url}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="font-size:.68rem;padding:2px 7px;white-space:nowrap;text-decoration:none">Visit ↗</a>`:'';
+        const urlBtn=(!isKorky&&s.url)?`<a href="${s.url}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="font-size:.68rem;padding:2px 7px;white-space:nowrap;text-decoration:none">Visit ↗</a>`:'';
         const linkCell=(pdfBtn||urlBtn)?`<div style="display:flex;gap:5px;justify-content:flex-end;flex-wrap:wrap">${pdfBtn}${urlBtn}</div>`:`<span style="color:var(--g400);font-size:.75rem">—</span>`;
         return`<tr style="border-bottom:1px solid var(--g100);background:${i%2===0?"#fff":"#fafafa"};${enabled?"":"opacity:.5"}">
           <td style="padding:8px;text-align:center;vertical-align:top;border-right:1px solid var(--g100)"><input type="checkbox" ${enabled?"checked":""} onchange="setSrcEnabled('${s.id}',this.checked)" style="width:15px;height:15px;cursor:pointer;accent-color:#0891b2"></td>
