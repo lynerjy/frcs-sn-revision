@@ -227,3 +227,39 @@
 - Mine TJones Revision Notes (79pp) — `python3 mine.py next` to confirm source id, then extract
 - 283 claude-ai SBAs retained (policy changed: keep, don't replace)
 - Sources tab TODO still open: remove Status column, add URL links for online-only sources
+
+---
+
+## 2026-06-15 — Sources table overhaul + AI styling + process fix (session 9)
+
+### What was built / changed
+
+**Sources table (index.html)**
+- Removed "Status" column (select dropdown — was a deprecated holdover, no principled basis)
+- Renamed "Open" column → "Access"
+- Korky folder sources: show PDF button only (local files, no public URL needed)
+- Non-Korky sources: show Visit ↗ link (from `s.url`) + PDF button if `s.local` exists
+- "Not yet mined" gray badge on all Korky sources where `!s.cards || s.cards === 0`
+- TODO saved: verify all non-Korky sources have `url` fields populated
+
+**Provenance disclaimer (Sources tab intro)**
+- Expanded from one sentence to a full block explaining: what Claude covers well (classic anatomy, landmark trials, scoring systems), where to be cautious (specific numbers, UK-specific practice, recency cutoff Aug 2025, rare topics), and a clear "cross-check against Greenberg or NICE" instruction
+- Removed the inaccurate "AI-Generated section below lists all such questions" sentence
+
+**AI warning placement (quiz)**
+- Removed ⚠ AI badge from question line — only revealed in the answer (amber ref line in explanation)
+
+**Process fix — Greenberg mining rule (CLAUDE.md)**
+- Added mandatory section: Greenberg chapter selection must be driven by recall-bank frequency, not claude-ai verification backlog
+- Documents what went wrong in session 5 (2026-06-12): all 11 Greenberg sessions were driven by existing claude-ai SBAs, leaving paediatric neurosurgery (46 recalls, 3rd highest) with zero Greenberg coverage
+- Sets explicit priority chapter order: paeds first, then neuro-onco gaps, degenerative spine remainder, vascular, carotid
+
+### Key decisions
+- Greenberg paeds mining queued as URGENT next priority in frcs_next_todo.md
+- Target page ranges for paeds: craniosynostosis ~pp1140s, NTDs ~pp200s, paeds tumours ~pp750s
+- Korky sources intentionally omit Visit ↗ links — they are local files not public URLs
+
+### Open questions / next session
+- Greenberg paeds re-mining: run `python3 mine.py extract greenberg <pages>` targeting paeds chapters
+- TJones Revision Notes (79pp) still queued after paeds Greenberg
+- Non-Korky sources: verify all have `url` populated so Visit ↗ renders everywhere

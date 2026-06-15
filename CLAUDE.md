@@ -26,22 +26,30 @@ ref:"cerebral-physiology.pdf p6" // Aberdeen PDF: filename + page
 
 No page number = not acceptable. No source = not acceptable.
 
-### The 284 claude-ai tagged SBAs — mandatory verification during mining
+### claude-ai SBAs — keep, don't replace
 
-A prior session violated this rule and generated 284 SBAs from AI training knowledge. These are tagged `src_id:"claude-ai"` and shown with a warning on the live site.
+Policy changed: do NOT rewrite or replace claude-ai SBAs when mining a real source. Keep them. Only correct a claude-ai SBA if the source you just read clearly contradicts it. They are displayed with an amber ⚠ AI warning in the app and can be toggled off in Sources.
 
-**Every mining session must include a verification step:**
+---
 
-After mining a source, before marking it done:
-1. Run: `grep 'src_id:"claude-ai"' content.js | grep -i "<topic keyword>"` to find claude-ai SBAs in that topic area
-2. For each one found: check whether the source just mined covers that content
-3. If yes: rewrite the SBA from the source text, replace `src_id:"claude-ai"` with the real `src_id`, and update `ref:` to include a real page number
-4. If the source doesn't cover it: leave it tagged claude-ai for now — do not verify from memory
+## Greenberg mining — recall-bank chapter priority (MANDATORY)
 
-The goal is zero claude-ai SBAs by the time all textbooks are mined. Track progress by running:
-```bash
-grep -c 'src_id:"claude-ai"' content.js
-```
+Greenberg must be mined by **recall-bank frequency**, not by whatever claude-ai SBAs happen to exist.
+
+**What went wrong in session 5 (2026-06-12):** All 11 Greenberg sessions were driven by "which page verifies this claude-ai SBA" rather than "which topic has the most recalls." Paediatric neurosurgery (46 recalls — 3rd highest) was never touched. This must not happen again.
+
+**Rule for every Greenberg mining session:**
+1. Run `python3 mine.py stats` and check which topics are thinnest relative to their recall count.
+2. Look up the corresponding Greenberg 10e chapter for that topic (use the index or table of contents).
+3. Mine that chapter. Do not mine a different chapter because it happens to relate to an existing claude-ai SBA.
+4. Record the pages and card count with `python3 mine.py done greenberg <pages> <N>`.
+
+**Priority order for remaining Greenberg chapters (by recall count):**
+1. Paediatric neurosurgery (46 recalls) — craniosynostosis ~pp1140s, NTDs ~pp200s, paeds tumours ~pp750s
+2. Neuro-oncology cranial (62 recalls) — already partially covered; check thin sub-topics
+3. Degenerative spine (52 recalls) — partially covered pp659-680; check what remains
+4. Vascular aneurysm (26 recalls) — check PHASES, unruptured management chapters
+5. Carotid (thin topic, 2 SBAs) — carotid endarterectomy chapter
 
 ---
 
