@@ -1394,7 +1394,7 @@ if(state.examDate)examInp.value=state.examDate;
 examInp.addEventListener("change",()=>{state.examDate=examInp.value;save();updateStats();});
 const goalInp=document.getElementById("daily-goal-input");
 if(state.dailyGoal)goalInp.value=state.dailyGoal;
-goalInp.addEventListener("change",()=>{const v=Math.max(1,Math.min(50,parseInt(goalInp.value,10)||5));goalInp.value=v;state.dailyGoal=v;save();renderHoops();});
+goalInp.addEventListener("change",()=>{const v=Math.max(1,Math.min(50,parseInt(goalInp.value,10)||5));goalInp.value=v;state.dailyGoal=v;save();renderDailyHoops();});
 // ── INIT ───────────────────────────────────────────────────────────────────
 (function(){
   // Load game state + anim preference before anything
