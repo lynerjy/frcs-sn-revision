@@ -384,8 +384,6 @@ main{max-width:1400px;margin:0 auto;padding:24px}
         <span style="font-size:.75rem;font-weight:600;color:var(--g600);padding:0 4px;flex-shrink:0">Deck:</span>
         <button class="gsf-btn active" id="qf-all" data-gsf="all" onclick="setQuizFilter('all')">Full deck</button>
         <button class="gsf-btn" id="qf-recall" data-gsf="recall" onclick="setQuizFilter('recall')">Exam-likely</button>
-        <button class="gsf-btn" id="qf-korky" data-gsf="korky" onclick="setQuizFilter('korky')">Korky folder</button>
-        <button class="gsf-btn" id="qf-web" data-gsf="web" onclick="setQuizFilter('web')">Guidelines only</button>
       </div>
       <div style="font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:10px">Select topics to quiz:</div>
       <div id="quiz-topic-checkboxes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin-bottom:14px"></div>
@@ -568,6 +566,8 @@ document.querySelectorAll(".tab-btn").forEach(b=>{b.addEventListener("click",()=
 function openPDF(path,name){document.getElementById("pdf-modal-title").textContent=name;document.getElementById("pdf-iframe").src=path;document.getElementById("pdf-modal").classList.add("open");}
 document.getElementById("pdf-modal").addEventListener("click",e=>{if(e.target===e.currentTarget){e.currentTarget.classList.remove("open");document.getElementById("pdf-iframe").src="";}});
 function setSrcStatus(id,v,sel){state.sources[id].status=v;const sc=v==="in-progress"?" s-ip":v==="done"?" s-done":"";sel.className="status-sel"+sc;save();}
+function setSrcEnabled(id,v){if(!state.sources[id])state.sources[id]={enabled:true,status:"not-started"};state.sources[id].enabled=v;save();renderLearnTopicList();if(currentLearnTopic){const t=TOPICS.find(x=>x.id===currentLearnTopic);const ld=LEARN[currentLearnTopic];if(t&&ld)renderLearnContent(t,ld);}renderSourcesTable();}
+function setSrcCategoryEnabled(cat,v){SOURCES.filter(s=>(s.category||"Other")===cat).forEach(s=>{if(!state.sources[s.id])state.sources[s.id]={enabled:true,status:"not-started"};state.sources[s.id].enabled=v;});save();renderLearnTopicList();if(currentLearnTopic){const t=TOPICS.find(x=>x.id===currentLearnTopic);const ld=LEARN[currentLearnTopic];if(t&&ld)renderLearnContent(t,ld);}renderSourcesTable();}
 // ── PROGRESS TAB ──────────────────────────────────────────────────────────
 function topicAutoScore(topicId){
   const cSt=topicCardStats(topicId);
@@ -582,41 +582,50 @@ function topicAutoScore(topicId){
 function scoreCol(s){return s===null?"#9ca3af":s>=70?"#059669":s>=40?"#d97706":"#dc2626";}
 function renderSourcesTable(){
   const wrap=document.getElementById("sources-table-wrap");if(!wrap)return;
-  const priStyle={essential:'background:#fee2e2;color:#991b1b',recommended:'background:#fef3c7;color:#92400e',supplementary:'background:var(--g100);color:var(--g600)',korky:'background:#fef08a;color:#713f12'};
-  const catOrder=["Official Exam","E-Learning","Clinical Guidelines","Textbooks","Neuroradiology","Neuroanatomy","Revision Courses","Korky — Key Papers","Korky — Aberdeen Course","AI-Generated"];
+  const catOrder=["Korky — Key Papers","Korky — Aberdeen Course","Korky — MCQ Banks","Textbooks","Clinical Guidelines","Official Exam","E-Learning","Neuroradiology","Neuroanatomy","Revision Courses","AI-Generated"];
+  const korkyLike=new Set(["Korky — Key Papers","Korky — Aberdeen Course","Korky — MCQ Banks","Textbooks"]);
   const grouped={};
   SOURCES.forEach(s=>{const c=s.category||"Other";if(!grouped[c])grouped[c]=[];grouped[c].push(s);});
   const cats=[...catOrder.filter(c=>grouped[c]),...Object.keys(grouped).filter(c=>!catOrder.includes(c)&&grouped[c])];
   const intro=`<div style="background:#fff;border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);padding:20px 22px;margin-bottom:22px;font-size:.84rem;line-height:1.75;color:var(--g800)">
-    <div style="font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:10px">About this revision tool</div>
-    <p>Built from the exam materials assembled by Korky for the FRCS (SN). Content comes from two streams: <strong>verified clinical guidelines</strong> (NICE, RCP, Society for Endocrinology — freely available PDFs stored in this app) and <strong>landmark papers and course notes</strong> from Korky's past-candidate folder.</p>
-    <p style="margin-top:8px">Cards and SBAs are weighted toward the topics with the highest <em>recall-bank frequency</em> — the themes that real candidates report testing most often. Neuro-oncology cranial, degenerative spine, and vascular aneurysm are the highest-priority areas. The "Exam-likely" deck filter surfaces only cards and questions directly inspired by recall-bank patterns. Every card carries a source reference; the reference is the authority, not the card text.</p>
-    <p style="margin-top:8px;padding:8px 12px;background:#fef3c7;border-left:4px solid #f59e0b;border-radius:3px;font-size:.82rem;color:#78350f"><strong>⚠ Provenance warning:</strong> 284 SBAs are tagged <strong>AI-generated</strong> — written by Claude from training knowledge without a verified source document. These are likely accurate but must be treated with caution. They are labelled with a yellow warning on every answer reveal. Scroll to the AI-Generated section below for the full list.</p>
+    <div style="font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:10px">Sources &amp; content selection</div>
+    <p>Use the <strong>checkboxes</strong> on each row to control which sources are active. Enabled sources propagate immediately to the <strong>Flashcards</strong> and <strong>Quiz</strong> tabs on the Study page — only content from selected sources will appear.</p>
+    <p style="margin-top:8px">The <strong>Sources tab</strong> on each topic shows which sources are available for that topic and which are currently enabled. Use the <strong>All / None</strong> buttons on each section header to toggle a whole category at once. Korky folder sources are listed first.</p>
+    <p style="margin-top:8px;padding:8px 12px;background:#fef3c7;border-left:4px solid #f59e0b;border-radius:3px;font-size:.82rem;color:#78350f"><strong>⚠ Provenance:</strong> Some content is AI-generated (written from training knowledge, not a verified source). These are labelled with a yellow warning on every answer reveal.</p>
   </div>`;
   let html=intro;
   cats.forEach(cat=>{
     const srcs=grouped[cat];
-    const isKorky=cat.startsWith("Korky")||cat==="Textbooks";
+    const isKorky=korkyLike.has(cat);
     const isAI=cat==="AI-Generated";
     const catLabel=cat.replace("Korky — ","");
+    const allEnabled=srcs.every(s=>state.sources[s.id]?.enabled!==false);
+    const noneEnabled=srcs.every(s=>state.sources[s.id]?.enabled===false);
+    const catSafe=cat.replace(/'/g,"\\'");
     html+=`<div style="margin-bottom:24px">
-      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${isAI?"#92400e":isKorky?"#92400e":"var(--navy)"};margin-bottom:8px;display:flex;align-items:center;gap:8px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${isAI?"#92400e":isKorky?"#92400e":"var(--navy)"};margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         ${isKorky?`<span style="background:#fef08a;color:#713f12;border:1px solid #eab308;padding:1px 8px;border-radius:100px;font-size:.68rem">Korky folder</span>`:""}
         ${isAI?`<span style="background:#fef3c7;color:#92400e;border:1.5px solid #f59e0b;padding:1px 8px;border-radius:100px;font-size:.68rem">⚠ Unverified</span>`:""}
-        ${catLabel}
+        <span>${catLabel}</span>
+        <span style="margin-left:auto;display:flex;gap:4px">
+          <button onclick="setSrcCategoryEnabled('${catSafe}',true)" style="font-size:.65rem;padding:2px 8px;border-radius:3px;border:1px solid #d1d5db;background:${allEnabled?"#059669":"#fff"};color:${allEnabled?"#fff":"var(--g600)"};cursor:pointer;font-weight:600">All</button>
+          <button onclick="setSrcCategoryEnabled('${catSafe}',false)" style="font-size:.65rem;padding:2px 8px;border-radius:3px;border:1px solid #d1d5db;background:${noneEnabled?"#dc2626":"#fff"};color:${noneEnabled?"#fff":"var(--g600)"};cursor:pointer;font-weight:600">None</button>
+        </span>
       </div>
-      ${isAI?`<div style="background:#fffbeb;border:1.5px solid #f59e0b;border-radius:var(--r);padding:12px 14px;margin-bottom:10px;font-size:.82rem;color:#78350f;line-height:1.6"><strong>These questions were generated by Claude AI from training knowledge, not from a verified source document.</strong> The content is likely accurate but has not been checked against a textbook or guideline. Every question in this category should be reviewed against Greenberg, Samandouras, or a relevant guideline before being trusted for exam preparation. As content is mined from textbooks, these questions will be replaced or verified.</div>`:""}
-
+      ${isAI?`<div style="background:#fffbeb;border:1.5px solid #f59e0b;border-radius:var(--r);padding:12px 14px;margin-bottom:10px;font-size:.82rem;color:#78350f;line-height:1.6"><strong>These questions were generated by Claude AI from training knowledge, not a verified source document.</strong> Review against Greenberg or a guideline before trusting.</div>`:""}
       <table style="width:100%;border-collapse:collapse;font-size:.8rem;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--g200)">
       <thead><tr style="background:var(--g50);border-bottom:2px solid var(--g200)">
+        <th style="padding:8px;width:40px;text-align:center;font-weight:600;color:var(--navy)">On</th>
         <th style="text-align:left;padding:8px 12px;font-weight:600;color:var(--navy)">Source</th>
         <th style="padding:8px 8px;font-weight:600;color:var(--navy)">Status</th>
         <th style="padding:8px 8px;font-weight:600;color:var(--navy)">PDF</th>
       </tr></thead>
       <tbody>${srcs.map((s,i)=>{
-        const ss=state.sources[s.id]||{status:"not-started"};
+        const ss=state.sources[s.id]||{status:"not-started",enabled:true};
         const sc=ss.status==="in-progress"?"s-ip":ss.status==="done"?"s-done":"";
-        return`<tr style="border-bottom:1px solid var(--g100);background:${i%2===0?"#fff":"#fafafa"}">
+        const enabled=ss.enabled!==false;
+        return`<tr style="border-bottom:1px solid var(--g100);background:${i%2===0?"#fff":"#fafafa"};${enabled?"":"opacity:.5"}">
+          <td style="padding:8px;text-align:center;vertical-align:top"><input type="checkbox" ${enabled?"checked":""} onchange="setSrcEnabled('${s.id}',this.checked)" style="width:15px;height:15px;cursor:pointer;accent-color:#0891b2"></td>
           <td style="padding:8px 12px;line-height:1.45">
             <div style="font-weight:500;color:var(--g800)">${s.name}</div>
             ${s.notes?`<div style="font-size:.73rem;color:var(--g500);margin-top:2px">${s.notes}</div>`:""}
@@ -702,7 +711,7 @@ function resetProgress(){
   if(currentLearnTopic){const t=TOPICS.find(x=>x.id===currentLearnTopic);const ld=LEARN[currentLearnTopic];if(t&&ld)renderLearnContent(t,ld);}
 }
 // ── GLOBAL SOURCE FILTER ──────────────────────────────────────────────────
-let globalSourceFilter="all"; // quiz-only filter: "all" | "korky" | "web" | "recall"
+let globalSourceFilter="all"; // "all" | "recall" (exam-likely); source filtering handled by state.sources[id].enabled
 function setQuizFilter(v){
   globalSourceFilter=v;
   document.querySelectorAll("[id^='qf-']").forEach(b=>b.classList.toggle("active",b.dataset.gsf===v));
@@ -714,7 +723,7 @@ let currentLearnTopic=null;let currentCard=0;
 function srcEnabled(c){return !c.src_id||!state.sources[c.src_id]||state.sources[c.src_id].enabled;}
 function filteredCards(ld){return ld.c.filter(srcEnabled);}
 function filteredQs(qs){
-  const base=globalSourceFilter==="korky"?qs.filter(q=>q.korky):globalSourceFilter==="web"?qs.filter(q=>!q.korky):globalSourceFilter==="recall"?qs.filter(q=>q.recall):qs;
+  const base=globalSourceFilter==="recall"?qs.filter(q=>q.recall):qs;
   return base.filter(srcEnabled);
 }
 function renderLearnTopicList(){
@@ -753,21 +762,22 @@ function openLearnTopic(id){
   renderLearnContent(t,ld);
 }
 function renderLearnContent(t,ld){
-  const c=state.topics[t.id]?.confidence||0;
   const fc=filteredCards(ld).length;const fq=filteredQs(ld.q).length;
-  const filterLabel=globalSourceFilter==="korky"?"Korky folder":globalSourceFilter==="web"?"Guidelines & web":globalSourceFilter==="recall"?"Recall-driven":"All sources";
+  const allSrcs=topicSources(ld).filter(({id})=>id!=='claude-ai');
+  const disabledSrcs=allSrcs.filter(({id})=>state.sources[id]?.enabled===false).length;
+  const srcLabel=disabledSrcs>0?`<span style="font-size:.68rem;color:#d97706;font-weight:600;margin-left:8px">⚠ ${disabledSrcs} source${disabledSrcs>1?'s':''} off</span>`:``;
   document.getElementById("learn-content").innerHTML=`
   <div class="learn-content-hd">
-    <div class="learn-content-title">${t.name} <span style="font-size:.75rem;font-weight:400;color:var(--g400);margin-left:8px">${filterLabel}</span></div>
+    <div class="learn-content-title">${t.name}${srcLabel}</div>
     <div class="learn-tabs">
-      <button class="learn-tab active" data-ltab="notes">Notes</button>
-      <button class="learn-tab" data-ltab="cards">Flashcards (${fc})</button>
+      <button class="learn-tab active" data-ltab="cards">Flashcards (${fc})</button>
       <button class="learn-tab" data-ltab="quiz">Quiz (${fq} Qs)</button>
+      <button class="learn-tab" data-ltab="notes">Sources</button>
     </div>
   </div>
-  <div class="learn-tab-panel active" id="ltp-notes">${renderNotes(ld)}</div>
-  <div class="learn-tab-panel" id="ltp-cards">${renderCards(ld,0)}</div>
-  <div class="learn-tab-panel" id="ltp-quiz">${renderTopicQuizStart(ld)}</div>`;
+  <div class="learn-tab-panel active" id="ltp-cards">${renderCards(ld,0)}</div>
+  <div class="learn-tab-panel" id="ltp-quiz">${renderTopicQuizStart(ld)}</div>
+  <div class="learn-tab-panel" id="ltp-notes">${renderNotes(ld)}</div>`;
   document.querySelectorAll(".learn-tab").forEach(b=>{b.addEventListener("click",()=>{document.querySelectorAll(".learn-tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".learn-tab-panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById("ltp-"+b.dataset.ltab).classList.add("active");if(b.dataset.ltab==="cards")refreshCards(ld);if(b.dataset.ltab==="quiz")resetTopicQuiz(ld);});});
 }
 function topicSources(ld){
@@ -778,37 +788,41 @@ function topicSources(ld){
 }
 function renderNotes(ld){
   const allSrcs=topicSources(ld);
-  const realSrcs=allSrcs.filter(({id})=>id!=='claude-ai').map(({src})=>src);
+  const realSrcs=allSrcs.filter(({id})=>id!=='claude-ai').map(({src,id})=>({...src,id,enabled:state.sources[id]?.enabled!==false}));
   const aiCards=(ld.c||[]).filter(c=>c.src_id==='claude-ai').length;
   const aiSBAs=(ld.q||[]).filter(q=>q.src_id==='claude-ai').length;
   const hasAI=aiCards>0||aiSBAs>0;
-  let srcHtml=`<div style="font-size:.8rem;background:var(--g50);padding:12px 14px;border-radius:var(--r);border:1px solid var(--g200);margin-bottom:14px">`;
-  srcHtml+=`<div style="font-weight:700;color:var(--navy);margin-bottom:8px">📄 Sources for this topic</div>`;
+  const disabledCount=realSrcs.filter(s=>!s.enabled).length;
+  let html=`<div style="padding:4px 0">`;
+  html+=`<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--g500);margin-bottom:10px">Sources for this topic</div>`;
   if(realSrcs.length){
-    srcHtml+=`<ul style="margin:0 0 6px 0;padding-left:16px;line-height:1.9">`;
     realSrcs.forEach(s=>{
-      const badge=s.korky?`<span style="background:#fef08a;color:#713f12;border:1px solid #eab308;padding:0 6px;border-radius:3px;font-size:.65rem;font-weight:700;margin-left:5px">Korky</span>`:``;
-      srcHtml+=`<li style="color:var(--g700)">${s.name}${badge}</li>`;
+      const kBadge=s.korky?`<span style="background:#fef08a;color:#713f12;border:1px solid #eab308;padding:0 5px;border-radius:3px;font-size:.62rem;font-weight:700;margin-left:5px;flex-shrink:0">Korky</span>`:``;
+      const check=s.enabled?`<span style="color:#059669;font-size:.9rem;font-weight:700;flex-shrink:0">✓</span>`:`<span style="color:#d1d5db;font-size:.9rem;flex-shrink:0">○</span>`;
+      html+=`<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:5px;background:${s.enabled?"#f0fdf4":"var(--g50)"};border:1px solid ${s.enabled?"#bbf7d0":"var(--g200)"};margin-bottom:5px;${s.enabled?"":"opacity:.55"}">
+        ${check}<span style="font-size:.8rem;color:var(--g800);flex:1">${s.name}</span>${kBadge}
+      </div>`;
     });
-    srcHtml+=`</ul>`;
   }else{
-    srcHtml+=`<p style="color:var(--g500);font-style:italic;font-size:.78rem;margin-bottom:6px">No verified sources mined yet.</p>`;
+    html+=`<p style="font-size:.8rem;color:var(--g500);font-style:italic;padding:10px 0">No verified sources mined for this topic yet.</p>`;
+  }
+  if(disabledCount>0){
+    html+=`<div style="margin-top:8px;padding:7px 10px;background:#fef3c7;border-radius:4px;border:1px solid #f59e0b;font-size:.76rem;color:#92400e">⚠ <strong>${disabledCount} source${disabledCount>1?'s':''} disabled</strong> — flashcards and quiz questions from those sources are hidden. Re-enable them in <strong>Admin → Sources</strong>.</div>`;
   }
   if(hasAI){
     const parts=[];
     if(aiCards)parts.push(`${aiCards} flashcard${aiCards>1?'s':''}`);
     if(aiSBAs)parts.push(`${aiSBAs} SBA${aiSBAs>1?'s':''}`);
-    srcHtml+=`<div style="margin-top:6px;padding:6px 10px;background:#fef3c7;border-left:3px solid #f59e0b;border-radius:3px;font-size:.76rem;color:#92400e"><strong>⚠ ${parts.join(' and ')} AI-generated</strong> — written from training knowledge, not a verified source document. Treat with caution and cross-check before exam.</div>`;
+    html+=`<div style="margin-top:8px;padding:7px 10px;background:#fef3c7;border-left:3px solid #f59e0b;border-radius:4px;font-size:.76rem;color:#92400e"><strong>⚠ ${parts.join(' and ')} AI-generated</strong> — written from training knowledge, not a verified source. Treat with caution.</div>`;
   }
-  srcHtml+=`</div>`;
-  if(!ld.n||!ld.n.length)return srcHtml+'<div class="empty" style="padding:20px">No summary notes for this topic yet — use the PDF viewer in Sources, then test yourself with Flashcards and Quiz.</div>';
-  return srcHtml+ld.n.map(s=>`<div class="notes-section"><div class="notes-heading">${s.h}</div><ul class="notes-list">${s.pts.map(p=>`<li>${p}</li>`).join("")}</ul></div>`).join("");
+  html+=`</div>`;
+  return html;
 }
 let useSmartOrder=true;
 function renderCards(ld,idx){
   let cards=filteredCards(ld);
   if(useSmartOrder)cards=smartSortCards(cards,currentLearnTopic);
-  if(!cards.length)return`<div class="empty">${globalSourceFilter==="korky"?"No Korky folder flashcards for this topic yet.":globalSourceFilter==="web"?"No guideline flashcards for this topic yet.":globalSourceFilter==="recall"?"No recall-driven flashcards for this topic yet.":"No flashcards for this topic yet."}</div>`;
+  if(!cards.length)return`<div class="empty">${globalSourceFilter==="recall"?"No exam-likely flashcards for this topic yet.":"No flashcards available — check source selection in Admin → Sources or Sources tab."}</div>`;
   if(idx>=cards.length)idx=cards.length-1;
   const card=cards[idx];
   const cid=cardId(currentLearnTopic,card.q);
@@ -818,7 +832,7 @@ function renderCards(ld,idx){
   const mClass=m===0?"cm-unseen":m===1?"cm-learning":"cm-mastered";
   const korkBadge=card.korky?'<span class="korky-pill" style="margin-top:8px">Korky folder</span>':"";
   const stats=topicCardStats(currentLearnTopic);
-  return`<div class="card-counter">${idx+1} of ${cards.length}${globalSourceFilter!=="all"?` &nbsp;<span class="korky-pill" style="${globalSourceFilter==="recall"?"background:#dcfce7;color:#166534;border-color:#86efac":""}">${globalSourceFilter==="korky"?"Korky folder":globalSourceFilter==="recall"?"Recall-driven":"Guidelines & web"}</span>`:""}</div>
+  return`<div class="card-counter">${idx+1} of ${cards.length}${globalSourceFilter==="recall"?` &nbsp;<span class="korky-pill" style="background:#dcfce7;color:#166534;border-color:#86efac">Exam-likely</span>`:""}</div>
   <div class="card-mastery"><span class="cm-dot ${mClass}"></span> ${mLabel}${cs.seen?` (${cs.correct}/${cs.seen})`:""}</div>
   <div style="display:flex;justify-content:center;gap:12px;margin-bottom:8px;font-size:.7rem;color:var(--g400)">
     <span style="color:#059669">${stats.mastered} mastered</span>
