@@ -351,7 +351,6 @@ main{max-width:1400px;margin:0 auto;padding:24px}
   <div class="hdr-bot">
     <span class="exam-lbl">Exam:</span>
     <input type="date" class="exam-inp" id="exam-date-input">
-    <span id="exam-date-label" class="exam-lbl"></span>
     <span class="exam-lbl" style="margin-left:14px">🏀 Daily goal:</span>
     <input type="number" id="daily-goal-input" min="1" max="50" value="5" class="exam-inp" style="width:52px;text-align:center">
   </div>
@@ -553,7 +552,7 @@ function updateStats(){
   document.getElementById("stat-total").textContent=qsDone;
   document.getElementById("stat-streak").textContent=calcStreak();
   updateXPBar();
-  if(state.examDate){const t=new Date();t.setHours(0,0,0,0);const d=Math.ceil((new Date(state.examDate)-t)/86400000);document.getElementById("stat-days").textContent=d>0?d:"—";document.getElementById("exam-date-label").textContent=d>0?"("+formatDate(state.examDate)+")":"Exam date passed";}}
+  if(state.examDate){const t=new Date();t.setHours(0,0,0,0);const d=Math.ceil((new Date(state.examDate)-t)/86400000);document.getElementById("stat-days").textContent=d>0?d:"—";}}
 function calcStreak(){let s=0;const t=new Date();t.setHours(0,0,0,0);let d=new Date(t);for(;;){const k=toKey(d);if(state.log[k])s++;else if(d.getTime()===t.getTime()){d.setDate(d.getDate()-1);continue;}else break;d.setDate(d.getDate()-1);}return s;}
 // ── TABS ───────────────────────────────────────────────────────────────────
 document.querySelectorAll(".tab-btn").forEach(b=>{b.addEventListener("click",()=>{
