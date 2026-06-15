@@ -303,3 +303,29 @@
 - Greenberg paeds re-mining still URGENT — craniosynostosis ~pp1140s, NTDs ~pp200s, paeds tumours ~pp750s
 - TJones Revision Notes (79pp) queued after paeds Greenberg
 - Non-Korky sources: verify all have `url` fields so Visit ↗ renders everywhere
+
+---
+
+## 2026-06-16 — Header layout compaction + polish (session 11)
+
+### What was built / changed
+
+**Hoops merged onto XP bar row**
+- Removed separate `.daily-row` div entirely — level pill, XP bar, XP label, TODAY label, hoops, and done/more msg now all sit in a single `.xp-row` flex row
+- `.xp-bar-wrap` capped at `max-width:160px` (was `flex:1` with no cap, could expand to ~400px) to leave room for hoops
+- `.daily-hoops` gap reduced 6px → 4px to tighten spacing in the merged row
+- `.daily-row` CSS rule removed (no longer used)
+- Net: one fewer header row, same brain positioning above the bar
+
+**Redundant exam-date-label removed**
+- `<span id="exam-date-label">` was echoing the date picker value as formatted text (e.g. "(15 Jun 2026)") — unnecessary since the date input already shows it
+- Span removed from HTML; JS in `updateStats()` that wrote to it also removed
+
+### Key decisions
+- XP increment values unchanged — bar is physically shorter so visual jump per answer is naturally smaller without touching game mechanics
+- Brain `margin-top:42px` on `.xp-row` retained — still needed to give brain's 39px height clearance above the bar
+
+### Open questions / next session
+- Greenberg paeds re-mining still URGENT — craniosynostosis ~pp1140s, NTDs ~pp200s, paeds tumours ~pp750s
+- TJones Revision Notes (79pp) queued after paeds Greenberg
+- Non-Korky sources: verify all have `url` fields so Visit ↗ renders everywhere
