@@ -588,34 +588,32 @@ function renderSourcesTable(){
   SOURCES.forEach(s=>{const c=s.category||"Other";if(!grouped[c])grouped[c]=[];grouped[c].push(s);});
   const cats=[...catOrder.filter(c=>grouped[c]),...Object.keys(grouped).filter(c=>!catOrder.includes(c)&&grouped[c])];
   const intro=`<div style="background:#fff;border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);padding:20px 22px;margin-bottom:22px;font-size:.84rem;line-height:1.75;color:var(--g800)">
-    <div style="font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:10px">Sources &amp; content selection</div>
-    <p>Use the <strong>checkboxes</strong> on each row to control which sources are active. Enabled sources propagate immediately to the <strong>Flashcards</strong> and <strong>Quiz</strong> tabs on the Study page — only content from selected sources will appear.</p>
-    <p style="margin-top:8px">The <strong>Sources tab</strong> on each topic shows which sources are available for that topic and which are currently enabled. Use the <strong>All / None</strong> buttons on each section header to toggle a whole category at once. Korky folder sources are listed first.</p>
-    <p style="margin-top:8px;padding:8px 12px;background:#fef3c7;border-left:4px solid #f59e0b;border-radius:3px;font-size:.82rem;color:#78350f"><strong>⚠ Provenance:</strong> Some content is AI-generated (written from training knowledge, not a verified source). These are labelled with a yellow warning on every answer reveal.</p>
+    <div style="font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:10px">About this revision tool</div>
+    <p>Built from the exam materials assembled by Korky for the FRCS (SN). Content comes from two streams: <strong>verified clinical guidelines</strong> (NICE, RCP, Society for Endocrinology — freely available PDFs stored in this app) and <strong>landmark papers and course notes</strong> from Korky's past-candidate folder.</p>
+    <p style="margin-top:8px">Cards and SBAs are weighted toward the topics with the highest <em>recall-bank frequency</em> — the themes that real candidates report testing most often. Neuro-oncology cranial, degenerative spine, and vascular aneurysm are the highest-priority areas. The "Exam-likely" filter surfaces only cards and questions directly inspired by recall-bank patterns. Every card carries a source reference; the reference is the authority, not the card text.</p>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--g200)">
+      <div style="font-weight:700;color:var(--navy);margin-bottom:6px">Source selection</div>
+      <p>Use the <strong>checkboxes</strong> on each row to control which sources are active. Changes propagate immediately to the <strong>Flashcards</strong> and <strong>Quiz</strong> tabs — only content from selected sources will appear. The checkbox in each section header selects or deselects the whole category. The <strong>Sources tab</strong> on each topic in the Study page shows which sources are available and which are currently enabled.</p>
+    </div>
+    <p style="margin-top:10px;padding:8px 12px;background:#fef3c7;border-left:4px solid #f59e0b;border-radius:3px;font-size:.82rem;color:#78350f"><strong>⚠ Provenance:</strong> Some content is AI-generated (written from training knowledge, not a verified source document). These are labelled with a yellow warning on every answer reveal. The AI-Generated section below lists all such questions.</p>
   </div>`;
   let html=intro;
-  cats.forEach(cat=>{
+  cats.forEach((cat,catIdx)=>{
     const srcs=grouped[cat];
     const isKorky=korkyLike.has(cat);
     const isAI=cat==="AI-Generated";
     const catLabel=cat.replace("Korky — ","");
-    const allEnabled=srcs.every(s=>state.sources[s.id]?.enabled!==false);
-    const noneEnabled=srcs.every(s=>state.sources[s.id]?.enabled===false);
     const catSafe=cat.replace(/'/g,"\\'");
     html+=`<div style="margin-bottom:24px">
       <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${isAI?"#92400e":isKorky?"#92400e":"var(--navy)"};margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         ${isKorky?`<span style="background:#fef08a;color:#713f12;border:1px solid #eab308;padding:1px 8px;border-radius:100px;font-size:.68rem">Korky folder</span>`:""}
         ${isAI?`<span style="background:#fef3c7;color:#92400e;border:1.5px solid #f59e0b;padding:1px 8px;border-radius:100px;font-size:.68rem">⚠ Unverified</span>`:""}
         <span>${catLabel}</span>
-        <span style="margin-left:auto;display:flex;gap:4px">
-          <button onclick="setSrcCategoryEnabled('${catSafe}',true)" style="font-size:.65rem;padding:2px 8px;border-radius:3px;border:1px solid #d1d5db;background:${allEnabled?"#059669":"#fff"};color:${allEnabled?"#fff":"var(--g600)"};cursor:pointer;font-weight:600">All</button>
-          <button onclick="setSrcCategoryEnabled('${catSafe}',false)" style="font-size:.65rem;padding:2px 8px;border-radius:3px;border:1px solid #d1d5db;background:${noneEnabled?"#dc2626":"#fff"};color:${noneEnabled?"#fff":"var(--g600)"};cursor:pointer;font-weight:600">None</button>
-        </span>
       </div>
       ${isAI?`<div style="background:#fffbeb;border:1.5px solid #f59e0b;border-radius:var(--r);padding:12px 14px;margin-bottom:10px;font-size:.82rem;color:#78350f;line-height:1.6"><strong>These questions were generated by Claude AI from training knowledge, not a verified source document.</strong> Review against Greenberg or a guideline before trusting.</div>`:""}
       <table style="width:100%;border-collapse:collapse;font-size:.8rem;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--g200)">
       <thead><tr style="background:var(--g50);border-bottom:2px solid var(--g200)">
-        <th style="padding:8px;width:40px;text-align:center;font-weight:600;color:var(--navy)">On</th>
+        <th style="padding:8px;width:40px;text-align:center;border-right:1px solid var(--g200)"><input type="checkbox" id="chk-cat-${catIdx}" onchange="setSrcCategoryEnabled('${catSafe}',this.checked)" style="width:15px;height:15px;cursor:pointer;accent-color:#0891b2" title="Select / deselect all in this section"></th>
         <th style="text-align:left;padding:8px 12px;font-weight:600;color:var(--navy)">Source</th>
         <th style="padding:8px 8px;font-weight:600;color:var(--navy)">Status</th>
         <th style="padding:8px 8px;font-weight:600;color:var(--navy)">PDF</th>
@@ -625,7 +623,7 @@ function renderSourcesTable(){
         const sc=ss.status==="in-progress"?"s-ip":ss.status==="done"?"s-done":"";
         const enabled=ss.enabled!==false;
         return`<tr style="border-bottom:1px solid var(--g100);background:${i%2===0?"#fff":"#fafafa"};${enabled?"":"opacity:.5"}">
-          <td style="padding:8px;text-align:center;vertical-align:top"><input type="checkbox" ${enabled?"checked":""} onchange="setSrcEnabled('${s.id}',this.checked)" style="width:15px;height:15px;cursor:pointer;accent-color:#0891b2"></td>
+          <td style="padding:8px;text-align:center;vertical-align:top;border-right:1px solid var(--g100)"><input type="checkbox" ${enabled?"checked":""} onchange="setSrcEnabled('${s.id}',this.checked)" style="width:15px;height:15px;cursor:pointer;accent-color:#0891b2"></td>
           <td style="padding:8px 12px;line-height:1.45">
             <div style="font-weight:500;color:var(--g800)">${s.name}</div>
             ${s.notes?`<div style="font-size:.73rem;color:var(--g500);margin-top:2px">${s.notes}</div>`:""}
@@ -637,6 +635,15 @@ function renderSourcesTable(){
     </div>`;
   });
   wrap.innerHTML=html;
+  // Set indeterminate state on section header checkboxes for mixed selections
+  cats.forEach((cat,catIdx)=>{
+    const cb=document.getElementById(`chk-cat-${catIdx}`);if(!cb)return;
+    const srcs=grouped[cat];
+    const allOn=srcs.every(s=>state.sources[s.id]?.enabled!==false);
+    const allOff=srcs.every(s=>state.sources[s.id]?.enabled===false);
+    cb.checked=allOn;
+    cb.indeterminate=!allOn&&!allOff;
+  });
 }
 ["src-search","src-priority","src-status"].forEach(id=>{const el=document.getElementById(id);if(el){el.addEventListener("input",renderSourcesTable);el.addEventListener("change",renderSourcesTable);}});
 // ── PROGRESS SUMMARY ─────────────────────────────────────────────────────
@@ -770,14 +777,14 @@ function renderLearnContent(t,ld){
   <div class="learn-content-hd">
     <div class="learn-content-title">${t.name}${srcLabel}</div>
     <div class="learn-tabs">
-      <button class="learn-tab active" data-ltab="cards">Flashcards (${fc})</button>
+      <button class="learn-tab active" data-ltab="notes">Sources</button>
+      <button class="learn-tab" data-ltab="cards">Flashcards (${fc})</button>
       <button class="learn-tab" data-ltab="quiz">Quiz (${fq} Qs)</button>
-      <button class="learn-tab" data-ltab="notes">Sources</button>
     </div>
   </div>
-  <div class="learn-tab-panel active" id="ltp-cards">${renderCards(ld,0)}</div>
-  <div class="learn-tab-panel" id="ltp-quiz">${renderTopicQuizStart(ld)}</div>
-  <div class="learn-tab-panel" id="ltp-notes">${renderNotes(ld)}</div>`;
+  <div class="learn-tab-panel active" id="ltp-notes">${renderNotes(ld)}</div>
+  <div class="learn-tab-panel" id="ltp-cards">${renderCards(ld,0)}</div>
+  <div class="learn-tab-panel" id="ltp-quiz">${renderTopicQuizStart(ld)}</div>`;
   document.querySelectorAll(".learn-tab").forEach(b=>{b.addEventListener("click",()=>{document.querySelectorAll(".learn-tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".learn-tab-panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById("ltp-"+b.dataset.ltab).classList.add("active");if(b.dataset.ltab==="cards")refreshCards(ld);if(b.dataset.ltab==="quiz")resetTopicQuiz(ld);});});
 }
 function topicSources(ld){
@@ -794,6 +801,7 @@ function renderNotes(ld){
   const hasAI=aiCards>0||aiSBAs>0;
   const disabledCount=realSrcs.filter(s=>!s.enabled).length;
   let html=`<div style="padding:4px 0">`;
+  html+=`<div style="font-size:.76rem;color:var(--g600);background:var(--g50);border:1px solid var(--g200);border-radius:4px;padding:8px 12px;margin-bottom:14px;line-height:1.6">These sources determine what content appears in <strong>Flashcards</strong> and <strong>Quiz</strong> for this topic. ✓ = currently enabled; ○ = disabled. Enable or disable sources in <strong>Admin → Sources</strong>.</div>`;
   html+=`<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--g500);margin-bottom:10px">Sources for this topic</div>`;
   if(realSrcs.length){
     realSrcs.forEach(s=>{
