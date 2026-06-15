@@ -625,7 +625,7 @@ function renderSourcesTable(){
       <tbody>${srcs.map((s,i)=>{
         const ss=state.sources[s.id]||{enabled:true};
         const enabled=ss.enabled!==false;
-        const miningBadge=!s.korky?'':(!s.cards||s.cards===0)
+        const miningBadge=!isKorky?'':(!s.cards||s.cards===0)
           ?`<span style="background:var(--g100);color:var(--g600);border:1px solid var(--g200);padding:1px 6px;border-radius:3px;font-size:.62rem;font-weight:600;margin-left:6px;vertical-align:middle">not yet mined</span>`
           :s.partial
             ?`<span style="background:#fffbeb;color:#92400e;border:1px solid #f59e0b;padding:1px 6px;border-radius:3px;font-size:.62rem;font-weight:600;margin-left:6px;vertical-align:middle">partial — ${s.cards} cards</span>`
