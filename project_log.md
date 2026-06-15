@@ -168,7 +168,28 @@
 - **Session logging enforced**: mandatory end-of-session rule added to `CLAUDE.md` in project root + memory feedback file; project log caught up for sessions 4–6 which had never been logged
 
 ### Open questions / next session
-- Push changes to GitHub Pages (`git -C ~/frcs-sn-revision add index.html content.js && git -C ~/frcs-sn-revision commit -m "UI: brain tracking, flashcard AI warnings, source list, remove priority col" && git -C ~/frcs-sn-revision push`)
 - Mine TJones Revision Notes (79pp) — run `python3 mine.py next` to confirm source id, then `mine.py extract`
 - Download JCIE Syllabus Blueprint 2023 (see Sources prioritisation TODO above)
 - 283 claude-ai SBAs still unverified — replace during each mining session as usual
+
+---
+
+## 2026-06-15 — Source filtering via checkboxes + topic Sources tab (session 7)
+
+### What we built
+- **Per-source checkboxes** in Admin → Sources: each row has an On/Off checkbox; toggling immediately filters Flashcards and Quiz content via `state.sources[id].enabled`
+- **Gmail-style section header checkbox**: single checkbox in "On" column header — checked=all on, unchecked=all off, indeterminate dash=mixed; set via `.indeterminate` property after render
+- **Section select-all** replaces the clunky All/None buttons that were in the section title
+- **`setSrcEnabled(id, v)`** and **`setSrcCategoryEnabled(cat, v)`** new functions; both re-render topic list, current topic content, and sources table on change
+- **`filteredQs`** simplified: removed korky/web branches (now handled by checkboxes); kept only `recall` branch for Exam-likely filter
+- **Korky folder + Textbooks listed first** in Sources table (Textbooks are from Korky's physical collection)
+- **Sources tab in topic view**: renamed from "Notes", made first tab and default on topic open; shows each source with ✓/○ enabled indicator; explains that sources control Flashcards/Quiz and links to Admin → Sources
+- **Sources page intro**: restored original "About this revision tool" paragraph (provenance, two streams, recall-bank weighting) + added "Source selection" sub-section beneath it
+- **Removed**: Korky folder / Guidelines only quick-filter buttons from global quiz (redundant with checkboxes); stale filterLabel display from topic title
+
+### Architecture note
+`filteredCards(ld)` was already filtering via `srcEnabled()` which checks `state.sources[id].enabled`. The new checkboxes just give the user a UI to set those flags. No change to the filtering logic itself was needed for flashcards.
+
+### TODO for next session
+- **Remove "Status" column from Sources table** — deprecated holdover, no longer used
+- **Add URL links for online sources** — sources without a local PDF should show a link button pointing to `s.url`; currently only PDF sources show an "Open" button, online-only sources show "—"
