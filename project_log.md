@@ -193,3 +193,37 @@
 ### TODO for next session
 - **Remove "Status" column from Sources table** — deprecated holdover, no longer used
 - **Add URL links for online sources** — sources without a local PDF should show a link button pointing to `s.url`; currently only PDF sources show an "Open" button, online-only sources show "—"
+
+---
+
+## 2026-06-15 — AI source toggle + dev panel drag + UI polish (session 8)
+
+### What we built
+
+**AI-Generated source toggle**
+- Added `{id:"claude-ai", name:"Claude AI — AI-Generated Questions", category:"AI-Generated"}` to SOURCES array in `content.js`
+- `normalizeState()` now picks it up automatically → it appears in Sources tab with a toggle checkbox like all other sources
+- When disabled, all `src_id:"claude-ai"` cards and SBAs are excluded from Flashcards and Quiz via the existing `srcEnabled()` gate — no logic change needed
+- Removed the hard-coded `filter(({id})=>id!=='claude-ai')` exclusions from `renderLearnContent` and `renderNotes` so it now flows through the normal source pipeline
+
+**AI warning styling — amber throughout**
+- Sources sub-tab (per-topic): claude-ai row now renders with amber ✓, amber background (`#fffbeb`), amber border, `⚠ AI` badge, and a count line: "12 SBAs · 2 cards" (computed from `ld.q` and `ld.c` filtered by `src_id`)
+- Quiz question (global + topic): amber `⚠ AI` badge in the score/question-number line before answering; amber `AI-generated — topic` line in explanation after answering
+- Flashcard backs: amber pill with left border accent replacing the old dim opacity `.5` ref line
+- Sources tab: `AI-Generated` section already had amber warning banner — unchanged
+
+**Policy change on claude-ai SBAs** (user instruction)
+- Do NOT replace or rewrite claude-ai SBAs when mining a real source — keep them
+- Only correct if source clearly contradicts content
+- Target is no longer "zero claude-ai SBAs" — target is "no obviously wrong ones"
+- Feedback saved to memory: `feedback_frcs_claude_ai_sbas.md`
+
+**Dev panel (test user)**
+- Moved default position from bottom-right to bottom-left (was overlapping "Next →" button in quiz)
+- Added drag handle (⠿ DEV PANEL title bar): mousedown/mousemove/mouseup drag to anywhere on screen
+- Cursor changes grab → grabbing during drag; panel clamps to viewport edges
+
+### Open questions / next session
+- Mine TJones Revision Notes (79pp) — `python3 mine.py next` to confirm source id, then extract
+- 283 claude-ai SBAs retained (policy changed: keep, don't replace)
+- Sources tab TODO still open: remove Status column, add URL links for online-only sources

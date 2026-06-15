@@ -601,6 +601,54 @@
           "cards": 9
         }
       ]
+    },
+    "aberdeen-neuro-death": {
+      "pages_done": [
+        [
+          1,
+          7
+        ]
+      ],
+      "cards_added": 12,
+      "sessions": [
+        {
+          "date": "2026-06-15",
+          "pages": "1-7",
+          "cards": 12
+        }
+      ]
+    },
+    "aberdeen-tcd": {
+      "pages_done": [
+        [
+          1,
+          7
+        ]
+      ],
+      "cards_added": 11,
+      "sessions": [
+        {
+          "date": "2026-06-15",
+          "pages": "1-7",
+          "cards": 11
+        }
+      ]
+    },
+    "aberdeen-aeds": {
+      "pages_done": [
+        [
+          1,
+          7
+        ]
+      ],
+      "cards_added": 10,
+      "sessions": [
+        {
+          "date": "2026-06-15",
+          "pages": "1-7",
+          "cards": 10
+        }
+      ]
     }
   },
   "sessions": []

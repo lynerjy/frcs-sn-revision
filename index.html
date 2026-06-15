@@ -770,7 +770,7 @@ function openLearnTopic(id){
 }
 function renderLearnContent(t,ld){
   const fc=filteredCards(ld).length;const fq=filteredQs(ld.q).length;
-  const allSrcs=topicSources(ld).filter(({id})=>id!=='claude-ai');
+  const allSrcs=topicSources(ld);
   const disabledSrcs=allSrcs.filter(({id})=>state.sources[id]?.enabled===false).length;
   const srcLabel=disabledSrcs>0?`<span style="font-size:.68rem;color:#d97706;font-weight:600;margin-left:8px">⚠ ${disabledSrcs} source${disabledSrcs>1?'s':''} off</span>`:``;
   document.getElementById("learn-content").innerHTML=`
@@ -795,33 +795,33 @@ function topicSources(ld){
 }
 function renderNotes(ld){
   const allSrcs=topicSources(ld);
-  const realSrcs=allSrcs.filter(({id})=>id!=='claude-ai').map(({src,id})=>({...src,id,enabled:state.sources[id]?.enabled!==false}));
-  const aiCards=(ld.c||[]).filter(c=>c.src_id==='claude-ai').length;
-  const aiSBAs=(ld.q||[]).filter(q=>q.src_id==='claude-ai').length;
-  const hasAI=aiCards>0||aiSBAs>0;
+  const realSrcs=allSrcs.map(({src,id})=>({...src,id,enabled:state.sources[id]?.enabled!==false}));
   const disabledCount=realSrcs.filter(s=>!s.enabled).length;
   let html=`<div style="padding:4px 0">`;
   html+=`<div style="font-size:.76rem;color:var(--g600);background:var(--g50);border:1px solid var(--g200);border-radius:4px;padding:8px 12px;margin-bottom:14px;line-height:1.6">These sources determine what content appears in <strong>Flashcards</strong> and <strong>Quiz</strong> for this topic. ✓ = currently enabled; ○ = disabled. Enable or disable sources in <strong>Admin → Sources</strong>.</div>`;
   html+=`<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--g500);margin-bottom:10px">Sources for this topic</div>`;
   if(realSrcs.length){
+    const aiCards=(ld.c||[]).filter(c=>c.src_id==='claude-ai').length;
+    const aiSBAs=(ld.q||[]).filter(q=>q.src_id==='claude-ai').length;
     realSrcs.forEach(s=>{
+      const isAI=s.id==='claude-ai';
       const kBadge=s.korky?`<span style="background:#fef08a;color:#713f12;border:1px solid #eab308;padding:0 5px;border-radius:3px;font-size:.62rem;font-weight:700;margin-left:5px;flex-shrink:0">Korky</span>`:``;
-      const check=s.enabled?`<span style="color:#059669;font-size:.9rem;font-weight:700;flex-shrink:0">✓</span>`:`<span style="color:#d1d5db;font-size:.9rem;flex-shrink:0">○</span>`;
-      html+=`<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:5px;background:${s.enabled?"#f0fdf4":"var(--g50)"};border:1px solid ${s.enabled?"#bbf7d0":"var(--g200)"};margin-bottom:5px;${s.enabled?"":"opacity:.55"}">
-        ${check}<span style="font-size:.8rem;color:var(--g800);flex:1">${s.name}</span>${kBadge}
+      const aiBadge=isAI?`<span style="background:#fef3c7;color:#92400e;border:1px solid #f59e0b;padding:0 5px;border-radius:3px;font-size:.62rem;font-weight:700;margin-left:5px;flex-shrink:0">⚠ AI</span>`:``;
+      const aiCount=isAI?[aiSBAs?`${aiSBAs} SBA${aiSBAs!==1?'s':''}`:null,aiCards?`${aiCards} card${aiCards!==1?'s':''}`:null].filter(Boolean).join(' · '):'';
+      const check=s.enabled
+        ?(isAI?`<span style="color:#d97706;font-size:.9rem;font-weight:700;flex-shrink:0">✓</span>`:`<span style="color:#059669;font-size:.9rem;font-weight:700;flex-shrink:0">✓</span>`)
+        :`<span style="color:#d1d5db;font-size:.9rem;flex-shrink:0">○</span>`;
+      const bg=s.enabled?(isAI?"#fffbeb":"#f0fdf4"):"var(--g50)";
+      const border=s.enabled?(isAI?"#f59e0b":"#bbf7d0"):"var(--g200)";
+      html+=`<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:5px;background:${bg};border:1px solid ${border};margin-bottom:5px;${s.enabled?"":"opacity:.55"}">
+        ${check}<span style="font-size:.8rem;color:var(--g800);flex:1">${s.name}</span>${aiCount?`<span style="font-size:.7rem;color:#92400e;opacity:.8">${aiCount}</span>`:''} ${kBadge}${aiBadge}
       </div>`;
     });
   }else{
     html+=`<p style="font-size:.8rem;color:var(--g500);font-style:italic;padding:10px 0">No verified sources mined for this topic yet.</p>`;
   }
   if(disabledCount>0){
-    html+=`<div style="margin-top:8px;padding:7px 10px;background:#fef3c7;border-radius:4px;border:1px solid #f59e0b;font-size:.76rem;color:#92400e">⚠ <strong>${disabledCount} source${disabledCount>1?'s':''} disabled</strong> — flashcards and quiz questions from those sources are hidden. Re-enable them in <strong>Admin → Sources</strong>.</div>`;
-  }
-  if(hasAI){
-    const parts=[];
-    if(aiCards)parts.push(`${aiCards} flashcard${aiCards>1?'s':''}`);
-    if(aiSBAs)parts.push(`${aiSBAs} SBA${aiSBAs>1?'s':''}`);
-    html+=`<div style="margin-top:8px;padding:7px 10px;background:#fef3c7;border-left:3px solid #f59e0b;border-radius:4px;font-size:.76rem;color:#92400e"><strong>⚠ ${parts.join(' and ')} AI-generated</strong> — written from training knowledge, not a verified source. Treat with caution.</div>`;
+    html+=`<div style="margin-top:8px;padding:7px 10px;background:#fef3c7;border-radius:4px;border:1px solid #f59e0b;font-size:.76rem;color:#92400e">⚠ <strong>${disabledCount} source${disabledCount>1?'s':''} disabled</strong> — flashcards and quiz questions from those sources are hidden. Re-enable them in <strong>Sources</strong>.</div>`;
   }
   html+=`</div>`;
   return html;
@@ -850,7 +850,7 @@ function renderCards(ld,idx){
   <div class="card-hint" id="card-hint">Click card to reveal answer</div>
   <div class="card-wrapper"><div class="flip-card" id="flip-card" onclick="flipAndShowJudge()">
     <div class="card-face card-front"><div class="card-label">Question</div><div class="card-text">${card.q}</div></div>
-    <div class="card-face card-back"><div class="card-label">Answer</div><div class="card-text">${card.a}</div>${korkBadge}${(card.ref&&card.ref!=='claude'&&!card.ref.startsWith('claude'))?`<div class="card-ref">${card.ref}</div>`:""}${card.src_id==='claude-ai'?`<div style="margin-top:8px;padding:6px 10px;background:#fef3c7;border-radius:3px;border:1.5px solid #f59e0b;font-size:.73rem;color:#92400e"><strong>⚠ AI-generated</strong> — not verified against a source document. Check against Greenberg or a guideline before trusting.</div>`:""}</div>
+    <div class="card-face card-back"><div class="card-label">Answer</div><div class="card-text">${card.a}</div>${korkBadge}${card.src_id==='claude-ai'?`<div style="margin-top:10px;font-size:.72rem;color:#92400e;background:#fffbeb;padding:4px 8px;border-radius:3px;border-left:2px solid #f59e0b">⚠ AI-generated${card.ref&&card.ref.includes(' — ')?` — ${card.ref.replace(/^claude — /,'')}`:''}  </div>`:(card.ref&&card.ref!=='claude'&&!card.ref.startsWith('claude'))?`<div class="card-ref">${card.ref}</div>`:""}</div>
   </div></div>
   <div class="card-judge" id="card-judge">
     <button class="btn-got-it" onclick="judgeCard(true)">Got it</button>
@@ -915,7 +915,8 @@ function renderTQ(){
   const q=tqState.qs[tqState.idx];
   const wrong=tqState.idx-tqState.correct;
   const tqCombo=gameState.combo>=2?`<span class="combo-badge">×${gameState.combo} COMBO</span>`:'';
-  el.innerHTML=`<div class="quiz-q-num">Q${tqState.idx+1}/${tqState.qs.length} &nbsp; <span class="score-pill score-correct">${tqState.correct} ✓</span> <span class="score-pill score-wrong">${wrong} ✗</span> ${tqCombo}</div>
+  const tqAiTag=q.src_id==='claude-ai'?`<span style="background:#fef3c7;color:#92400e;border:1px solid #f59e0b;border-radius:3px;font-size:.65rem;padding:1px 6px;font-weight:600">⚠ AI</span>`:'';
+  el.innerHTML=`<div class="quiz-q-num">Q${tqState.idx+1}/${tqState.qs.length} &nbsp; <span class="score-pill score-correct">${tqState.correct} ✓</span> <span class="score-pill score-wrong">${wrong} ✗</span> ${tqCombo} ${tqAiTag}</div>
   <div class="quiz-stem">${q.stem}</div>
   <div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" id="tqo-${i}" onclick="answerTQ(${i})">${o}</button>`).join("")}</div>
   <div class="quiz-verdict" id="tq-verdict"></div>
@@ -946,7 +947,8 @@ function sbaSourceHtml(q){
   const src=q.src_id?SOURCES.find(s=>s.id===q.src_id):null;
   let html='';
   if(src&&src.id==='claude-ai'){
-    html+=`<div style="margin-top:10px;padding:7px 10px;background:#fef3c7;border-radius:4px;border:1.5px solid #f59e0b;font-size:.75rem;color:#92400e"><strong>⚠ AI-generated</strong> — not verified against a source document. ${q.ref&&q.ref!=='claude'?`<span style="opacity:.75">Topic: ${q.ref.replace(/^claude — /,'')}</span>`:''}Check against a textbook before trusting.</div>`;
+    const topic=q.ref&&q.ref!=='claude'?q.ref.replace(/^claude — /,'').replace(/^claude$/,''):'';
+    html+=`<div style="margin-top:8px;font-size:.72rem;color:#92400e;background:#fffbeb;padding:4px 8px;border-radius:3px;border-left:2px solid #f59e0b">AI-generated${topic?` — ${topic}`:''}</div>`;
   } else if(src){
     html+=`<div style="margin-top:10px;padding:7px 10px;background:#f8fafc;border-radius:4px;border:1px solid var(--g200);font-size:.75rem;color:var(--g800)"><strong>Source:</strong> ${src.name}${q.ref?` <span style="color:var(--g400);margin-left:4px">· ${q.ref}</span>`:''}</div>`;
   } else if(q.ref){
@@ -986,7 +988,8 @@ function renderGQ(){
   }
   const q=quizState.qs[quizState.idx];
   const gqCombo=gameState.combo>=2?`<span class="combo-badge">×${gameState.combo} COMBO</span>`:'';
-  el.innerHTML=`<div class="quiz-score-bar">Q${quizState.idx+1}/${quizState.qs.length} &nbsp; <span class="score-pill score-correct">${quizState.correct} ✓</span> <span class="score-pill score-wrong">${quizState.idx-quizState.correct} ✗</span> ${gqCombo}</div>
+  const gqAiTag=q.src_id==='claude-ai'?`<span style="background:#fef3c7;color:#92400e;border:1px solid #f59e0b;border-radius:3px;font-size:.65rem;padding:1px 6px;font-weight:600">⚠ AI</span>`:'';
+  el.innerHTML=`<div class="quiz-score-bar">Q${quizState.idx+1}/${quizState.qs.length} &nbsp; <span class="score-pill score-correct">${quizState.correct} ✓</span> <span class="score-pill score-wrong">${quizState.idx-quizState.correct} ✗</span> ${gqCombo} ${gqAiTag}</div>
   <div class="quiz-stem">${q.stem}</div>
   <div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" id="gqo-${i}" onclick="answerGQ(${i})">${o}</button>`).join("")}</div>
   <div class="quiz-verdict" id="gq-verdict"></div>
@@ -1251,15 +1254,38 @@ function initDevPanel(){
   if(document.getElementById('dev-panel'))return;
   const el=document.createElement('div');
   el.id='dev-panel';
-  el.style.cssText='position:fixed;bottom:16px;right:16px;z-index:9000;background:#111;border:2px solid #f59e0b;border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;font-family:monospace;font-size:.72rem;color:#fbbf24;box-shadow:4px 4px 0 rgba(245,158,11,.3)';
-  el.innerHTML=`<div style="font-weight:700;letter-spacing:.05em;margin-bottom:2px">DEV PANEL</div>
+  el.style.cssText='position:fixed;bottom:16px;left:16px;z-index:9000;background:#111;border:2px solid #f59e0b;border-radius:6px;padding:0;display:flex;flex-direction:column;gap:0;font-family:monospace;font-size:.72rem;color:#fbbf24;box-shadow:4px 4px 0 rgba(245,158,11,.3);user-select:none';
+  el.innerHTML=`<div id="dev-panel-handle" style="padding:7px 12px 5px;font-weight:700;letter-spacing:.05em;cursor:grab;border-bottom:1px solid rgba(245,158,11,.25);display:flex;align-items:center;gap:6px"><span style="opacity:.5;font-size:.65rem">⠿</span> DEV PANEL</div>
+<div style="padding:8px 10px;display:flex;flex-direction:column;gap:5px">
 <button onclick="gameOnAnswer(true,false)" style="background:#166534;color:#4ade80;border:1px solid #4ade80;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">✓ Correct answer</button>
 <button onclick="gameOnAnswer(false,false)" style="background:#7f1d1d;color:#f87171;border:1px solid #f87171;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">✗ Wrong answer</button>
 <button onclick="gameOnAnswer(true,true)" style="background:#1e3a5f;color:#60a5fa;border:1px solid #60a5fa;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">✓ Hard correct (+2×XP)</button>
 <button onclick="devGrantLevel()" style="background:#3b0764;color:#c084fc;border:1px solid #c084fc;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">⚡ Grant full level XP</button>
 <button onclick="devFillHoops()" style="background:#431407;color:#fb923c;border:1px solid #fb923c;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">🏀 Fill all hoops</button>
-<button onclick="devResetGame()" style="background:#1c1917;color:#78716c;border:1px solid #57534e;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">↺ Reset game state</button>`;
+<button onclick="devResetGame()" style="background:#1c1917;color:#78716c;border:1px solid #57534e;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">↺ Reset game state</button>
+</div>`;
   document.body.appendChild(el);
+  // Drag behaviour — drag handle only
+  const handle=document.getElementById('dev-panel-handle');
+  let dragging=false,ox=0,oy=0;
+  handle.addEventListener('mousedown',e=>{
+    dragging=true;
+    const r=el.getBoundingClientRect();
+    ox=e.clientX-r.left;oy=e.clientY-r.top;
+    handle.style.cursor='grabbing';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    let nx=e.clientX-ox,ny=e.clientY-oy;
+    nx=Math.max(0,Math.min(window.innerWidth-el.offsetWidth,nx));
+    ny=Math.max(0,Math.min(window.innerHeight-el.offsetHeight,ny));
+    el.style.left=nx+'px';el.style.top=ny+'px';
+    el.style.bottom='auto';
+  });
+  document.addEventListener('mouseup',()=>{
+    if(dragging){dragging=false;handle.style.cursor='grab';}
+  });
 }
 function devGrantLevel(){
   const lv=getLevelIndex(gameState.xp);
