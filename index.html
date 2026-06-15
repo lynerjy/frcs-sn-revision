@@ -36,7 +36,7 @@ header::after{content:'';position:absolute;inset:0;background:repeating-linear-g
 .exam-inp{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 8px;border-radius:3px;font-size:.78rem}
 .exam-lbl{font-size:.72rem;opacity:.55}
 /* Level + XP bar */
-.xp-row{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.xp-row{display:flex;align-items:center;gap:10px;position:relative;z-index:1;margin-top:42px}
 .level-pill{font-family:var(--pf);font-size:.65rem;font-weight:700;color:#fbbf24;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.35);padding:3px 9px;border-radius:2px;white-space:nowrap;flex-shrink:0}
 .xp-bar-wrap{flex:1;min-width:120px}
 .xp-bar{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:2px;height:7px;overflow:hidden;position:relative}
@@ -352,6 +352,8 @@ main{max-width:1400px;margin:0 auto;padding:24px}
     <span class="exam-lbl">Exam:</span>
     <input type="date" class="exam-inp" id="exam-date-input">
     <span id="exam-date-label" class="exam-lbl"></span>
+    <span class="exam-lbl" style="margin-left:14px">🏀 Daily goal:</span>
+    <input type="number" id="daily-goal-input" min="1" max="50" value="5" class="exam-inp" style="width:52px;text-align:center">
   </div>
   <div class="xp-row">
     <span class="level-pill" id="level-pill">Level 0 / 9</span>
@@ -1113,7 +1115,7 @@ function renderFlagged(){
   return rows;
 }
 // ── GAME SYSTEM ────────────────────────────────────────────────────────────
-const DAILY_GOAL=5;
+function getDailyGoal(){return Math.max(1,parseInt(state.dailyGoal||5,10)||5);}
 const LEVELS=[
   {xp:0,title:"Med Student"},{xp:150,title:"FY1"},{xp:400,title:"Core Trainee"},
   {xp:800,title:"ST3 Registrar"},{xp:1500,title:"ST4 Registrar"},{xp:2500,title:"ST5 Registrar"},
@@ -1137,7 +1139,7 @@ function incDailyCount(){
   gameState.dailyCounts[k]=(prev+1);
   saveGameState();
   renderDailyHoops();
-  if(prev+1===DAILY_GOAL&&animEnabled())showGoalSmash();
+  if(prev+1===getDailyGoal()&&animEnabled())showGoalSmash();
 }
 function hoopSVG(scored){
   const rc=scored?'#f59e0b':'rgba(255,255,255,0.3)';
@@ -1158,10 +1160,10 @@ function renderDailyHoops(){
   if(!el)return;
   const count=getDailyCount();
   let html='';
-  for(let i=0;i<DAILY_GOAL;i++)html+=`<div class="hoop${i<count?" scored":""}">${hoopSVG(i<count)}</div>`;
+  for(let i=0;i<getDailyGoal();i++)html+=`<div class="hoop${i<count?" scored":""}">${hoopSVG(i<count)}</div>`;
   el.innerHTML=html;
-  if(msg){if(count>=DAILY_GOAL){msg.classList.add("show");}else{msg.classList.remove("show");}}
-  if(more){const rem=DAILY_GOAL-count;more.textContent=count<DAILY_GOAL?`${rem} more to goal`:(count>DAILY_GOAL?`+${count-DAILY_GOAL} bonus`:"");}
+  if(msg){if(count>=getDailyGoal()){msg.classList.add("show");}else{msg.classList.remove("show");}}
+  if(more){const rem=getDailyGoal()-count;more.textContent=count<getDailyGoal()?`${rem} more to goal`:(count>getDailyGoal()?`+${count-getDailyGoal()} bonus`:"");}
 }
 function getLevelIndex(xp){let lv=0;for(let i=LEVELS.length-1;i>=0;i--){if(xp>=LEVELS[i].xp){lv=i;break;}}return lv;}
 function addXP(pts,isHard){
@@ -1311,7 +1313,7 @@ function devGrantLevel(){
 }
 function devFillHoops(){
   const k=todayKey();
-  gameState.dailyCounts[k]=DAILY_GOAL;
+  gameState.dailyCounts[k]=getDailyGoal();
   saveGameState();renderDailyHoops();
   if(animEnabled())showGoalSmash();
 }
@@ -1368,7 +1370,7 @@ function checkAchievements(){
   maybeUnlock("first-correct",totalSeen>=1);
   maybeUnlock("five-combo",gameState.combo>=5);
   maybeUnlock("ten-combo",gameState.combo>=10);
-  maybeUnlock("daily-goal",getDailyCount()>=DAILY_GOAL);
+  maybeUnlock("daily-goal",getDailyCount()>=getDailyGoal());
   maybeUnlock("century",totalSeen>=100);
   maybeUnlock("level-5",getLevelIndex(gameState.xp)>=5);
 }
@@ -1390,6 +1392,9 @@ function showAchievement(a){
 const examInp=document.getElementById("exam-date-input");
 if(state.examDate)examInp.value=state.examDate;
 examInp.addEventListener("change",()=>{state.examDate=examInp.value;save();updateStats();});
+const goalInp=document.getElementById("daily-goal-input");
+if(state.dailyGoal)goalInp.value=state.dailyGoal;
+goalInp.addEventListener("change",()=>{const v=Math.max(1,Math.min(50,parseInt(goalInp.value,10)||5));goalInp.value=v;state.dailyGoal=v;save();renderHoops();});
 // ── INIT ───────────────────────────────────────────────────────────────────
 (function(){
   // Load game state + anim preference before anything
