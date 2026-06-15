@@ -441,6 +441,8 @@ main{max-width:1400px;margin:0 auto;padding:24px}
 // ── FIREBASE / AUTH ────────────────────────────────────────────────────────
 const FB_USERS={"korky":"korkyblorky","test":"test"};
 let currentUser=null,db=null,fsTimer=null;
+function stateKey(){return"frcs_state_"+(currentUser||"anon");}
+function gameKey(){return"frcs_game_"+(currentUser||"anon");}
 firebase.initializeApp({apiKey:"AIzaSyBlXzIz_Yjs55dumuZRCZ_UkDQRkZ24wvY",authDomain:"frcs-revision.firebaseapp.com",projectId:"frcs-revision",storageBucket:"frcs-revision.firebasestorage.app",messagingSenderId:"854181681754",appId:"1:854181681754:web:2bbb99b152d2e8cb74d663"});
 db=firebase.firestore();
 function doLogin(){
@@ -450,7 +452,9 @@ function doLogin(){
   currentUser=u;localStorage.setItem("frcs_user",u);
   document.getElementById("login-overlay").style.display="none";
   const hdrEl=document.getElementById("hdr-user");if(hdrEl)hdrEl.textContent=u;
+  loadGameState();
   loadState();renderQuizTopicCheckboxes();renderLearnTopicList();updateStats();renderDailyHoops();
+  initDevPanel();
   loadFromFirestore();
 }
 function doLogout(){
@@ -465,7 +469,7 @@ async function loadFromFirestore(){
       const d=snap.data();
       state={...state,...d};
       normalizeState();
-      localStorage.setItem("frcs_state",JSON.stringify(state));
+      localStorage.setItem(stateKey(),JSON.stringify(state));
       renderQuizTopicCheckboxes();renderLearnTopicList();updateStats();
       if(currentLearnTopic){const t=TOPICS.find(x=>x.id===currentLearnTopic);const ld=LEARN[currentLearnTopic];if(t&&ld)renderLearnContent(t,ld);}
     }
@@ -492,7 +496,7 @@ function normalizeState(){
   SOURCES.forEach(s=>{if(!state.sources[s.id])state.sources[s.id]={enabled:true,status:"not-started"};});
   TOPICS.forEach(t=>{if(!state.topics[t.id])state.topics[t.id]={confidence:0,status:"not-started",notes:""};});
 }
-function loadState(){try{const s=localStorage.getItem("frcs_state");if(s)state={...state,...JSON.parse(s)};}catch(e){}normalizeState();}
+function loadState(){try{const s=localStorage.getItem(stateKey());if(s)state={...state,...JSON.parse(s)};}catch(e){}normalizeState();}
 // Card ID: stable hash from question text
 function cardId(topicId,q){return topicId+"::"+q.substring(0,60).replace(/[^a-zA-Z0-9]/g,"_");}
 function sbaId(topicId,stem){return "sba::"+topicId+"::"+stem.substring(0,60).replace(/[^a-zA-Z0-9]/g,"_");}
@@ -537,7 +541,7 @@ function topicSbaStats(topicId){
   ld.q.forEach(q=>{const sid=sbaId(topicId,q.stem);const s=state.sbaResults[sid];if(s){seen+=s.seen;correct+=s.correct;totalMs+=(s.totalMs||0);}});
   return{seen,correct,pct:seen?Math.round(correct/seen*100):0,avgMs:seen?Math.round(totalMs/seen):0};
 }
-function save(){localStorage.setItem("frcs_state",JSON.stringify(state));saveToFirestore();}
+function save(){localStorage.setItem(stateKey(),JSON.stringify(state));saveToFirestore();}
 // ── STATS ──────────────────────────────────────────────────────────────────
 function updateStats(){
   // Card mastery stats
@@ -1049,8 +1053,15 @@ const LEVELS=[
   {xp:13000,title:"FRCS (SN) ✓"},
 ];
 let gameState={xp:0,level:0,combo:0,dailyCounts:{},achievements:{}};
-function loadGameState(){try{const s=localStorage.getItem("frcs_game");if(s)gameState={...gameState,...JSON.parse(s)};}catch(e){}}
-function saveGameState(){localStorage.setItem("frcs_game",JSON.stringify(gameState));}
+function loadGameState(){
+  try{
+    const nk=gameKey();
+    let s=localStorage.getItem(nk);
+    if(!s){s=localStorage.getItem("frcs_game");if(s&&currentUser)localStorage.setItem(nk,s);}
+    if(s)gameState={...gameState,...JSON.parse(s)};
+  }catch(e){}
+}
+function saveGameState(){localStorage.setItem(gameKey(),JSON.stringify(gameState));}
 function todayKey(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 function getDailyCount(){return gameState.dailyCounts[todayKey()]||0;}
 function incDailyCount(){
@@ -1185,6 +1196,37 @@ const PXBRAIN=(function(){
     start(){if(!raf&&cv){raf=requestAnimationFrame(frame);}},
   };
 })();
+// ── DEV PANEL (test user only) ─────────────────────────────────────────────
+function initDevPanel(){
+  if(currentUser!=='test')return;
+  if(document.getElementById('dev-panel'))return;
+  const el=document.createElement('div');
+  el.id='dev-panel';
+  el.style.cssText='position:fixed;bottom:16px;right:16px;z-index:9000;background:#111;border:2px solid #f59e0b;border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;font-family:monospace;font-size:.72rem;color:#fbbf24;box-shadow:4px 4px 0 rgba(245,158,11,.3)';
+  el.innerHTML=`<div style="font-weight:700;letter-spacing:.05em;margin-bottom:2px">DEV PANEL</div>
+<button onclick="gameOnAnswer(true,false)" style="background:#166534;color:#4ade80;border:1px solid #4ade80;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">✓ Correct answer</button>
+<button onclick="gameOnAnswer(false,false)" style="background:#7f1d1d;color:#f87171;border:1px solid #f87171;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">✗ Wrong answer</button>
+<button onclick="gameOnAnswer(true,true)" style="background:#1e3a5f;color:#60a5fa;border:1px solid #60a5fa;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">✓ Hard correct (+2×XP)</button>
+<button onclick="devGrantLevel()" style="background:#3b0764;color:#c084fc;border:1px solid #c084fc;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">⚡ Grant full level XP</button>
+<button onclick="devFillHoops()" style="background:#431407;color:#fb923c;border:1px solid #fb923c;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">🏀 Fill all hoops</button>
+<button onclick="devResetGame()" style="background:#1c1917;color:#78716c;border:1px solid #57534e;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;font-size:.72rem">↺ Reset game state</button>`;
+  document.body.appendChild(el);
+}
+function devGrantLevel(){
+  const lv=getLevelIndex(gameState.xp);
+  const next=LEVELS[Math.min(lv+1,LEVELS.length-1)];
+  if(next){gameState.xp=next.xp;saveGameState();updateXPBar();checkAchievements();}
+}
+function devFillHoops(){
+  const k=todayKey();
+  gameState.dailyCounts[k]=DAILY_GOAL;
+  saveGameState();renderDailyHoops();
+  if(animEnabled())showGoalSmash();
+}
+function devResetGame(){
+  gameState={xp:0,level:0,combo:0,dailyCounts:{},achievements:{}};
+  saveGameState();updateXPBar();renderDailyHoops();
+}
 function animEnabled(){return !document.body.classList.contains("no-anim");}
 function toggleAnim(){
   const off=document.body.classList.toggle("no-anim");
@@ -1281,8 +1323,9 @@ examInp.addEventListener("change",()=>{state.examDate=examInp.value;save();updat
     currentUser=savedUser;
     const hdrEl=document.getElementById("hdr-user");if(hdrEl)hdrEl.textContent=savedUser;
     document.getElementById("login-overlay").style.display="none";
+    loadGameState();
     loadState();renderQuizTopicCheckboxes();renderLearnTopicList();updateStats();
-    renderDailyHoops();
+    renderDailyHoops();initDevPanel();
     loadFromFirestore();
   }
   // else: login overlay stays visible
