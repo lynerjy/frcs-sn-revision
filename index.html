@@ -384,7 +384,8 @@ main{max-width:1400px;margin:0 auto;padding:24px}
         <button class="gsf-btn" id="qf-recall" data-gsf="recall" onclick="setQuizFilter('recall')">Exam-likely</button>
       </div>
       <div style="font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:10px">Select topics to quiz:</div>
-      <div id="quiz-topic-checkboxes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin-bottom:14px"></div>
+      <div id="quiz-topic-checkboxes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin-bottom:8px"></div>
+      <div id="recall-bank-note" style="display:none;font-size:.72rem;color:var(--g500);margin-bottom:6px;font-style:italic">Exam likelihood estimated from candidate recall-bank reports. Greyed topics have no recall-flagged questions.</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
         <button class="btn btn-sm btn-secondary" onclick="selectAllQuizTopics(true)">Select all</button>
         <button class="btn btn-sm btn-secondary" onclick="selectAllQuizTopics(false)">Clear all</button>
@@ -684,7 +685,6 @@ function renderProgressSummary(){
   el.innerHTML=`<div class="prog-summary" style="margin-bottom:0">
     <div class="prog-summary-hd">
       <div class="prog-summary-title">Progress <span style="font-size:.72rem;font-weight:400;color:var(--g400)">by exam frequency</span></div>
-      ${hasData?`<button class="btn-reset" onclick="resetProgress()">Reset all progress</button>`:""}
     </div>
     <div class="prog-overview">
       <div class="prog-stat"><div class="prog-stat-val" style="color:#059669">${masteredC}</div><div class="prog-stat-lbl">Mastered</div></div>
@@ -704,6 +704,7 @@ function renderProgressSummary(){
     <th style="padding:9px 8px;font-weight:600;color:var(--navy);text-align:center">Flashcards</th>
     <th style="padding:9px 8px;font-weight:600;color:var(--navy);text-align:center">SBA %</th>
     <th style="padding:9px 8px;font-weight:600;color:var(--navy);text-align:center">Avg speed</th>
+    <th style="padding:9px 8px;font-weight:600;color:var(--navy);text-align:right">${hasData?`<button class="btn-reset" onclick="resetProgress()" style="font-size:.65rem;padding:2px 7px">↺ reset all</button>`:''}</th>
   </tr></thead>
   <tbody>${rows.map((r,i)=>{
     const sc=scoreCol(r.score);
@@ -712,6 +713,7 @@ function renderProgressSummary(){
     const sbaLabel=r.sSt.seen?`${r.sSt.pct}%`:'—';
     const speedLabel=r.sSt.seen&&r.sSt.avgMs?`${Math.round(r.sSt.avgMs/1000)}s`:'—';
     const scoreLabel=r.score!==null?`${r.score}%`:'—';
+    const hasTopicData=Object.keys(state.cards).some(k=>k.startsWith(r.id+"::"))||Object.keys(state.sbaResults).some(k=>k.startsWith("sba::"+r.id+"::"));
     return`<tr style="border-bottom:1px solid var(--g100);background:${i%2===0?"#fff":"#fafafa"}">
       <td style="padding:9px 12px"><div style="display:flex;align-items:center;gap:7px"><div style="width:8px;height:8px;border-radius:50%;background:${r.col};flex-shrink:0"></div><span style="font-weight:500">${r.name}</span></div></td>
       <td style="padding:9px 8px;text-align:center">${RECALL_COUNTS[r.id]?`<span style="font-size:.68rem;font-weight:700;color:#d97706">${RECALL_COUNTS[r.id]}</span>`:'<span style="color:var(--g400)">—</span>'}</td>
@@ -719,6 +721,7 @@ function renderProgressSummary(){
       <td style="padding:9px 8px;text-align:center;color:var(--g600)">${cardLabel}</td>
       <td style="padding:9px 8px;text-align:center;font-weight:600;color:${r.sSt.seen?scoreCol(r.sSt.pct):"var(--g400)"}">${sbaLabel}</td>
       <td style="padding:9px 8px;text-align:center;color:var(--g400)">${speedLabel}</td>
+      <td style="padding:9px 8px;text-align:right">${hasTopicData?`<button class="btn-reset" onclick="resetTopicProgress('${r.id}')" title="Reset this topic" style="padding:2px 7px;font-size:.65rem">↺ reset</button>`:''}</td>
     </tr>`;}).join("")}</tbody></table>
   <div style="margin-top:24px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
@@ -734,11 +737,20 @@ function resetProgress(){
   updateStats();renderProgressSummary();renderLearnTopicList();
   if(currentLearnTopic){const t=TOPICS.find(x=>x.id===currentLearnTopic);const ld=LEARN[currentLearnTopic];if(t&&ld)renderLearnContent(t,ld);}
 }
+function resetTopicProgress(tid){
+  const name=TOPICS.find(x=>x.id===tid)?.name||tid;
+  if(!confirm(`Reset progress for "${name}"? This clears flashcard mastery and SBA results for this topic only.`))return;
+  Object.keys(state.cards).filter(k=>k.startsWith(tid+"::")).forEach(k=>delete state.cards[k]);
+  Object.keys(state.sbaResults).filter(k=>k.startsWith("sba::"+tid+"::")).forEach(k=>delete state.sbaResults[k]);
+  save();updateStats();renderProgressSummary();renderLearnTopicList();
+  if(currentLearnTopic===tid){const t=TOPICS.find(x=>x.id===tid);const ld=LEARN[tid];if(t&&ld)renderLearnContent(t,ld);}
+}
 // ── GLOBAL SOURCE FILTER ──────────────────────────────────────────────────
 let globalSourceFilter="all"; // "all" | "recall" (exam-likely); source filtering handled by state.sources[id].enabled
 function setQuizFilter(v){
   globalSourceFilter=v;
   document.querySelectorAll("[id^='qf-']").forEach(b=>b.classList.toggle("active",b.dataset.gsf===v));
+  const note=document.getElementById("recall-bank-note");if(note)note.style.display=v==="recall"?"block":"none";
   renderQuizTopicCheckboxes();
 }
 function setGlobalSourceFilter(v){globalSourceFilter=v;renderQuizTopicCheckboxes();}
@@ -978,10 +990,16 @@ function sbaSourceHtml(q){
 let quizState={qs:[],idx:0,correct:0,answered:false};
 let quizTopics=new Set(TOPICS.map(t=>t.id));
 function renderQuizTopicCheckboxes(){
+  const isRecall=globalSourceFilter==="recall";
   const visible=TOPICS.map(t=>{
     if(!LEARN[t.id])return"";
     const qs=filteredQs(LEARN[t.id].q);
-    if(!qs.length)return"";
+    if(!qs.length&&!isRecall)return"";
+    if(!qs.length&&isRecall){
+      const allQs=LEARN[t.id].q.filter(srcEnabled);
+      if(!allQs.length)return"";
+      return`<label style="display:flex;align-items:center;gap:6px;font-size:.8rem;cursor:not-allowed;opacity:.38" title="No exam-likely questions for this topic"><input type="checkbox" disabled><span style="color:var(--g400)">${t.name}</span></label>`;
+    }
     return`<label style="display:flex;align-items:center;gap:6px;font-size:.8rem;cursor:pointer"><input type="checkbox" ${quizTopics.has(t.id)?"checked":""} onchange="toggleQuizTopic('${t.id}',this.checked)"><span>${t.name}</span><span style="font-size:.7rem;color:var(--g400)">(${qs.length})</span></label>`;
   });
   document.getElementById("quiz-topic-checkboxes").innerHTML=visible.join("");

@@ -329,3 +329,37 @@
 - Greenberg paeds re-mining still URGENT — craniosynostosis ~pp1140s, NTDs ~pp200s, paeds tumours ~pp750s
 - TJones Revision Notes (79pp) queued after paeds Greenberg
 - Non-Korky sources: verify all have `url` fields so Visit ↗ renders everywhere
+
+---
+
+## 2026-06-16 — Progress reset per topic + Exam-likely grey-out (session 12)
+
+### What was built / changed
+
+**Greenberg pp297-319 (Chiari I/II + NTDs) — 12 SBAs committed and pushed**
+- `python3 mine.py done greenberg 297-319 12` run — Greenberg now at 76 total cards
+- Topics: Chiari II shunt-first rule; Chiari I most common symptom (pain 69%); tonsillar descent >5mm criteria; Chiari I vs II comparison; Chiari II dysphagia 69%; surgical outcome 68%; anencephaly/anterior neuropore; VPA 1-2% NTD + CBZ doubles MM; folic acid 4mg/d → 71% reduction; AFP screening 91%/100% at 15-20 weeks; craniolacunia 85% in Chiari II NOT due to ICP; cerebellar ptosis from excessive craniectomy
+
+**Per-topic reset in Progress table**
+- Each topic row now shows a small `↺ reset` button in a new rightmost column (only appears if that topic has recorded data)
+- `resetTopicProgress(tid)` function: deletes `state.cards` entries starting with `tid+"::"` and `state.sbaResults` entries starting with `"sba::"+tid+"::"`; saves, re-renders, re-renders active topic content if it's the current one
+- "Reset all progress" button moved from above-table header into the table header row (right-aligned in the last column), so it's co-located with the per-topic resets
+
+**Exam-likely filter — grey out instead of hide**
+- `renderQuizTopicCheckboxes()`: when `globalSourceFilter==="recall"`, topics with no recall-flagged questions now render as greyed-out disabled checkboxes (opacity 0.38, `cursor:not-allowed`) rather than being removed from the DOM
+- Topics stay in position when toggling between Full deck / Exam-likely — only colour changes, no layout shift
+- No suffix label added to greyed topics (self-evident)
+- Recall-bank attribution note ("Exam likelihood estimated from candidate recall-bank reports...") shown below the checkboxes (not above) when Exam-likely is active, so it doesn't shift topic positions on toggle
+
+### Key decisions
+- Reset buttons appear only when a topic has data — keeps the column clean for untouched topics
+- Note placed below checkboxes not above: prevents any layout shift when toggling filter tabs
+
+### Login persistence (answered for user)
+- Auto-login is localStorage-based (`frcs_user` key), per-browser/device — not IP-based
+- Expected and correct: if you sign in on the same browser, you stay logged in until Sign out is clicked
+
+### Open questions / next session
+- Continue Greenberg mining: craniosynostosis (~pp1130-1160), paeds tumours (medulloblastoma/ATRT ~pp750-795)
+- TJones Revision Notes (79pp) after paeds Greenberg
+- Non-Korky sources: verify all have `url` fields so Visit ↗ renders everywhere
