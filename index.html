@@ -550,6 +550,8 @@ function updateStats(){
   document.getElementById("stat-total").textContent=qsDone;
   document.getElementById("stat-streak").textContent=calcStreak();
   updateXPBar();
+  const _examInp=document.getElementById("exam-date-input");if(_examInp&&state.examDate)_examInp.value=state.examDate;
+  const _goalInp=document.getElementById("daily-goal-input");if(_goalInp)_goalInp.value=getDailyGoal();
   if(state.examDate){const t=new Date();t.setHours(0,0,0,0);const d=Math.ceil((new Date(state.examDate)-t)/86400000);document.getElementById("stat-days").textContent=d>0?d:"—";}}
 function calcStreak(){let s=0;const t=new Date();t.setHours(0,0,0,0);let d=new Date(t);for(;;){const k=toKey(d);if(state.log[k])s++;else if(d.getTime()===t.getTime()){d.setDate(d.getDate()-1);continue;}else break;d.setDate(d.getDate()-1);}return s;}
 // ── TABS ───────────────────────────────────────────────────────────────────
