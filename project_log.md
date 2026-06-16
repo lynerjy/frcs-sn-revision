@@ -400,3 +400,33 @@ Two changes planned, implementation interrupted by /summ:
 - Implement Sources page redesign above (4-group layout + mining badge column)
 - Continue Greenberg mining: craniosynostosis (~pp1130-1160), paeds tumours (~pp750-795)
 - TJones Revision Notes (79pp) after paeds Greenberg
+
+---
+
+## 2026-06-16 — Sources page redesign: 4-group layout + Mining column (session 14)
+
+### What was built / changed
+
+**Sources page — 4-group layout**
+- Replaced fine-grained category-per-table with four meta-group sections, ordered:
+  1. **Korky Folder** (amber header) — sources with `type:"korky"` (Key Papers, Aberdeen Course Material, MCQ Banks)
+  2. **Publicly Available** (blue header) — `type:"free"` or `type:"free_pdf"` (Clinical Guidelines, Official Exam, GAIN, Brain School, Radiopaedia)
+  3. **AI-Generated** (amber/warning header) — claude-ai source
+  4. **Login / Subscription Required** (grey header) — `type:"subscription"`, `"purchase"`, `"paid_event"` (eBrain, frcs-companion, neurocourses, CLNA, Textbooks, Revision Courses)
+- Each group is a single table; categories within a group appear as bold sub-header rows with toggle checkboxes
+- E-Learning splits correctly: GAIN/Brain School under Publicly Available; eBrain/frcs-companion under Locked
+- Fixed longstanding category name mismatch: `"Korky — Aberdeen Course"` → `"Korky — Aberdeen Course Material"` (Aberdeen sources were silently falling into "Other" bucket)
+
+**Mining column**
+- Mining badge (✓ N cards / partial / not yet mined / reference only) moved from inline in Source name cell into its own dedicated **Mining** column, between Source and Access
+- Badges now `white-space:nowrap` and centred in the column
+
+### Key decisions
+- Group assignment by `type` field (not `category`) — cleanest since categories cross-cut the desired groupings (E-Learning has both free and subscription sources)
+- Category sub-headers always rendered (even for single-category groups like AI-Generated) — provides consistent checkbox mechanism; slight redundancy acceptable
+- Textbooks (`type:"purchase"`) go in Login/Subscription Required — not in Korky folder, since they're commercially available reference books not Korky-specific content
+
+### Open questions / next session
+- Continue Greenberg mining: craniosynostosis (~pp1130-1160), paeds tumours (medulloblastoma/ATRT ~pp750-795)
+- TJones Revision Notes (79pp) after paeds Greenberg
+- Non-Korky sources: verify all have `url` fields so Visit ↗ renders
