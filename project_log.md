@@ -363,3 +363,40 @@
 - Continue Greenberg mining: craniosynostosis (~pp1130-1160), paeds tumours (medulloblastoma/ATRT ~pp750-795)
 - TJones Revision Notes (79pp) after paeds Greenberg
 - Non-Korky sources: verify all have `url` fields so Visit ↗ renders everywhere
+
+---
+
+## 2026-06-16 — Exam date persistence + Sources page redesign planned (session 13)
+
+### What was built / changed
+
+**Exam date and daily goal persistence fix**
+- Root cause: `examInp.value` and `goalInp.value` were only set once at page init (before login), so Firestore sync and cross-device login never restored the inputs to the UI
+- Fix: `updateStats()` now syncs both `exam-date-input.value` and `daily-goal-input.value` from state on every call
+- Effect: exam date and basket goal now survive login, logout, cross-device Firestore pull
+
+**Login persistence explained**
+- Auto-login is `localStorage("frcs_user")` per-browser — not IP-based. Same browser = stays logged in until Sign out clicked. Expected behaviour.
+
+### Pending (not yet implemented): Sources page redesign
+
+Two changes planned, implementation interrupted by /summ:
+
+1. **Mining badge as separate column** — currently inline in the Source name cell; move to a dedicated column to the left of Access
+
+2. **Four-group vertical layout** replacing current fine-grained categories:
+   - **Korky Folder** — type=`korky` (Key Papers, Aberdeen Course Material, MCQ Banks)
+   - **Publicly Available** — type=`free` or `free_pdf` (Clinical Guidelines, Official Exam, GAIN/Brain School, Radiopaedia)
+   - **AI-Generated** — claude-ai source
+   - **Login / Subscription Required** — type=`subscription`, `purchase`, `paid_event` (eBrain, frcs-companion, neurocourses, CLNA, Textbooks, Revision Courses)
+
+   Implementation notes:
+   - `srcGroupKey(s)` function maps source → one of four group keys
+   - Fine-grained category sub-headers retained within each group
+   - Fix `"Korky — Aberdeen Course"` → `"Korky — Aberdeen Course Material"` mismatch in catOrder/korkyLike (currently Aberdeen sources fall into "Other" bucket)
+   - Group super-headers render above each cluster of category tables
+
+### Open questions / next session
+- Implement Sources page redesign above (4-group layout + mining badge column)
+- Continue Greenberg mining: craniosynostosis (~pp1130-1160), paeds tumours (~pp750-795)
+- TJones Revision Notes (79pp) after paeds Greenberg
