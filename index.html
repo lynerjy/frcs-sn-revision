@@ -583,86 +583,101 @@ function topicAutoScore(topicId){
 function scoreCol(s){return s===null?"#9ca3af":s>=70?"#059669":s>=40?"#d97706":"#dc2626";}
 function renderSourcesTable(){
   const wrap=document.getElementById("sources-table-wrap");if(!wrap)return;
-  const catOrder=["Korky — Key Papers","Korky — Aberdeen Course","Korky — MCQ Banks","Textbooks","Clinical Guidelines","Official Exam","E-Learning","Neuroradiology","Neuroanatomy","Revision Courses","AI-Generated"];
-  const korkyLike=new Set(["Korky — Key Papers","Korky — Aberdeen Course","Korky — MCQ Banks","Textbooks"]);
   const liveCountBySrc={};
   Object.values(LEARN).forEach(ld=>{
     (ld.c||[]).forEach(c=>{if(c.src_id)liveCountBySrc[c.src_id]=(liveCountBySrc[c.src_id]||0)+1;});
     (ld.q||[]).forEach(q=>{if(q.src_id)liveCountBySrc[q.src_id]=(liveCountBySrc[q.src_id]||0)+1;});
   });
-  const grouped={};
-  SOURCES.forEach(s=>{const c=s.category||"Other";if(!grouped[c])grouped[c]=[];grouped[c].push(s);});
-  const cats=[...catOrder.filter(c=>grouped[c]),...Object.keys(grouped).filter(c=>!catOrder.includes(c)&&grouped[c])];
+  function srcGroupKey(s){
+    if(s.category==="AI-Generated")return"ai";
+    if((s.type||"")==="korky")return"korky";
+    if((s.type||"")==="free"||(s.type||"")==="free_pdf")return"public";
+    return"locked";
+  }
+  const GROUP_ORDER=["korky","public","ai","locked"];
+  const GROUP_META={
+    korky:{label:"Korky Folder",hdrBg:"#fef9c3",hdrColor:"#713f12",badge:`<span style="background:#fef08a;color:#713f12;border:1px solid #eab308;padding:1px 8px;border-radius:100px;font-size:.68rem;font-weight:700">Korky</span>`},
+    public:{label:"Publicly Available",hdrBg:"#eff6ff",hdrColor:"#1e3a8a",badge:""},
+    ai:{label:"AI-Generated",hdrBg:"#fffbeb",hdrColor:"#92400e",badge:`<span style="background:#fef3c7;color:#92400e;border:1.5px solid #f59e0b;padding:1px 8px;border-radius:100px;font-size:.68rem;font-weight:700">⚠ Unverified</span>`},
+    locked:{label:"Login / Subscription Required",hdrBg:"var(--g50)",hdrColor:"var(--g500)",badge:""}
+  };
+  const CAT_PREF={
+    korky:["Korky — Key Papers","Korky — Aberdeen Course Material","Korky — MCQ Banks","Textbooks"],
+    public:["Clinical Guidelines","Official Exam","E-Learning","Neuroradiology","Neuroanatomy"],
+    ai:["AI-Generated"],
+    locked:["E-Learning","Neuroanatomy","Revision Courses","Textbooks"]
+  };
+  const buckets={korky:{},public:{},ai:{},locked:{}};
+  SOURCES.forEach(s=>{const g=srcGroupKey(s);const c=s.category||"Other";if(!buckets[g][c])buckets[g][c]=[];buckets[g][c].push(s);});
+  function orderedCats(grp){const pref=CAT_PREF[grp]||[];const all=Object.keys(buckets[grp]);return[...pref.filter(c=>all.includes(c)),...all.filter(c=>!pref.includes(c))];}
   const intro=`<div style="background:#fff;border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--g200);padding:20px 22px;margin-bottom:22px;font-size:.84rem;line-height:1.75;color:var(--g800)">
     <div style="font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:10px">About this revision tool</div>
     <p>Built from the exam materials assembled by Korky for the FRCS (SN). Content comes from two streams: <strong>verified clinical guidelines</strong> (NICE, RCP, Society for Endocrinology — freely available PDFs stored in this app) and <strong>landmark papers and course notes</strong> from Korky's past-candidate folder.</p>
     <p style="margin-top:8px">Cards and SBAs are weighted toward the topics with the highest <em>recall-bank frequency</em> — the themes that real candidates report testing most often. Neuro-oncology cranial, degenerative spine, and vascular aneurysm are the highest-priority areas. The "Exam-likely" filter surfaces only cards and questions directly inspired by recall-bank patterns. Every card carries a source reference; the reference is the authority, not the card text.</p>
     <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--g200)">
       <div style="font-weight:700;color:var(--navy);margin-bottom:6px">Source selection</div>
-      <p>Use the <strong>checkboxes</strong> on each row to control which sources are active. Changes propagate immediately to the <strong>Flashcards</strong> and <strong>Quiz</strong> tabs — only content from selected sources will appear. The checkbox in each section header selects or deselects the whole category. The <strong>Sources tab</strong> on each topic in the Study page shows which sources are available and which are currently enabled.</p>
-      <p style="margin-top:8px"><strong>Mining status badges</strong> appear next to every source: <span style="display:inline-block;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;padding:0px 6px;border-radius:3px;font-size:.72rem;font-weight:600;vertical-align:middle">✓ N cards</span> — fully mined; <span style="display:inline-block;background:#fffbeb;color:#92400e;border:1px solid #f59e0b;padding:0px 6px;border-radius:3px;font-size:.72rem;font-weight:600;vertical-align:middle">partial — N cards</span> — large source, mined in stages; <span style="display:inline-block;background:var(--g100);color:var(--g600);border:1px solid var(--g200);padding:0px 6px;border-radius:3px;font-size:.72rem;font-weight:600;vertical-align:middle">not yet mined</span> — PDF available but no content extracted yet; <span style="display:inline-block;background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;padding:0px 6px;border-radius:3px;font-size:.72rem;font-weight:600;vertical-align:middle">reference only</span> — external link, no content mined into the app.</p>
+      <p>Use the <strong>checkboxes</strong> on each row to control which sources are active. Changes propagate immediately to the <strong>Flashcards</strong> and <strong>Quiz</strong> tabs — only content from selected sources will appear. The checkbox in each category sub-header selects or deselects that whole category.</p>
+      <p style="margin-top:8px">The <strong>Mining</strong> column shows extraction status for each source: <span style="display:inline-block;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;padding:0px 6px;border-radius:3px;font-size:.72rem;font-weight:600;vertical-align:middle">✓ N cards</span> — fully mined; <span style="display:inline-block;background:#fffbeb;color:#92400e;border:1px solid #f59e0b;padding:0px 6px;border-radius:3px;font-size:.72rem;font-weight:600;vertical-align:middle">partial — N</span> — large source, mined in stages; <span style="display:inline-block;background:var(--g100);color:var(--g600);border:1px solid var(--g200);padding:0px 6px;border-radius:3px;font-size:.72rem;font-weight:600;vertical-align:middle">not yet mined</span> — PDF available but not yet extracted; <span style="display:inline-block;background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;padding:0px 6px;border-radius:3px;font-size:.72rem;font-weight:600;vertical-align:middle">reference only</span> — external link only.</p>
     </div>
     <div style="margin-top:10px;padding:10px 14px;background:#fef3c7;border-left:4px solid #f59e0b;border-radius:3px;font-size:.82rem;color:#78350f;line-height:1.7">
       <div style="font-weight:700;margin-bottom:6px">⚠ AI-generated content — read before relying on it</div>
-      <p>283 questions in this app were written by Claude AI from training knowledge rather than a verified source document. They are marked with an amber <strong>⚠ AI</strong> badge throughout the app. You can disable them entirely in the AI-Generated section at the bottom of this page.</p>
+      <p>283 questions in this app were written by Claude AI from training knowledge rather than a verified source document. They are marked with an amber <strong>⚠ AI</strong> badge throughout the app. You can disable them entirely in the AI-Generated section below.</p>
       <p style="margin-top:6px"><strong>What Claude's training data covers well for neurosurgery:</strong> widely-taught conceptual material — cranial anatomy, classic syndromes, established scoring systems (PHASES, Hunt &amp; Hess, Fisher), landmark trial results (ISAT, SPORT, Stupp), and first-principles physiology. These are extensively represented in textbooks and review articles that formed the training corpus.</p>
       <p style="margin-top:6px"><strong>Where to be cautious:</strong> (1) <em>Specific numerical thresholds</em> — e.g. exact MFV cut-offs, dosing, timing windows — Claude may state confident-sounding figures that differ between guidelines. (2) <em>UK-specific practice</em> — NICE guideline recommendations, JCIE exam expectations, and NHS pathways are underrepresented in training data vs. US sources. (3) <em>Recency</em> — Claude Sonnet 4.6's training data has a knowledge cutoff of August 2025; guidelines revised after that date will not be reflected. (4) <em>Rare or niche content</em> — low-frequency topics may have thinner coverage in training data and higher error rates. For any AI-generated question where the answer matters clinically, cross-check against Greenberg or the relevant NICE guideline before trusting it.</p>
     </div>
   </div>`;
   let html=intro;
-  cats.forEach((cat,catIdx)=>{
-    const srcs=grouped[cat];
-    const isKorky=korkyLike.has(cat);
-    const isAI=cat==="AI-Generated";
-    const catLabel=cat.replace("Korky — ","");
-    const catSafe=cat.replace(/'/g,"\\'");
-    html+=`<div style="margin-bottom:24px">
-      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${isAI?"#92400e":isKorky?"#92400e":"var(--navy)"};margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        ${isKorky?`<span style="background:#fef08a;color:#713f12;border:1px solid #eab308;padding:1px 8px;border-radius:100px;font-size:.68rem">Korky folder</span>`:""}
-        ${isAI?`<span style="background:#fef3c7;color:#92400e;border:1.5px solid #f59e0b;padding:1px 8px;border-radius:100px;font-size:.68rem">⚠ Unverified</span>`:""}
-        <span>${catLabel}</span>
-      </div>
+  let cbIdx=0;const cbMap=[];
+  GROUP_ORDER.forEach(grp=>{
+    const cats=orderedCats(grp);if(!cats.length)return;
+    const meta=GROUP_META[grp];const isAI=grp==="ai";const isKorky=grp==="korky";
+    html+=`<div style="margin-bottom:28px">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:${meta.hdrColor};margin-bottom:10px;display:flex;align-items:center;gap:8px;padding:7px 12px;background:${meta.hdrBg};border-radius:6px;border:1px solid rgba(0,0,0,.06)">${meta.badge}<span>${meta.label}</span></div>
       ${isAI?`<div style="background:#fffbeb;border:1.5px solid #f59e0b;border-radius:var(--r);padding:12px 14px;margin-bottom:10px;font-size:.82rem;color:#78350f;line-height:1.6"><strong>These questions were generated by Claude AI from training knowledge, not a verified source document.</strong> Review against Greenberg or a guideline before trusting.</div>`:""}
       <table style="width:100%;border-collapse:collapse;font-size:.8rem;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--g200)">
       <thead><tr style="background:var(--g50);border-bottom:2px solid var(--g200)">
-        <th style="padding:8px;width:40px;text-align:center;border-right:1px solid var(--g100)"><input type="checkbox" id="chk-cat-${catIdx}" onchange="setSrcCategoryEnabled('${catSafe}',this.checked)" style="width:15px;height:15px;cursor:pointer;accent-color:#0891b2" title="Select / deselect all in this section"></th>
+        <th style="padding:8px;width:40px;text-align:center;border-right:1px solid var(--g100)"></th>
         <th style="text-align:left;padding:8px 12px;font-weight:600;color:var(--navy)">Source</th>
+        <th style="padding:8px 12px;font-weight:600;color:var(--navy);text-align:center;width:130px;white-space:nowrap">Mining</th>
         <th style="padding:8px 12px;font-weight:600;color:var(--navy);text-align:right;white-space:nowrap">Access</th>
       </tr></thead>
-      <tbody>${srcs.map((s,i)=>{
-        const ss=state.sources[s.id]||{enabled:true};
-        const enabled=ss.enabled!==false;
+      <tbody>`;
+    cats.forEach((cat,catI)=>{
+      const srcs=buckets[grp][cat];if(!srcs||!srcs.length)return;
+      const catLabel=cat.replace(/^Korky — /,"");
+      const catSafe=cat.replace(/'/g,"\\'");
+      const idx=cbIdx++;cbMap.push({cat,srcs});
+      html+=`<tr style="background:#f8fafc;border-bottom:1px solid var(--g200);${catI>0?"border-top:2px solid var(--g200)":""}">
+        <td style="padding:5px 8px;text-align:center;border-right:1px solid var(--g100)"><input type="checkbox" id="chk-cat-${idx}" onchange="setSrcCategoryEnabled('${catSafe}',this.checked)" style="width:14px;height:14px;cursor:pointer;accent-color:#0891b2" title="Toggle all ${catLabel}"></td>
+        <td colspan="3" style="padding:5px 12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--g400)">${catLabel}</td>
+      </tr>`;
+      srcs.forEach((s,i)=>{
+        const ss=state.sources[s.id]||{enabled:true};const enabled=ss.enabled!==false;
         const effectiveCards=s.cards||(liveCountBySrc[s.id]||0);
-        const miningBadge=isAI?'':effectiveCards>0&&s.partial
-          ?`<span style="background:#fffbeb;color:#92400e;border:1px solid #f59e0b;padding:1px 6px;border-radius:3px;font-size:.62rem;font-weight:600;margin-left:6px;vertical-align:middle">partial — ${effectiveCards} cards</span>`
-          :effectiveCards>0
-            ?`<span style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;padding:1px 6px;border-radius:3px;font-size:.62rem;font-weight:600;margin-left:6px;vertical-align:middle">✓ ${effectiveCards} cards</span>`
-            :(s.local||isKorky)
-              ?`<span style="background:var(--g100);color:var(--g600);border:1px solid var(--g200);padding:1px 6px;border-radius:3px;font-size:.62rem;font-weight:600;margin-left:6px;vertical-align:middle">not yet mined</span>`
-              :`<span style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;padding:1px 6px;border-radius:3px;font-size:.62rem;font-weight:600;margin-left:6px;vertical-align:middle">reference only</span>`;
+        const miningCell=isAI?'<span style="color:var(--g400);font-size:.75rem">—</span>':
+          effectiveCards>0&&s.partial?`<span style="background:#fffbeb;color:#92400e;border:1px solid #f59e0b;padding:2px 7px;border-radius:3px;font-size:.62rem;font-weight:600;white-space:nowrap">partial — ${effectiveCards}</span>`:
+          effectiveCards>0?`<span style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;padding:2px 7px;border-radius:3px;font-size:.62rem;font-weight:600;white-space:nowrap">✓ ${effectiveCards}</span>`:
+          (s.local||isKorky)?`<span style="background:var(--g100);color:var(--g600);border:1px solid var(--g200);padding:2px 7px;border-radius:3px;font-size:.62rem;font-weight:600;white-space:nowrap">not yet mined</span>`:
+          `<span style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;padding:2px 7px;border-radius:3px;font-size:.62rem;font-weight:600;white-space:nowrap">reference only</span>`;
         const pdfBtn=s.local?`<button class="btn btn-teal btn-sm" style="font-size:.68rem;padding:2px 7px;white-space:nowrap" onclick="openPDF('${s.local}','${s.name.replace(/'/g,"\\'")}')">PDF</button>`:'';
-        const urlBtn=(!isKorky&&s.url)?`<a href="${s.url}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="font-size:.68rem;padding:2px 7px;white-space:nowrap;text-decoration:none">Visit ↗</a>`:'';
+        const urlBtn=(grp!=="korky"&&s.url)?`<a href="${s.url}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="font-size:.68rem;padding:2px 7px;white-space:nowrap;text-decoration:none">Visit ↗</a>`:'';
         const linkCell=(pdfBtn||urlBtn)?`<div style="display:flex;gap:5px;justify-content:flex-end;flex-wrap:wrap">${pdfBtn}${urlBtn}</div>`:`<span style="color:var(--g400);font-size:.75rem">—</span>`;
-        return`<tr style="border-bottom:1px solid var(--g100);background:${i%2===0?"#fff":"#fafafa"};${enabled?"":"opacity:.5"}">
+        html+=`<tr style="border-bottom:1px solid var(--g100);background:${i%2===0?"#fff":"#fafafa"};${enabled?"":"opacity:.5"}">
           <td style="padding:8px;text-align:center;vertical-align:top;border-right:1px solid var(--g100)"><input type="checkbox" ${enabled?"checked":""} onchange="setSrcEnabled('${s.id}',this.checked)" style="width:15px;height:15px;cursor:pointer;accent-color:#0891b2"></td>
-          <td style="padding:8px 12px;line-height:1.45">
-            <div style="font-weight:500;color:var(--g800)">${s.name}${miningBadge}</div>
-            ${s.notes?`<div style="font-size:.73rem;color:var(--g500);margin-top:2px">${s.notes}</div>`:""}
-          </td>
+          <td style="padding:8px 12px;line-height:1.45"><div style="font-weight:500;color:var(--g800)">${s.name}</div>${s.notes?`<div style="font-size:.73rem;color:var(--g500);margin-top:2px">${s.notes}</div>`:""}</td>
+          <td style="padding:8px 12px;vertical-align:middle;text-align:center">${miningCell}</td>
           <td style="padding:8px 12px;vertical-align:top;text-align:right">${linkCell}</td>
         </tr>`;
-      }).join("")}</tbody></table>
-    </div>`;
+      });
+    });
+    html+=`</tbody></table></div>`;
   });
   wrap.innerHTML=html;
-  // Set indeterminate state on section header checkboxes for mixed selections
-  cats.forEach((cat,catIdx)=>{
-    const cb=document.getElementById(`chk-cat-${catIdx}`);if(!cb)return;
-    const srcs=grouped[cat];
+  cbMap.forEach(({cat,srcs},idx)=>{
+    const cb=document.getElementById(`chk-cat-${idx}`);if(!cb)return;
     const allOn=srcs.every(s=>state.sources[s.id]?.enabled!==false);
     const allOff=srcs.every(s=>state.sources[s.id]?.enabled===false);
-    cb.checked=allOn;
-    cb.indeterminate=!allOn&&!allOff;
+    cb.checked=allOn;cb.indeterminate=!allOn&&!allOff;
   });
 }
 ["src-search","src-priority","src-status"].forEach(id=>{const el=document.getElementById(id);if(el){el.addEventListener("input",renderSourcesTable);el.addEventListener("change",renderSourcesTable);}});
