@@ -589,6 +589,8 @@ CONTENT_SOURCE_MAP = {
     "aberdeen-neuro-death":          "aberdeen-neuro-death",
     "aberdeen-tcd":                  "aberdeen-tcd",
     "aberdeen-aeds":                 "aberdeen-aeds",
+    "aberdeen-tjones-revision":      "aberdeen-tjones-revision",
+    "aberdeen-tjones-exam":          "aberdeen-tjones-exam",
     # Future papers — add entry here when source is added to content.js SOURCES array
 }
 
