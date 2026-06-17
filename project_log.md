@@ -480,3 +480,73 @@ Two changes planned, implementation interrupted by /summ:
 2. **Greenberg paeds tumours section 35.2** — pilocytic astrocytoma, ependymoma, craniopharyngioma (PDF ~pp621-650 estimate; verify via TOC)
 3. **TJones Revision Notes** (79pp, `aberdeen-tjones-revision`) — highest yield per page for thin topics; mine next
 4. **Verify Sources page** renders correctly in browser — all new Korky textbooks should appear in Korky group with "not yet mined" badge
+
+---
+
+## 2026-06-17 (session 7b) — Greenberg paeds cont. + UI fixes
+
+### What we built / mined
+
+**Greenberg paeds pp264-295 — craniosynostosis + NTDs + tethered cord**
+- Section 15.2 (pp264-271): craniosynostosis and craniofacial development
+- Section 16 (pp272-295): NTDs, tethered cord syndrome, split cord malformation, Dandy-Walker
+- mine.py TOC extraction confirmed: craniosynostosis is NOT at pp1140s (that's spinal trauma); it's at book p.264 = PDF pp264-271
+- 10 new paeds SBAs added: sagittal CSO (most common, scaphocephaly), coronal CSO (harlequin eye, amblyopia), Apert vs Crouzon (syndactyly + HCP vs no), lambdoid vs positional plagiocephaly (ear direction key discriminator), tethered cord (93% gait/LE weakness; conus <L2 + filum >2mm), adult vs childhood tethered cord pain (86% perianal/perineal in adults), pre-op cystometrogram, Type I vs II SCM (bony dural-sheathed septum/separate tubes vs fibrous/single tube), Type I SCM surgical rule (don't cut filum until septum removed), Dandy-Walker triad + HCP 75-95%
+- Greenberg total: 96 cards recorded
+
+**mine.py fix: block size 80k→250k**
+- paeds section grew larger than the 80000 char limit; stats was undercounting SBAs (54 reported vs 59 actual). Fixed by increasing block limit to 250000 chars.
+
+**Mobile fix: panel swap (replaces scrollIntoView)**
+- New approach: clicking a topic adds `mob-content` class to `.learn-layout`, which hides `.learn-topic-list` via CSS. A "← All Topics" button injected at top of `#learn-content` removes the class on click.
+- Previous approach (scrollIntoView) was unreliable on mobile browsers.
+
+**Source counts in Sources tab**
+- All sources now show their SBA/card counts next to the source name (e.g. "12 SBAs · 3 cards")
+- Previously only claude-ai source showed counts
+- Count color: amber for claude-ai, grey for all others
+
+### Stats
+- Paeds SBAs: 59 (was 49 at start of session 7)
+- Total SBAs: 436 (mine.py now counts correctly with larger block)
+- Greenberg cards: 96
+
+### Open questions / next session
+1. Greenberg paeds section 35.2 (pilocytic astrocytoma, ependymoma, craniopharyngioma) — PDF pages ~621-650 estimate; verify via TOC
+2. TJones Revision Notes (79pp, `aberdeen-tjones-revision`) — highest yield per page
+3. Move to neuro-onco-cranial (62 recalls) after paeds mining complete
+
+---
+
+## 2026-06-17 (session 7c) — Greenberg paeds continued: PCA + ependymoma
+
+### What was mined
+
+**Greenberg Chapter 39 (pp691-708): Pilocytic astrocytoma**
+- 6 new paeds SBAs:
+  - WHO grade 1, >95% 10-yr survival; surgical principle: nodule only (cyst wall not neoplastic)
+  - Post-op XRT NOT recommended; follow serial MRI; re-operate if recurrence; chemo preferred over XRT in young patients
+  - NF1 association: PCA is the principal CNS tumour of NF1 (15-20% of NF1 patients)
+  - KIAA1549::BRAF fusion → MAPK pathway; most prevalent (75%) in cerebellar PCAs
+  - Biphasic histology: Rosenthal fibres (compacted) + eosinophilic granular bodies (loose myxoid)
+  - Cystic cerebellar presentation: cyst + enhancing mural nodule; 94% enhance
+
+**Greenberg Chapter 41 (pp726-732): Posterior fossa ependymoma**
+- 5 new paeds SBAs:
+  - Floor of 4th ventricle; facial colliculus invasion → peripheral CN VII + abducens (CN VI) palsy
+  - Post-op workup: LP at 2 weeks (10cc CSF); XRT 59.4Gy 3D conformal; spinal XRT only if drop mets/+CSF
+  - 5YS paeds 20-30% vs adult up to 80%; GTR most important prognosticator
+  - ZFTA::RELA fusion: 66-84% of paediatric supratentorial ependymomas; worse prognosis
+
+**mine.py fix**: block size 80k→250k (paeds section exceeded 80k limit)
+
+### Stats
+- Paeds SBAs: 68 (started session 7 at 49)
+- Total SBAs: 445
+- Greenberg cards recorded: 107
+
+### Open questions / next session
+1. Greenberg craniopharyngioma (Chapter 50.2, book p.849 → PDF ~851) — important paeds/sellar tumour
+2. Ependymoma chapter tail (pp733-744) not yet read — may have more spinal ependymoma content
+3. Move to neuro-onco-cranial (62 recalls, priority #2) after paeds complete
+4. TJones Revision Notes (79pp) for broad thin-topic coverage
