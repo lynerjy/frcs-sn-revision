@@ -730,6 +730,22 @@
           "cards": 10
         }
       ]
+    },
+    "aberdeen-tjones-revision": {
+      "pages_done": [
+        [
+          1,
+          20
+        ]
+      ],
+      "cards_added": 16,
+      "sessions": [
+        {
+          "date": "2026-06-17",
+          "pages": "1-20",
+          "cards": 16
+        }
+      ]
     }
   },
   "sessions": []
