@@ -811,8 +811,12 @@ function openLearnTopic(id){
   renderLearnTopicList();
   const t=TOPICS.find(x=>x.id===id);
   const ld=LEARN[id];
-  if(!ld){document.getElementById("learn-content").innerHTML=`<div class="learn-content-hd"><div class="learn-content-title">${t.name}</div></div><div class="empty" style="padding:40px">Content coming soon. Check back after the next update.</div>`;return;}
+  if(!ld){document.getElementById("learn-content").innerHTML=`<div class="learn-content-hd"><div class="learn-content-title">${t.name}</div></div><div class="empty" style="padding:40px">Content coming soon. Check back after the next update.</div>`;
+    if(window.innerWidth<=800)document.getElementById("learn-content").scrollIntoView({behavior:"smooth",block:"start"});
+    return;
+  }
   renderLearnContent(t,ld);
+  if(window.innerWidth<=800)document.getElementById("learn-content").scrollIntoView({behavior:"smooth",block:"start"});
 }
 function renderLearnContent(t,ld){
   const fc=filteredCards(ld).length;const fq=filteredQs(ld.q).length;

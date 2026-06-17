@@ -430,3 +430,53 @@ Two changes planned, implementation interrupted by /summ:
 - Continue Greenberg mining: craniosynostosis (~pp1130-1160), paeds tumours (medulloblastoma/ATRT ~pp750-795)
 - TJones Revision Notes (79pp) after paeds Greenberg
 - Non-Korky sources: verify all have `url` fields so Visit ↗ renders
+
+---
+
+## 2026-06-17 — Greenberg paeds mining + Sources page Korky fix + mobile scroll fix
+
+### What we built / mined
+
+**Greenberg paeds — medulloblastoma + ATRT (pp745–768)**
+- Located correct pages via TOC extraction (pages 15-40); "craniosynostosis ~pp1140s" in memory was wrong — that range is spinal trauma. Craniosynostosis is at book p.264 (~PDF 272-295); medulloblastoma at book p.744 (PDF 745-768).
+- Extracted pp745-780, then narrowed to 745-768 to avoid vestibular schwannoma chapter bleed.
+- Added 3 flashcards to `LEARN["paeds"].c[]`:
+  1. Medulloblastoma 4 molecular subtypes (WNT/SHH-TP53wt/SHH-TP53mut/non-WNT-non-SHH groups 3+4) — `ref:"Greenberg 10e, p747"`
+  2. Chang M staging system — `ref:"Greenberg 10e, p748–749, Table 43.1"`
+  3. MDB vs ependymoma imaging (roof of 4th vs floor) — `ref:"Greenberg 10e, p748"`
+- Added 8 medulloblastoma SBAs + 2 ATRT SBAs to `LEARN["paeds"].q[]` (10 total, all `src_id:"greenberg"`, `korky:true`, `recall:true`)
+- Ran `python3 mine.py done greenberg 745-768 8` then `done greenberg 755-768 2`. Total greenberg cards now 86.
+
+**Paeds SBA count: 49** (was 28 before this session; +21 from medulloblastoma/ATRT SBAs added across sessions 6+7 — 11 net new this session).
+
+**Sources page — Korky textbooks fix**
+- Root cause: Greenberg had `type:"purchase"` → appeared in Login/Subscription Required group, showed "reference only"
+- Fix: changed `type:"korky"`, added `korky:true`, updated `cards:76→86`, updated notes
+- Added 4 new Korky textbook entries (never existed before):
+  - `infographic-2025` — Infographic Guide to Neurosurgery 2025 (70pp)
+  - `alleyne-board-review` — Alleyne & Citow Board Review 3rd ed (434pp)
+  - `birinyi-board-prep` — Birinyi Comprehensive Board Preparation (450pp)
+  - `harbaugh-knowledge-update` — Harbaugh Neurosurgery Knowledge Update (985pp)
+- Added 3 new Aberdeen Korky entries: `aberdeen-tjones-revision` (79pp), `aberdeen-tjones-exam` (39pp), `emergency-head-injury` (14pp)
+- Renamed `category` of samandouras/elwell-kirollos/landmark-papers/young-neuro to "Textbooks — Recommended Purchases" so they stay clearly separate from Korky textbooks in the Locked group
+- `srcGroupKey()` in index.html already handles `type:"korky"` correctly — no HTML changes needed for this fix
+
+**Mobile scroll fix**
+- Bug: on ≤800px, `.learn-topic-list` is sticky and fills most viewport; `#learn-content` rendered below fold after topic click
+- Fix: added `if(window.innerWidth<=800) document.getElementById("learn-content").scrollIntoView({behavior:"smooth",block:"start"})` at end of `openLearnTopic()` (both branches)
+
+### Key decisions
+- Greenberg type changed to `type:"korky"` (not `"free"`) — it's a physical book Carolyn has access to in the Korky folder context
+- ATRT SBAs added from pp754-755 per source text; biallelic SMARCB1 inactivation, WHO grade 4, infant peak, 33% CSF dissemination at diagnosis
+
+### Stats
+- Total SBAs: 422 (+21 paeds vs session 6)
+- Total cards: 442
+- claude-ai SBAs remaining: 283 (no change)
+- Greenberg cards recorded: 86
+
+### Open questions / next session
+1. **Greenberg craniosynostosis** — pages 272-295 partially mined (only 2 cards from session 4); needs a dedicated extraction of the full chapter
+2. **Greenberg paeds tumours section 35.2** — pilocytic astrocytoma, ependymoma, craniopharyngioma (PDF ~pp621-650 estimate; verify via TOC)
+3. **TJones Revision Notes** (79pp, `aberdeen-tjones-revision`) — highest yield per page for thin topics; mine next
+4. **Verify Sources page** renders correctly in browser — all new Korky textbooks should appear in Korky group with "not yet mined" badge
