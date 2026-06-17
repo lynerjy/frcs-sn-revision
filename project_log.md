@@ -621,3 +621,36 @@ Two changes planned, implementation interrupted by /summ:
 1. **TJones Revision Notes** (79pp, `aberdeen-tjones-revision`) — highest yield per page for thin topics (carotid 2 SBAs, spinal-anatomy 3, neuroradiology 6)
 2. **Infographic Guide 2025** (70pp, `infographic-2025`) — visual recall-style content
 3. **Alleyne/Citow Board Review** (434pp, `alleyne-board-review`) — mine by chapter for weak topics
+
+---
+
+## Session 10 — 2026-06-17
+
+### What was done
+- Started mining **TJones Revision Notes** (`aberdeen-tjones-revision`, 79pp) — pages 1–20
+- Added TJones to `CONTENT_SOURCE_MAP` in mine.py (was unmapped)
+- Added **16 new SBAs** across 7 topics, all `recall:true`, `korky:true`, `src_id:"aberdeen-tjones-revision"`
+
+### SBAs added (with source page):
+| Topic | SBAs | Content |
+|-------|------|---------|
+| neuro-icu | 4 | Mannitol immediate mechanism (p1), HTS vs mannitol advantages (p1), brain abscess organisms by source (p20), brain abscess stages (p20) |
+| ethics | 3 | DVLA VP shunt (p3), non-aneurysmal vs aSAH driving (p3), grade I vs II meningioma driving (p3) |
+| spinal-anatomy | 3 | Conus vs CES features (p1), Klippel-Feil triad + associations (p13), syringomyelia theories—Williams vs hydrodynamic vs Heiss-Oldfield (p18) |
+| peripheral-nerve | 2 | Ulnar nerve entrapment sites ×4 (p12), Froment's sign mechanism (p12) |
+| pituitary | 2 | Acromegaly gold standard (OGTT, p15), Cushing's disease vs ectopic ACTH + IPSS (p19) |
+| cranial-anatomy | 1 | Aphasia classification (Broca's/Wernicke's/conductive/global, p13) |
+| epilepsy-surgery | 1 | Levetiracetam pharmacology (p2) |
+
+### Updated counts (post-session 10):
+- Total SBAs in LEARN: **488** (was 472)
+- TJones pages mined: 1–20 of 79
+- Remaining TJones: pp21–79
+
+### Decisions
+- All new SBAs have explicit `topic:` fields (mine.py stats may show slightly different counts due to section parsing — app uses explicit `topic:` for filtering, which is correct)
+
+### Next session priorities
+1. **TJones pp21–40** — continue mining revision notes (spine anatomy, neurophysiology, ethics topics expected)
+2. **TJones pp41–60** — vascular, functional, paediatrics sections
+3. **Infographic Guide 2025** (70pp) — after TJones complete
