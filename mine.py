@@ -717,7 +717,7 @@ def parse_content_js():
         tid = m.group(1)
         block_start = m.start()
         # Rough count of {q: (flashcards) and stem: (SBAs) within ~50k chars after
-        block = text[block_start:block_start + 80000]
+        block = text[block_start:block_start + 250000]
         # Find end of this topic block (next topic or end)
         next_topic = re.search(r'"[a-z][a-z-]+":\{src:', block[10:])
         if next_topic:
