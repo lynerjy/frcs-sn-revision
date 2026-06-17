@@ -584,3 +584,40 @@ Two changes planned, implementation interrupted by /summ:
 2. **Craniosynostosis** — still not mined; was at book ~p.264 (PDF ~pp266-272, just before the pages mined today). Recall bank shows multiple CSO questions.
 3. TJones Revision Notes (79pp) — highest yield per page for thin topics
 4. Infographic Guide 2025 (70pp) — next after TJones
+
+---
+
+## Session 9 — 2026-06-17
+
+### What was mined
+- **Greenberg pp266-272** (craniosynostosis + encephalocele + Dandy-Walker): 9 new paeds SBAs
+  - Arachnoid cyst drainage rule (ventricular drainage is ineffective — promotes cyst enlargement)
+  - Fontanelle closure timing (anterior 2.5yrs; posterior 2-3mo; 90% adult head size by 1yr)
+  - Secondary CSO causes (phenytoin, valproate, rickets, sickle cell, microcephaly etc.)
+  - ICP in single-suture CSO (~11%; beaten copper calvaria only correlated if + sellar erosion + sutural diastasis)
+  - Metopic synostosis (trigonocephaly, hypotelorism, 1/15,000 births, 75% male, 19p chromosome)
+  - Lambdoid surgical technique (ideal 6-18mo; prone on cerebellar headrest; craniectomy to asterion; 100-200ml blood loss)
+  - Oxycephaly (all suture fusion → tower skull + undeveloped sinuses; elevated ICP)
+  - Encephalocele / nasal polyp rule (nasal polyp in newborn = encephalocele until proven otherwise; basal = no visible mass, presents as CSF leak; transnasally alone is dangerous)
+  - Encephalocele prognosis (<5% develop normally; worse if cerebral tissue/ventricular extension/HCP)
+  
+- **Greenberg pp841-848** (craniopharyngioma Ch50.2): 6 new paeds SBAs
+  - CP epidemiology (0.8% brain tumours; most common non-neuroepithelial intracerebral in children; 5-11% paeds brain tumours)
+  - Surgical approaches (transcallosal = ONLY for 3rd ventricle tumours; spare chiasm feeders + pituitary stalk remnant = longitudinal striations = portal veins)
+  - Post-op DI (triphasic response; short-acting vasopressin only — DDAVP risks iatrogenic renal shutdown in SIADH phase)
+  - Post-op steroids (hydrocortisone + dexamethasone; taper slowly — chemical meningitis risk)
+  - Radiation (postpone in paeds to protect IQ; side effects: endocrine, optic neuritis, dementia)
+  - Outcome (5-10% mortality from hypothalamic injury; bilateral = hyperthermia + somnolence + loss of thirst; 5yr survival 55-85%; recurrence mostly <1yr; reoperation higher morbidity)
+
+### Card counts (post-session)
+- paeds: 18 flashcards, **95 SBAs** (was 80 at session start)
+- TOTAL: 444 flashcards, **472 SBAs**
+- Greenberg total mined: 136 cards across scattered chapters
+
+### Git
+- Pushed: commit 7d3386e "Greenberg paeds: 15 new SBAs from craniosynostosis (pp266-272) and craniopharyngioma (pp841-848)"
+
+### Next session priorities
+1. **TJones Revision Notes** (79pp, `aberdeen-tjones-revision`) — highest yield per page for thin topics (carotid 2 SBAs, spinal-anatomy 3, neuroradiology 6)
+2. **Infographic Guide 2025** (70pp, `infographic-2025`) — visual recall-style content
+3. **Alleyne/Citow Board Review** (434pp, `alleyne-board-review`) — mine by chapter for weak topics
