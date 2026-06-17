@@ -550,3 +550,37 @@ Two changes planned, implementation interrupted by /summ:
 2. Ependymoma chapter tail (pp733-744) not yet read — may have more spinal ependymoma content
 3. Move to neuro-onco-cranial (62 recalls, priority #2) after paeds complete
 4. TJones Revision Notes (79pp) for broad thin-topic coverage
+
+---
+
+## 2026-06-17 (session 8) — Greenberg pp272-295 (developmental anomalies) + source count fix
+
+### What was fixed
+- **Greenberg source card count on Sources page**: hardcoded `cards:76` → `cards:101` (then updated again to `cards:115` after this session's mining). The `cards` field in SOURCES is manually maintained and had drifted from the actual content.js count.
+
+### What was mined
+**Greenberg pp272-295 (book pp270-293): Developmental anomalies**
+- 12 new paeds SBAs + 2 flashcards added (14 total)
+- Topics covered:
+  - **Dandy Walker malformation** (3 SBAs + 1 flashcard): classic triad, HCP rate 75-95%, ETV requires patent aqueduct, prognosis (50% normal IQ, seizures 15%)
+  - **Myelomeningocele** (4 SBAs): recurrence risk 2-3% after 1 affected child / folic acid prevention; HCP in 65-85% (>80% before age 6m); closure within 24hrs (colonised after 36hrs); surgical goals (free placode/watertight dura/skin — does NOT restore function); outcomes (85% survive, early death = Chiari II complications)
+  - **Tethered cord** (1 SBA): filum >2mm = pathological, conus below L2
+  - **Hypothalamic hamartoma** (2 SBAs): gelastic seizures in up to 92%; sessile → seizures + developmental delay; pedunculated → precocious puberty
+  - **Klippel-Feil** (1 flashcard): low hairline + brevicollis + limited rotation; Sprengel's 25-35%; deafness 30%; mandatory cardiac/renal workup
+  - **Diastematomyelia Type I** (1 SBA): never divide filum before removing bony septum or cord retracts against it
+
+### Stats after this session
+- Paeds SBAs: 80 (was 68 at start of session)
+- Total: 444 cards / 457 SBAs
+- Greenberg total entries: 115 (82 SBAs + 19 flashcards + 14 new)
+- Greenberg source `cards` field: 115
+
+### Key decisions
+- Confirmed the memory file SBA count of "49 paeds SBAs" and "cards:86 Greenberg" were stale — actual counts verified from grep on content.js
+- Inserted new cards into paeds section immediately after last ependymoma SBA (line ~890)
+
+### Open questions / next session
+1. **Greenberg paeds tumours** — pilocytic astrocytoma/ependymoma/craniopharyngioma details NOT in pp272-295 (those pages are developmental anomalies). Craniopharyngioma at Greenberg Ch50.2 ~p.849; pilocytic/ependymoma already mined in session 7c
+2. **Craniosynostosis** — still not mined; was at book ~p.264 (PDF ~pp266-272, just before the pages mined today). Recall bank shows multiple CSO questions.
+3. TJones Revision Notes (79pp) — highest yield per page for thin topics
+4. Infographic Guide 2025 (70pp) — next after TJones
