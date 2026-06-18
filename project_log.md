@@ -654,3 +654,58 @@ Two changes planned, implementation interrupted by /summ:
 1. **TJones pp21–40** — continue mining revision notes (spine anatomy, neurophysiology, ethics topics expected)
 2. **TJones pp41–60** — vascular, functional, paediatrics sections
 3. **Infographic Guide 2025** (70pp) — after TJones complete
+
+## Session 11 — 2026-06-17
+
+### What was done
+- Continued mining **TJones Revision Notes** (`aberdeen-tjones-revision`) — pages 21–40
+- Added **16 new SBAs** across 9 topics, all `recall:true`, `korky:true`, `src_id:"aberdeen-tjones-revision"`
+
+### SBAs added (with source page):
+| Topic | SBAs | Content |
+|-------|------|---------|
+| neuro-icu | 1 | Brainstem death pre-conditions — all physiological criteria (p21) |
+| neuro-onco-cranial | 4 | NF2 diagnostic criteria + chromosome (p22), Cowden/Lhermitte-Duclos (PTEN, p31), Turcot syndrome CNS tumours (p31), CNS lymphoma treatment + survival (p37) |
+| neuropathology | 1 | Chordoma physaliphorous cells + proton beam (p25) |
+| paeds | 2 | Tuberous sclerosis TSC1/TSC2 genetics (p26-27), Medulloblastoma poor prognostic factors (p36) |
+| vascular-aneurysm | 1 | SAH rebleeding rates — 4% day 1, 1.5%/day ×13, 50% at 6 months, 3%/year (p29) |
+| neuro-onco-cranial | 1 | Paraganglioma preop management — alpha-before-beta + contralateral IJV angiogram (p29) |
+| functional | 2 | DBS pain targets (VPM/VPL vs PVG/PAG, p34), Hemifacial spasm MVD outcomes 85–93% (p39) |
+| peripheral-nerve | 1 | Common peroneal vs L5 footdrop — tibialis posterior sparing (p35) |
+| pituitary | 1 | Craniopharyngioma good prognostic factors (p36) |
+| cranial-anatomy | 1 | Cavernous sinus contents — III, IV, VI, ICA, V1, V2 (V3 excluded) (p37) |
+| spinal-trauma | 1 | Central cord syndrome — mechanism (hyperextension + osteophytes), surgery delayed (p40) |
+
+### Updated counts (post-session 11):
+- Total SBAs in LEARN: **504** (was 488)
+- TJones pages mined: 1–40 of 79
+- Remaining TJones: pp41–79
+
+### Notes
+- TJones p38 1p19q data appears inverted vs standard literature (Cairncross) — skipped that SBA; would need corroboration from another source before writing
+- TJones p37 lists CNV3 as exiting via SOF (clearly wrong — exits via foramen ovale); omitted V3 from cavernous sinus SBA
+
+### Next session priorities
+1. **TJones pp41–60** — continue revision notes
+2. **TJones pp61–79** — finish
+3. **Infographic Guide 2025** (70pp)
+
+## Session 12 — 2026-06-17
+
+### What was done
+- Completed **TJones Revision Notes** (`aberdeen-tjones-revision`) — pages 41–60 (session 11 extension) and pages 61–79 (final chunk)
+- Added **30 new SBAs** across two batches:
+  - pp41–60 (16 SBAs): phenytoin toxicity, CBZ SIADH mechanism, gabapentin pharmacology, DNET, Down syndrome AAI, neurogenic stunned myocardium, CSW vs SIADH, DI criteria, aneurysm locations, Hangman's Effendi, central neurocytoma, Engel class, BOLD MRI, LA onset/duration, Moyamoya secondary causes, Nurick grade
+  - pp61–79 (14 SBAs): neuroanaesthesia CBF effects, AED choice by seizure type, hemiballismus, optic chiasm blood supply, Chance fracture, thalamic nuclei (MGB/mediodorsal/Wernicke-Korsakoff), ACDF consent rates (RLN + dysphagia), far lateral disc L4 root, MVD TGN outcomes, VS pathology/natural history, VS SRS outcomes, ETCO2 changes, tuberculum sellae vs olfactory groove
+
+### Updated counts (post-session 12):
+- Total SBAs in LEARN: **533** (was 488 at start of today)
+- TJones fully mined: all 79 pages complete — 62 total TJones SBAs added
+- claude-ai SBAs: 283 (unchanged)
+
+### Today total: 46 new SBAs (pp21–79 across 3 batches)
+
+### Next content priorities
+1. **Infographic Guide 2025** (`infographic-2025`, 70pp) — visual recall-style content
+2. **Alleyne/Citow Board Review** (`alleyne-board-review`, 434pp) — by weakest topics (carotid 2 SBAs, neuroradiology 6)
+3. **NG217 Epilepsy** (150pp NICE guideline) — 0 cards from PDF currently
