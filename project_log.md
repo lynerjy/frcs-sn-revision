@@ -709,3 +709,27 @@ Two changes planned, implementation interrupted by /summ:
 1. **Infographic Guide 2025** (`infographic-2025`, 70pp) — visual recall-style content
 2. **Alleyne/Citow Board Review** (`alleyne-board-review`, 434pp) — by weakest topics (carotid 2 SBAs, neuroradiology 6)
 3. **NG217 Epilepsy** (150pp NICE guideline) — 0 cards from PDF currently
+
+---
+
+## Session 13 — 2026-06-17 (continued — bug fix session)
+
+### What was done
+- **Fixed Progress tab crash** (bug introduced when Dandy Walker and Klippel-Feil flashcard entries were accidentally placed in `paeds.q[]` instead of `paeds.c[]`)
+- Root cause: `renderProgressSummary()` iterates all 22 topics and calls `topicSbaStats()` → `sbaId(topicId, q.stem)` — crashes if `q.stem` is `undefined`, which happens for flashcard-format entries `{q:, a:}` placed in the SBA array
+- Diagnosis: added try/catch to `renderProgressSummary()` which surfaced the exact error: "Cannot read properties of undefined (reading 'substring')"
+- Fix: moved 2 entries from `LEARN["paeds"].q[]` to `LEARN["paeds"].c[]`: Dandy Walker malformation (Greenberg p.270–271) and Klippel-Feil syndrome (Greenberg p.289)
+- Also removed redundant `topic:"paeds"` field from both entries (was present because they were in SBA format; not needed in c[] array — actually kept for consistency but irrelevant)
+- Scanned all 22 topics for similar misplaced entries: all clean
+
+### No SBA count change
+- Moving entries from q[] to c[] doesn't change SBA count but does increase flashcard count for paeds by 2
+- Total SBAs: 533 (unchanged)
+
+### Commits
+- `2724ef1` — Add try/catch to renderProgressSummary to surface runtime errors (diagnostic)  
+- `31c61af` — Fix Progress tab crash: move 2 flashcard entries from paeds q[] to c[]
+
+### Next
+- Progress tab should now render fully
+- Consider mining Infographic Guide 2025 or Alleyne/Citow next session
