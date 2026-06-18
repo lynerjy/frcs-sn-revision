@@ -684,7 +684,8 @@ function renderSourcesTable(){
 ["src-search","src-priority","src-status"].forEach(id=>{const el=document.getElementById(id);if(el){el.addEventListener("input",renderSourcesTable);el.addEventListener("change",renderSourcesTable);}});
 // ── PROGRESS SUMMARY ─────────────────────────────────────────────────────
 function renderProgressSummary(){
-  const el=document.getElementById("progress-summary");if(!el)return;
+  const el=document.getElementById("progress-summary");if(!el){console.error("progress-summary element not found");return;}
+  try{
   let totalC=0,masteredC=0,learningC=0,unseenC=0,totalSba=0,correctSba=0,totalMs=0;
   const rows=[];
   TOPICS.forEach(t=>{
@@ -748,6 +749,7 @@ function renderProgressSummary(){
     </div>
     <div id="flagged-section">${renderFlagged()}</div>
   </div>`;
+  }catch(e){el.innerHTML=`<div style="padding:20px;color:#dc2626;font-size:.85rem;background:#fee2e2;border-radius:6px;margin:16px"><strong>Progress tab error:</strong> ${e.message}<br><small style="font-size:.75rem;color:#6b7280">Open browser console (F12) for full details.</small></div>`;console.error("renderProgressSummary error:",e);}
 }
 function resetProgress(){
   if(!confirm("Reset all flashcard and SBA progress? This clears all mastery and accuracy data."))return;
