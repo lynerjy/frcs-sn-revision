@@ -733,3 +733,44 @@ Two changes planned, implementation interrupted by /summ:
 ### Next
 - Progress tab should now render fully
 - Consider mining Infographic Guide 2025 or Alleyne/Citow next session
+
+---
+
+## Session 14 — 2026-06-19
+
+### What was built / changed
+
+**UI fixes (index.html):**
+1. **Flagged questions "Show answer" toggle** — Progress tab flagged list now shows a `<details>` element under each flagged question. For SBAs: correct option highlighted green + explanation. For flashcards: answer text. Two bugs fixed during implementation: (a) `LEARN.find is not a function` → LEARN is an object not array; (b) `Object.values(LEARN).flat()` didn't reach cards since each value is `{src,c:[]}` — fixed to `flatMap(t=>t.c||[])`.
+
+2. **Topic sidebar SBA count — now live** — Changed `X/Y` count in topic list sidebar from flashcard mastery (`0/96` for neuro-onco-cranial) to SBA progress: distinct SBAs answered at least once / total SBAs available. Also fixed: `renderLearnTopicList()` now called after every SBA answer so count updates in real time.
+
+**Content (content.js):**
+- **8 new SBAs from Greenberg 10e pp.56–89** added to `cranial-anatomy` (0 Greenberg SBAs previously):
+  1. Pterion — 4 bones, surface landmark
+  2. Hand knob — inverted Ω on axial MRI, localises motor cortex hand area
+  3. Brodmann areas — key areas 4, 6, 44, 17, 40/39
+  4. AC-PC line — Talairach definition, functional neurosurgery baseline
+  5. PICA segments — 5 segments; first 3 must be preserved
+  6. Persistent primitive trigeminal artery — most common fetal anastomosis; Wada/transsphenoidal risk (hard)
+  7. Artery of Adamkiewicz — left 80%, T9–L2 85%
+  8. Cavernous sinus — CN VI not in lateral wall; Triangle of Parkinson; V2 exits foramen rotundum (hard)
+
+**Memory:**
+- `frcs_greenberg_toc.md` saved to ~/.claude memory — Greenberg chapter→page map by FRCS topic. Load this at session start instead of re-scanning TOC.
+
+### Updated counts (post-session 14)
+- Total SBAs: **541** (was 533); Total cards: **444**
+- cranial-anatomy: 28 SBAs / 12 cards (8 Greenberg SBAs newly added)
+- Greenberg coverage now: neuro-onco-cranial, degenerative-spine, paeds, cranial-anatomy (new)
+
+### Greenberg mining priority (established this session)
+Ordered by recall bank frequency, filtered to topics with 0 Greenberg coverage:
+cranial-anatomy (42R, done pp.56–89) → ethics (36R) → functional (30R) → vascular-aneurysm (26R) → hydrocephalus (24R) → neuro-icu (22R) → head-injury (19R)
+
+### Next content priorities
+1. Greenberg — cranial-anatomy pp.63–73 (cranial foramina, CPA — not yet mined from this range)
+2. Greenberg — ethics (need index lookup for chapter pages)
+3. Greenberg — functional pp.1838–1897
+4. Infographic Guide 2025 (70pp)
+5. Alleyne/Citow — carotid (2 SBAs), neuroradiology (6)

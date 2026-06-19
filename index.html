@@ -788,13 +788,14 @@ function renderLearnTopicList(){
   const fc=ld?filteredCards(ld).length:0;const fq=ld?filteredQs(ld.q).length:0;
   const empty=ld&&fc===0&&fq===0;
   const st=topicCardStats(t.id);
+  const doneSBAs=fq?(filteredQs(ld.q)||[]).filter(q=>{const s=state.sbaResults[sbaId(t.id,q.stem)];return s&&s.seen>0;}).length:0;
   const masteryBar=st.total?`<div class="topic-mastery-bar">${Array(st.mastered).fill('<div class="tmb-seg tmb-mastered"></div>').join("")}${Array(st.learning).fill('<div class="tmb-seg tmb-learning"></div>').join("")}${Array(st.unseen).fill('<div class="tmb-seg tmb-unseen"></div>').join("")}</div>`:"";
   return`<div class="learn-topic-item${currentLearnTopic===t.id?" active":""}${empty?" disabled":""}" onclick="openLearnTopic('${t.id}')" style="flex-direction:column;align-items:stretch;gap:3px">
   <div style="display:flex;align-items:center;gap:8px">
   <div class="learn-topic-dot" style="background:${TCOL[t.id]||"#aaa"}"></div>
   <span style="flex:1">${t.name}</span>
   ${RECALL_COUNTS[t.id]?`<span style="font-size:.6rem;color:#d97706;font-weight:600">${RECALL_COUNTS[t.id]}R</span>`:''}
-  ${st.total?`<span style="font-size:.62rem;color:var(--g400)">${st.mastered}/${st.total}</span>`:'<span style="font-size:.62rem;color:var(--g400)">(soon)</span>'}
+  ${fq?`<span style="font-size:.62rem;color:var(--g400)">${doneSBAs}/${fq}</span>`:'<span style="font-size:.62rem;color:var(--g400)">(soon)</span>'}
   </div>${masteryBar}
   </div>`;}).join("");
 }
@@ -998,7 +999,7 @@ function answerTQ(i){
   const scoreEl=document.querySelector(".quiz-q-num");
   const combo2=gameState.combo>=2?`<span class="combo-badge">×${gameState.combo} COMBO</span>`:'';
   if(scoreEl)scoreEl.innerHTML=`Q${tqState.idx+1}/${tqState.qs.length} &nbsp; <span class="score-pill score-correct">${tqState.correct} ✓</span> <span class="score-pill score-wrong">${w2} ✗</span> ${combo2}`;
-  if(currentLearnTopic&&q.stem)recordSba(sbaId(currentLearnTopic,q.stem),correct,ms);
+  if(currentLearnTopic&&q.stem){recordSba(sbaId(currentLearnTopic,q.stem),correct,ms);renderLearnTopicList();}
 }
 function nextTQ(){tqState.idx++;tqState.answered=false;renderTQ();}
 function sbaSourceHtml(q){
@@ -1144,13 +1145,29 @@ function exportFlags(){
 function renderFlagged(){
   const ids=Object.keys(state.flags);
   if(!ids.length)return`<div style="color:var(--g400);font-size:.85rem;padding:16px 0">No flagged questions yet. Hit <strong>🏳 Flag</strong> on any question or card to review it later.</div>`;
+  const esc=s=>String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   const rows=ids.sort((a,b)=>state.flags[b].ts-state.flags[a].ts).map(id=>{
     const f=state.flags[id];
     const date=new Date(f.ts).toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+    const match=Object.values(LEARN).flatMap(t=>t.c||[]).find(item=>item.stem===f.stem||item.q===f.stem);
+    let detailsHtml="";
+    if(match&&match.opts){
+      const letters=["A","B","C","D","E"];
+      const optsHtml=match.opts.map((o,i)=>`<div style="padding:2px 0${i===match.ans?";font-weight:700;color:#16a34a":""}">${letters[i]}. ${esc(o)}</div>`).join("");
+      detailsHtml=`<details style="margin-top:8px"><summary style="cursor:pointer;font-size:.78rem;color:var(--g500);user-select:none">Show answer ▸</summary>
+        <div style="margin-top:6px;padding:8px 10px;background:var(--g50);border-radius:4px;font-size:.8rem;line-height:1.5">
+          <div style="margin-bottom:6px">${optsHtml}</div>
+          ${match.exp?`<div style="border-top:1px solid var(--g200);padding-top:6px;color:var(--g700)"><strong>Explanation:</strong> ${esc(match.exp)}</div>`:""}
+        </div></details>`;
+    }else if(match&&match.a){
+      detailsHtml=`<details style="margin-top:8px"><summary style="cursor:pointer;font-size:.78rem;color:var(--g500);user-select:none">Show answer ▸</summary>
+        <div style="margin-top:6px;padding:8px 10px;background:var(--g50);border-radius:4px;font-size:.8rem;line-height:1.5;color:var(--g700)">${esc(match.a)}</div></details>`;
+    }
     return`<div class="flagged-item">
-      <div class="flagged-item-q">🚩 ${f.stem||"(question text not saved)"}</div>
-      ${f.note?`<div class="flagged-item-note">${f.note.replace(/</g,"&lt;")}</div>`:""}
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <div class="flagged-item-q">🚩 ${esc(f.stem)||"(question text not saved)"}</div>
+      ${f.note?`<div class="flagged-item-note">${esc(f.note)}</div>`:""}
+      ${detailsHtml}
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:8px">
         <span class="flagged-item-meta">Flagged ${date}</span>
         <button class="btn btn-sm btn-secondary" onclick="removeFlagById('${id}');document.getElementById('flagged-section').innerHTML=renderFlagged()">Remove</button>
       </div>
