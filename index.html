@@ -1220,11 +1220,23 @@ function renderDailyHoops(){
   const more=document.getElementById("daily-more");
   if(!el)return;
   const count=getDailyCount();
-  let html='';
-  for(let i=0;i<getDailyGoal();i++)html+=`<div class="hoop${i<count?" scored":""}">${hoopSVG(i<count)}</div>`;
-  el.innerHTML=html;
-  if(msg){if(count>=getDailyGoal()){msg.classList.add("show");}else{msg.classList.remove("show");}}
-  if(more){const rem=getDailyGoal()-count;more.textContent=count<getDailyGoal()?`${rem} more to goal`:(count>getDailyGoal()?`+${count-getDailyGoal()} bonus`:"");}
+  const goal=getDailyGoal();
+  // cycle-based: show where you are within the current set of N
+  const raw=count%goal;
+  const cycleCount=(count>0&&raw===0)?goal:raw;
+  const existing=el.querySelectorAll('.hoop');
+  if(existing.length!==goal){
+    let html='';
+    for(let i=0;i<goal;i++)html+=`<div class="hoop${i<cycleCount?" scored":""}">${hoopSVG(i<cycleCount)}</div>`;
+    el.innerHTML=html;
+  }else{
+    existing.forEach((h,i)=>{
+      const want=i<cycleCount;const has=h.classList.contains('scored');
+      if(want!==has){h.innerHTML=hoopSVG(want);want?h.classList.add('scored'):h.classList.remove('scored');}
+    });
+  }
+  if(msg){if(cycleCount>=goal){msg.classList.add("show");}else{msg.classList.remove("show");}}
+  if(more){more.textContent=cycleCount<goal?`${goal-cycleCount} more to goal`:'';}
 }
 function getLevelIndex(xp){let lv=0;for(let i=LEVELS.length-1;i>=0;i--){if(xp>=LEVELS[i].xp){lv=i;break;}}return lv;}
 function addXP(pts,isHard){
@@ -1245,9 +1257,10 @@ function gameOnAnswer(correct,isHard){
     addXP(Math.round(base*bonus),false);
     const k=todayKey(),prev=getDailyCount();
     gameState.dailyCounts[k]=(prev+1);
-    if(prev+1===getDailyGoal()&&animEnabled())showGoalSmash();
-    // renderDailyHoops deferred to when ball lands so hoop scores on impact
-    triggerBrainDunk(renderDailyHoops);
+    if((prev+1)%getDailyGoal()===0&&animEnabled())showGoalSmash();
+    // every Nth question: brain travels to hoop, fills on landing; otherwise simple ball throw
+    if((prev+1)%getDailyGoal()===0){triggerBrainTravelDunk(Math.min(prev,getDailyGoal()-1),renderDailyHoops);}
+    else{triggerBrainDunk(renderDailyHoops);}
   }else{
     gameState.combo=0;
     triggerBrainMiss();
@@ -1280,6 +1293,18 @@ const PXBRAIN=(function(){
   const BODY=[[0,0,1,1,1,1,1,1,0,0],[0,1,1,1,1,1,1,1,1,0],[0,1,2,1,1,2,1,1,1,0],[1,1,1,1,1,1,1,1,1,1],[1,1,2,1,1,1,1,2,1,1],[1,1,1,1,1,1,1,1,1,1],[0,1,1,1,1,1,1,1,1,0],[0,0,1,1,1,1,1,1,0,0]];
   const LEGS=[[0,0,1,1,0,0,0,1,1,0],[0,0,1,1,0,0,0,1,1,0]];
   let cv,cx,raf,st='idle',it=0,dt=0,mt=0,isSom=false,onLand=null;
+  let atHoop=false,tvT=0,tvDur=25,tvSX=0,tvSY=0,tvEX=0,tvEY=0,tvOnArr=null,slowTick=0;
+  function bez(p,s,c,e){return (1-p)*(1-p)*s+2*(1-p)*p*c+p*p*e;}
+  function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
+  function startBack(){
+    if(!cv)return;
+    const r=cv.getBoundingClientRect();
+    tvSX=r.left;tvSY=r.top;
+    const xf=document.getElementById('xp-fill');
+    if(xf){const xr=xf.getBoundingClientRect();tvEX=Math.min(window.innerWidth-cv.width,Math.max(0,xr.right-cv.width/2));tvEY=xr.top-(BY+BODY.length+LEGS.length)*SC;}
+    else{tvEX=tvSX;tvEY=tvSY;}
+    tvT=0;tvDur=22;st='back';
+  }
   function px(n){return n*SC;}
   function dbr(by2){
     for(let r=0;r<BODY.length;r++)for(let c=0;c<BODY[r].length;c++){const v=BODY[r][c];if(v){cx.fillStyle=v===1?CB:CF;cx.fillRect(px(BX+c),px(by2+r),SC,SC);}}
@@ -1289,12 +1314,14 @@ const PXBRAIN=(function(){
   function dbl(by2){if(by2<0||by2>14)return;cx.fillStyle=CK;cx.fillRect(px(10),px(by2),SC*2,SC*2);}
   function launchFlyingBall(){
     if(!cv)return;
+    if(atHoop){const cb=onLand;onLand=null;setTimeout(()=>{if(cb)cb();},180);return;}
     const br=cv.getBoundingClientRect(),bw=10;
     // Ball is at canvas coords px(10)=30 (right side), px(BY-3+3)=px(3)=9 (apex height)
     const sx=br.left+30-bw/2,sy=br.top+9-bw/2;
     const hoops=document.querySelectorAll('.hoop');
-    const nScored=document.querySelectorAll('.hoop.scored').length;
-    const tgt=hoops[Math.min(nScored,hoops.length-1)];
+    const _c=getDailyCount(),_g=getDailyGoal(),_r=_c%_g;
+    const _idx=(_c>0&&_r===0)?0:Math.max(_r-1,0);
+    const tgt=hoops[Math.min(_idx,hoops.length-1)];
     if(!tgt)return;
     const tr=tgt.getBoundingClientRect();
     const ex=tr.left+tr.width/2-bw/2,ey=tr.top+4;
@@ -1315,9 +1342,31 @@ const PXBRAIN=(function(){
   function frame(){
     repos();
     cx.clearRect(0,0,cv.width,cv.height);
-    cv.style.transform='';
-    if(st==='idle'){it++;const dy=Math.sin(it/22)>.7?-1:0;dbr(BY+dy);dbl(BY+dy+3);}
-    else if(st==='dunk'){dt++;const t=dt;
+    if(st==='idle'){cv.style.transform='';it++;const dy=Math.sin(it/22)>.7?-1:0;dbr(BY+dy);dbl(BY+dy+3);}
+    else if(st==='go'){
+      tvT++;
+      const p=ease(Math.min(tvT/tvDur,1));
+      const cpX=(tvSX+tvEX)/2,cpY=Math.min(tvSY,tvEY)-48;
+      cv.style.left=bez(p,tvSX,cpX,tvEX)+'px';
+      cv.style.top=bez(p,tvSY,cpY,tvEY)+'px';
+      cv.style.transform='rotate('+(p*Math.PI*2)+'rad)'; // 1 full spin on the way
+      dbr(BY);
+      if(tvT>=tvDur){
+        cv.style.transform='';
+        const fillCb=tvOnArr;tvOnArr=null;
+        onLand=fillCb;atHoop=true;slowTick=0;st='dunk';dt=0;
+      }
+    }
+    else if(st==='back'){
+      cv.style.transform='';tvT++;
+      const p=ease(Math.min(tvT/tvDur,1));
+      const cpX=(tvSX+tvEX)/2,cpY=Math.min(tvSY,tvEY)-36;
+      cv.style.left=bez(p,tvSX,cpX,tvEX)+'px';
+      cv.style.top=bez(p,tvSY,cpY,tvEY)+'px';
+      dbr(BY);dbl(BY+3);
+      if(tvT>=tvDur){st='idle';it=0;repos();}
+    }
+    else if(st==='dunk'){if(atHoop){slowTick++;if(slowTick%6===0)dt++;}else{dt++;}const t=dt;
       if(isSom){
         // Somersault: full 360° spin during jump, launch ball at apex
         if(t<=9){const dy=-Math.round(t*3/12);dbr(BY+dy);dbl(BY+dy+3);cv.style.transform='rotate('+(t/12*Math.PI*2)+'rad)';}
@@ -1326,14 +1375,14 @@ const PXBRAIN=(function(){
         else if(t<=22){dbr(BY-3);}
         else if(t<=28){const dy=-3+Math.round((t-22)/2);dbr(BY+Math.min(0,dy));}
         else if(t<=32){dbr(BY);}
-        else{st='idle';dt=0;isSom=false;}
+        else{isSom=false;dt=0;if(atHoop){atHoop=false;startBack();}else{st='idle';}}
       }else{
         if(t<=6){const dy=-Math.round(t*3/8);dbr(BY+dy);dbl(BY+dy+3);}
         else if(t===7){launchFlyingBall();dbr(BY-3);}
         else if(t<=18){dbr(BY-3);}
         else if(t<=24){const dy=-3+Math.round((t-18)/2);dbr(BY+Math.min(0,dy));}
         else if(t<=28){dbr(BY);}
-        else{st='idle';dt=0;}
+        else{dt=0;if(atHoop){atHoop=false;startBack();}else{st='idle';}}
       }
     }
     else if(st==='miss'){mt++;const t=mt;
@@ -1345,6 +1394,7 @@ const PXBRAIN=(function(){
   }
   function repos(){
     if(!cv)return;
+    if(st==='go'||st==='back'||atHoop)return;
     const fill=document.getElementById('xp-fill');
     if(!fill)return;
     const r=fill.getBoundingClientRect();
@@ -1363,9 +1413,18 @@ const PXBRAIN=(function(){
       repos();
       raf=requestAnimationFrame(frame);
     },
-    dunk(som,cb){if(cv&&st!=='dunk'){st='dunk';dt=0;isSom=!!som;onLand=cb||null;}},
+    dunk(som,cb){if(cv&&st!=='dunk'&&st!=='go'&&st!=='back'){st='dunk';dt=0;isSom=!!som;onLand=cb||null;}else if(cb)cb();},
     miss(){if(cv&&st!=='miss'){st='miss';mt=0;}},
     reposition(){repos();},
+    goToHoop(tx,ty,onFill){
+      if(!cv)return;
+      if(st==='go'||st==='back'||atHoop){if(onFill)onFill();return;}
+      const r=cv.getBoundingClientRect();
+      tvSX=r.left;tvSY=r.top;
+      tvEX=tx-cv.width/2;tvEY=ty-39;
+      tvT=0;tvDur=300;tvOnArr=onFill;
+      st='go';dt=0;
+    },
     stop(){if(raf){cancelAnimationFrame(raf);raf=null;}if(cx&&cv){cx.clearRect(0,0,cv.width,cv.height);cv.style.transform='';dbr(BY);dbl(BY+3);}},
     start(){if(!raf&&cv){raf=requestAnimationFrame(frame);}},
   };
@@ -1434,6 +1493,14 @@ function toggleAnim(){
 }
 function triggerBrainDunk(cb){if(animEnabled())PXBRAIN.dunk(getDailyCount()%5===0,cb||null);else if(cb)cb();}
 function triggerBrainMiss(){if(animEnabled())PXBRAIN.miss();}
+function triggerBrainTravelDunk(hoopIdx,cb){
+  if(!animEnabled()){if(cb)cb();return;}
+  const hoops=document.querySelectorAll('.hoop');
+  const tgt=hoops[hoopIdx];
+  if(!tgt){triggerBrainDunk(cb);return;}
+  const r=tgt.getBoundingClientRect();
+  PXBRAIN.goToHoop(r.left+r.width/2,r.top+8,cb);
+}
 function floatXP(amount){
   const el=document.createElement("div");
   el.className="xp-float";

@@ -897,3 +897,53 @@ All changes are UI/animation only.
 2. **§112 HFS + §113 pain procedures** (PDF pp.~1862-1897)
 3. **Infographic Guide 2025** (70pp)
 4. **Alleyne/Citow** — carotid (2), neuroradiology (6), neuropathology (7)
+
+---
+
+## Session 17 — 2026-06-21 (brain travel-dunk animation, same day)
+
+### Changes made (all UI/animation, no card/SBA changes)
+
+**1. Brain travels to hoop on every 5th question**
+- New `PXBRAIN.goToHoop(tx, ty, onFill)` method: brain arcs parabolically from XP bar to the target hoop, dunks there, then arcs back
+- New states `'go'` and `'back'` added to PXBRAIN frame loop; `repos()` suppressed during travel
+- `triggerBrainTravelDunk(hoopIdx, cb)` outer helper: looks up hoop DOM element, calls `goToHoop`
+- `gameOnAnswer`: every Nth question (where N = getDailyGoal()) triggers travel dunk; all others keep simple ball throw from bar
+
+**2. Spin during travel**
+- Brain rotates 1 full spin (2π) during the 'go' arc via `cv.style.transform = 'rotate(...rad)'`
+- Bug fix: `cv.style.transform=''` reset moved inside `'idle'`/`'back'` state blocks; was clearing the spin before it rendered each frame
+
+**3. Slow-mo dunk at hoop**
+- `atHoop` flag: when set, dunk advances `dt` only every 6 animation frames (6× slow-mo, ~10× longer than normal)
+- `launchFlyingBall()` short-circuits when `atHoop`: fires `onLand` callback after 180ms (no ball arc, brain already at hoop)
+- After dunk completes with `atHoop`, `startBack()` fires — brain arcs back to XP bar in 22 frames
+
+**4. Travel speed: 300 frames (~5 seconds)**
+- `tvDur` set to 300 (from initial 25, then 60); user requested "a fifth the speed"
+- Fill deferred to landing: `renderDailyHoops` passed as onFill callback (not called immediately), so hoop stays empty during entire 5-second arc and fills only when brain lands
+
+**5. Hoops now cycle**
+- `renderDailyHoops` uses cycle-based count: `cycleCount = count % goal || (count>0 && count%goal===0 ? goal : 0)`
+- After completing a full set, next question resets hoops to 0/N and fills one-by-one again
+- Goal smash fires on every cycle completion (`(prev+1)%getDailyGoal()===0`), not just the first
+- Smart DOM update: only re-renders hoops that changed state (prevents hoop-pop animation re-firing on already-scored hoops)
+- `launchFlyingBall` target hoop now cycle-aware: flies to correct hoop index in current cycle
+
+**6. Robustness fixes**
+- `PXBRAIN.dunk()` guards against interrupting `'go'`/`'back'` states; fires callback immediately if can't start dunk
+- `PXBRAIN.goToHoop()` falls back to immediate callback if already traveling
+
+### Key decisions
+- Fill-on-landing (not fill-immediately) was user's explicit preference even with 5-second travel arc — intentional dead hoop during arc
+- Slow-mo factor of 6× chosen after iteration (user requested half-speed again from earlier 3× setting)
+- 'go'/'back' states as first-class PXBRAIN states (not flags) keeps frame logic clean and repos() suppression simple
+
+### No card/SBA count changes
+All changes are UI/animation only. SBA total remains 552, cards 444.
+
+### Next content priorities
+1. **Greenberg §85-89 vascular-aneurysm** (PDF pp.~1408-1495) — 26 recalls, START HERE
+2. **§112 HFS + §113 pain procedures** (PDF pp.~1862-1897)
+3. **Infographic Guide 2025** (70pp)
+4. **Alleyne/Citow** — carotid (2), neuroradiology (6), neuropathology (7)
