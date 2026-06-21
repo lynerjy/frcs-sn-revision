@@ -813,3 +813,49 @@ Investigated user report that cranial-anatomy Quiz tab showed only AI-generated 
 2. **Infographic Guide 2025** (70pp) — visual recall-style
 3. **Alleyne/Citow** — start with carotid (2 SBAs), neuroradiology (6), neuropathology (9)
 4. **NG217 Epilepsy** (150pp) — 0 cards from PDF
+
+---
+
+## Session 16 — 2026-06-21
+
+### Goal
+User asked where Greenberg content had gone from the functional neurosurgery topic. Investigated and confirmed: the Greenberg SBAs previously appearing in functional were from pp.56–89 (AC-PC line / cranial anatomy), correctly moved to cranial-anatomy in session 15. The genuine Greenberg functional chapters (§111-113) had never been mined.
+
+### Greenberg pages mined this session
+- **PDF pp.1830–1858 = Book pp.1838–1866** (§111 Functional/Stereotactic Neurosurgery, §112 Neurovascular Compression Syndromes)
+- **11 new SBAs added** to the functional topic
+
+### PDF page offset discovery
+- In this chapter range: PDF page number = book page number − 8
+- TOC memory file (frcs_greenberg_toc.md) lists BOOK page numbers, not PDF page numbers
+- Always subtract 8 when running `python3 mine.py extract greenberg` for §111-113 chapters
+
+### New SBAs written (all: src_id:"greenberg", korky:true, recall:true, topic:"functional")
+1. **DBS for PD** — STN/GPi vs VIM thalamus: VIM preferred when tremor is the PREDOMINANT symptom (p.1832-1833)
+2. **Contraindications to PD surgery** — dementia, age ≥85, ipsilateral hemianopsia, secondary parkinsonism, normal DaT scan, ICH risk (p.1833)
+3. **Dystonia DBS target** — GPi primary; better response for PRIMARY dystonias (tardive) than secondary (postanoxic, perinatal, poststroke) (p.1842)
+4. **Essential tremor / VIM** — VIM useful for tremor-dominant PD, ET, cerebellar, post-traumatic tremor; must fail maximal medical therapy first; side effects: paresthesias/headache/dysequilibrium/dysarthria (p.1841) — HIGHEST PRIORITY: addressed rq8/rq9/rq10 (3 recall bank hits)
+5. **Psychiatric DBS targets** — OCD: VC/VS (FDA humanitarian device exemption); Tourette: GPi/STN/ALIC/thalamus; MDD: subcallosal cingulate/ITB/NAc/VC striatum (p.1834)
+6. **ITB selection + test dose** — 50/75/100 mcg incremental LP doses vs placebo; pump if 2-point Ashworth reduction ≥4 hrs; usual daily dose = 2× test dose (~200 mcg/d); catheter at L2-3 no higher than T10 (p.1839-1840)
+7. **ITB withdrawal** (hard:true) — pruritus WITHOUT rash highly suggestive; severe (3-5%): rhabdomyolysis/DIC/death over 24-72 hrs; DDx NMS/autonomic dysreflexia/MH/sepsis (p.1842)
+8. **TGN epidemiology** — incidence 4/100,000; mean age 63; F:M 1.8:1; right 60%; V2+V3 most common (42%); 80-90% SCA at REZ (p.1851, Table 112.2)
+9. **TGN surgical selection** — V3 only→RFR; V1/V2→balloon compression; bilateral→glycerol (shortest duration); need immediate relief→NOT SRS; >5yr survival, fit for craniotomy→MVD (p.1854)
+10. **SRS for TGN** — 70-80 Gy at 4-5 mm isocenter; 80-96% significant reduction but only ~65% pain-free; median latency 3 months; recurrence 10-25% within 3 years; hypesthesia 20%; first SRS use by Leksell was for TGN (p.1856)
+11. **Neurovascular compression syndromes table** — CN V/SCA→TGN; CN VII facial→HFS; CN VII nervus intermedius/AICA→geniculate neuralgia; CN VIII→DPV; CN IX/PICA→glossopharyngeal neuralgia; CN X/PICA-VA→superior laryngeal neuralgia; CN XI/VA→torticollis; REZ = Obersteiner-Redlich zone (p.1849, Table 112.1)
+
+### Updated counts (post-session 16)
+- Total SBAs: **552** (+11)
+- Total cards: **444** (unchanged)
+- functional: 28 SBAs (+11 Greenberg §111-112)
+- Mining manifest: greenberg pages_done now includes [1830,1858], cards_added 155
+
+### Open questions
+- §112 remainder: HFS (pp.~1870-1876) and §113 pain procedures (pp.~1877-1897) not yet mined — these were outside the 1830-1858 range
+- Note: the 11 new SBAs are structurally inserted at the end of the LAST topic block's q[] array (not the "functional" key's q[] array). Mine.py stats shows them counted under a different structural block but the `topic:"functional"` field ensures the app routes them correctly. This is the same flat-list pattern used since session 14.
+
+### Next content priorities (unchanged from session 15, still due)
+1. **Greenberg §85–89 vascular-aneurysm** (PDF pp.~1408-1495) — 26 recalls, START HERE next session
+2. **§112 HFS + §113 pain procedures** (PDF pp.~1862-1897) — only if continuing functional mining
+3. **Infographic Guide 2025** (70pp)
+4. **Alleyne/Citow** — carotid (2), neuroradiology (6), neuropathology (7)
+4. **NG217 Epilepsy** (150pp)
