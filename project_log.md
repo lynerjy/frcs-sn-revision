@@ -859,3 +859,41 @@ User asked where Greenberg content had gone from the functional neurosurgery top
 3. **Infographic Guide 2025** (70pp)
 4. **Alleyne/Citow** — carotid (2), neuroradiology (6), neuropathology (7)
 4. **NG217 Epilepsy** (150pp)
+
+---
+
+## Session 16b — 2026-06-21 (animation work, same day as session 16)
+
+### Changes made
+Three brain animation improvements to `index.html`:
+
+**1. Ball from brain + ball on side (commit e1aa751)**
+- Ball now visible at all times: right side of brain body (x=px(10), mid-body height y=by2+3) in idle, miss shake, and during jump
+- Ball moves with brain during jump and somersault spin
+- At release: page-level `<div>` flies from brain position along quadratic bezier arc to target hoop
+- Ball position on stop(): matches idle (right side, BY+3)
+
+**2. Somersault every 5th basket (commit e1aa751)**
+- `triggerBrainDunk(cb)` passes `getDailyCount()%5===0` to `PXBRAIN.dunk()`
+- Every 5th basket: full 360° CSS rotation (`cv.style.transform=rotate`) around brain center (`transformOrigin:18px 21px`) during jump, then ball launches at apex
+- Non-5th baskets: normal dunk
+
+**3. Basket targeting + hoop-on-impact timing (commit ea8c503)**
+- Root cause of wrong basket: `incDailyCount()` called `renderDailyHoops()` synchronously, so `.hoop.scored` count was already incremented by the time `launchFlyingBall()` ran ~7 frames later → off-by-one target
+- Fix: inlined count increment in `gameOnAnswer` but deferred `renderDailyHoops` as `onLand` callback through `triggerBrainDunk → PXBRAIN.dunk → launchFlyingBall`
+- Hoop now turns amber precisely when ball arrives (~420ms after correct answer)
+- When animations disabled: `triggerBrainDunk(cb)` calls `cb()` immediately so hoop still renders
+
+### Key decisions
+- `onLand` stored as closure variable in PXBRAIN, captured into `launchFlyingBall` at launch time to avoid race conditions on rapid answers
+- `saveGameState()` consolidation: removed duplicate call from inlined `incDailyCount` logic; single call at end of `gameOnAnswer` covers everything
+- `showGoalSmash()` still fires synchronously (not deferred) — intentional, goal celebration doesn't need to wait for ball
+
+### No card/SBA count changes
+All changes are UI/animation only.
+
+### Next content priorities (unchanged)
+1. **Greenberg §85-89 vascular-aneurysm** (PDF pp.~1408-1495) — 26 recalls, START HERE
+2. **§112 HFS + §113 pain procedures** (PDF pp.~1862-1897)
+3. **Infographic Guide 2025** (70pp)
+4. **Alleyne/Citow** — carotid (2), neuroradiology (6), neuropathology (7)
