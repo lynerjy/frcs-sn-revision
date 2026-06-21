@@ -774,3 +774,42 @@ cranial-anatomy (42R, done pp.56–89) → ethics (36R) → functional (30R) →
 3. Greenberg — functional pp.1838–1897
 4. Infographic Guide 2025 (70pp)
 5. Alleyne/Citow — carotid (2 SBAs), neuroradiology (6)
+
+---
+
+## Session 15 — 2026-06-21
+
+### What was done
+**Bug fixes: topic block misplacements in content.js**
+
+Investigated user report that cranial-anatomy Quiz tab showed only AI-generated sources despite Greenberg pp.56–89 being mined in session 14.
+
+**Root cause:** When content is appended to content.js in the wrong section, it ends up in the wrong LEARN topic block. The app routes SBAs to the quiz exclusively by block structure (`LEARN["topic-id"].q[]`), not by per-entry `topic:` fields. Three groups of entries were misplaced:
+
+1. **8 Greenberg cranial-anatomy SBAs** (pterion, Brodmann areas, AC-PC line, PICA, PPTA, Adamkiewicz, cavernous sinus) — were in `"functional".q[]` → moved to `"cranial-anatomy".q[]`
+2. **4 TJones neuro-icu SBAs** (mannitol, HTS, brain abscess ×2 — all had `topic:"neuro-icu"` tag but app ignores per-entry tags) — were in `"functional".q[]` → moved to `"neuro-icu".q[]`
+3. **Missing comma** at the splice point between the last pre-existing cranial-anatomy SBA and the first inserted Greenberg SBA — caused a JS parse error that crashed the entire app (tabs disappeared, quiz incomplete)
+
+**Full Greenberg audit performed:** All 138 Greenberg entries confirmed in correct blocks:
+- `cranial-anatomy`: 8 SBAs (Greenberg 10e pp.56–89) ← newly fixed
+- `neuro-onco-cranial`: 31 entries (flashcards + SBAs, pp.657–824)
+- `degenerative-spine`: 24 SBAs (pp.379–386 spinal infection + pp.1242–1380)
+- `paeds`: 75 SBAs (pp.264–319 Chiari/MMC/CSO, pp.689–755 paeds tumours, pp.849–852 craniopharyngioma)
+
+### Updated counts (post-session 15)
+- Total SBAs: **541** (unchanged — moves only, no new cards)
+- Total cards: **444**
+- cranial-anatomy: 36 SBAs / 12 cards (now correctly includes 8 Greenberg SBAs)
+- neuro-icu: 36 SBAs (now correctly includes 4 TJones mannitol/HTS/abscess SBAs)
+- functional: 17 SBAs (now clean — only genuine functional neurosurgery content)
+
+### Key lessons
+- When inserting SBAs into a block, always verify the splice point has a trailing comma on the preceding entry
+- The `topic:` field on individual entries is metadata only — the app uses block structure exclusively for quiz routing
+- Greenberg full audit script: `python3 -c "import re; ..."`  (see conversation for full script)
+
+### Next content priorities
+1. **Vascular-aneurysm Greenberg** §85–89 (pp.1416–1503) — 26 recalls, extraction started this session but interrupted
+2. **Infographic Guide 2025** (70pp) — visual recall-style
+3. **Alleyne/Citow** — start with carotid (2 SBAs), neuroradiology (6), neuropathology (9)
+4. **NG217 Epilepsy** (150pp) — 0 cards from PDF
