@@ -1012,3 +1012,33 @@ Carolyn asked about reducing bash permission prompts — mentioned `/fewer-permi
 2. **Infographic Guide 2025** (`infographic-2025`, 70pp)
 3. **Alleyne/Citow Board Review** — carotid (2), neuroradiology (6), neuropathology (7)
 4. **NG217 Epilepsy guideline** (150pp)
+
+## 2026-06-22 — Session 19: Greenberg §112-113 functional (HFS, TGN detailed, GPN, cordotomy, SCS, DBS/DREZ)
+
+**What was mined:** Greenberg 10e PDF pp.1849-1880 (book pp.1857-1888)
+- §112.2 TGN remainder: carbamazepine diagnostic rule, PTR techniques detailed, PTR vs MVD outcomes (Table 112.4), PTR complications, MVD for TGN detailed
+- §112.3 HFS: clinical features, typical vs atypical, medical vs surgical management, MVD outcomes
+- §112.4 Geniculate neuralgia / tic convulsif
+- §112.5 Disabling positional vertigo (minor)
+- §112.6 Glossopharyngeal neuralgia
+- §113 Pain procedures: cordotomy (percutaneous + open), commissural myelotomy, spinal narcotics, SCS (FBSS, CRPS, PROCESS trial), DBS for pain (VPM/VPL vs PAG/PVG), DREZ lesions
+
+**Cards added:** 10 new SBAs
+**New totals:** 590 SBAs / 444 cards | Greenberg total: 193 cards
+**Pushed to GitHub Pages:** ✓
+
+**Key facts encoded:**
+- HFS: AICA, left side, ONLY movement disorder persisting in sleep (+ palatal myoclonus), carbamazepine INEFFECTIVE, MVD 85-93% resolution, hearing loss 13%, recurrence 10% (86% within 2 yrs)
+- Typical HFS: orbicularis → downward (anterocaudal AICA); Atypical: buccal → upward (rostral/posterior)
+- PTR vs MVD (Table 112.4): RFR 98% numbness / 80% recurrence at 12yr; MVD 2% numbness / 30% at 10yr
+- TGN carbamazepine: if 600-800mg/d gives no relief → QUESTION the diagnosis
+- GPN: 1:70 TGN; PICA; cardiac arrest possible; surgical = section CN IX + upper 1/3 CN X
+- Tic convulsif: GeN + HFS; AICA both sensory + motor CN VII; Cushing 1920
+- Cordotomy: lateral spinothalamic tract; contralateral; Ondine's curse (bilateral); 94% → 60% → 40%
+- SCS: FDA-approved FBSS + CRPS; PROCESS trial 37% vs 2%; CRPS benefit lost at 5 years; 32% device complications
+- DBS for pain: NOT FDA-approved; deafferentation → VPM/VPL (25-60% respond); nociceptive → PAG/PVG (only 20%)
+- DREZ: brachial plexus avulsion 80-90%; NOT for cancer; SCI limited pain region 80%
+
+**Structural note:** New SBAs added outside the `"functional":{src:...,c:[...]}` block (after line 1208). They carry explicit `topic:"functional"` so the app displays them correctly, but mine.py stats counts them under spinal-anatomy. This is a pre-existing quirk affecting earlier Greenberg functional SBAs too (lines 1198-1208). App function unaffected.
+
+**Next:** §114 Seizure Surgery (book pp.1889-1897 = PDF pp.1881-1889) — epilepsy-surgery topic (20 SBAs, thin)
