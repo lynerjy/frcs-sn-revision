@@ -985,3 +985,30 @@ Carolyn asked about reducing bash permission prompts — mentioned `/fewer-permi
   - `Bash(python3 mine.py next)` — 6 hits
   - `mcp__matlab__check_matlab_code` — 6 hits
 - Cannot auto-allow `python3 mine.py extract *` (python3 wildcards prohibited — equivalent to arbitrary code execution)
+
+---
+
+## Session 18 continued — 2026-06-22
+
+### What was done
+- Mined Greenberg §88-89, PDF pp. 1454–1495 (book pp. 1462–1503)
+  - Chapter 88: Aneurysm types by location (ACoA, DACA, PComA, carotid terminus, MCA, cavernous ICA, supraclinoid, posterior circulation, VA, PICA, basilar tip)
+  - Chapter 89: Special aneurysms and non-aneurysmal SAH (unruptured UIAs, PHASES score detail, multiple aneurysms, familial aneurysms, traumatic, mycotic, giant, cortical SAH, PNSAH)
+- Added **13 new SBAs** to `vascular-aneurysm` topic in content.js
+  - 10 standard + 3 hard:true
+  - All tagged: `src_id:"greenberg"`, `korky:true`, `recall:true`
+  - Standard: PNSAH CT criteria (p.1495), PNSAH management (p.1498), PComA 3rd nerve not pupil-sparing 99% (p.1475), clipping preferred for oculomotor recovery (p.1475), mycotic aneurysm distal MCA + antibiotics (p.1493), multiple aneurysm culprit (p.1490), giant aneurysm >2.5cm F:M 3:1 (p.1493), basilar tip ~5% of all intracranials (p.1482), pterional head rotation ACoA 60°/PComA 15-30°/MCA 45° (p.1474-1477), early surgery H&H ≤3 + large SAH (p.1462)
+  - Hard: PHASES calculation score 6 → 1.7% 5yr risk (p.1488), aneurysmal rest 0.4-0.8%/yr rebleeding (p.1463), PNSAH CT exclusion = interhemispheric fissure filling (p.1495)
+- `python3 mine.py done greenberg 1454-1495 13` recorded (Greenberg total: 183 cards)
+- Greenberg §85-89 fully mined — **complete**
+
+### Totals
+- **580 SBAs** | **444 flashcards** (was 567/444 at start of session 18)
+- vascular-aneurysm: 51 SBAs (was 23 at session start, now fully mined)
+- Pushed to GitHub Pages ✓
+
+### Next content priorities
+1. **Greenberg §112 HFS + §113 pain procedures** (PDF pp.~1862-1897) — functional topic
+2. **Infographic Guide 2025** (`infographic-2025`, 70pp)
+3. **Alleyne/Citow Board Review** — carotid (2), neuroradiology (6), neuropathology (7)
+4. **NG217 Epilepsy guideline** (150pp)
