@@ -1042,3 +1042,62 @@ Carolyn asked about reducing bash permission prompts — mentioned `/fewer-permi
 **Structural note:** New SBAs added outside the `"functional":{src:...,c:[...]}` block (after line 1208). They carry explicit `topic:"functional"` so the app displays them correctly, but mine.py stats counts them under spinal-anatomy. This is a pre-existing quirk affecting earlier Greenberg functional SBAs too (lines 1198-1208). App function unaffected.
 
 **Next:** §114 Seizure Surgery (book pp.1889-1897 = PDF pp.1881-1889) — epilepsy-surgery topic (20 SBAs, thin)
+
+## 2026-06-22 — Session 20: Bug fix + systemic validator
+
+**Context:** No new content mined. Session was entirely bug-fix and tooling.
+
+### Bug fixed: Greenberg functional SBAs showing in wrong Quiz topic
+
+The user noticed Quiz > Functional was not showing Greenberg SBAs despite them
+having been mined in Session 19.
+
+**Root cause:** content.js LEARN blocks have two separate arrays:
+- `c:[...flashcards...]` — Q&A cards
+- `q:[...SBAs...]` — quiz questions (what the app reads for Quiz routing)
+
+The 21 Greenberg functional SBAs (§111-113: DBS, TGN, HFS, GPN, pain procedures)
+had been inserted inside the `"spinal-anatomy"` block's `q:[]`, not inside
+`"functional"`'s `q:[]`. They had inline `topic:"functional"` but the app uses
+block placement, not the inline field, to route SBAs to Quiz topics.
+
+**Fix:** Moved all 21 SBAs from spinal-anatomy block to functional block using a
+Python script (line-index move, not Edit tool, to avoid massive string matching).
+Updated functional block `src:` to reference Greenberg 10e §111-113.
+
+Session 19's log note that said "app displays them correctly" via inline topic
+was **wrong** — that note has been superseded by this fix.
+
+### Systemic fix: validator + pre-commit hook
+
+Added to `mine.py validate`:
+- New check: scans every line, tracks current block, flags SBAs with `topic:"X"`
+  inside a different block's `q:[]`
+- Gated against baseline of **527 pre-existing mismatches** (TJones SBAs stored
+  in spinal-anatomy catch-all block with cross-topic tags — separate remediation task)
+- Exits 0 if mismatch count ≤ 527; exits 1 if count increases (new mismatch added)
+- Structural errors (stem/opts/ans mismatches) always fatal; ref warnings = info only
+
+Added `.git/hooks/pre-commit` — runs `mine.py validate` on every commit.
+Hook fired and passed on the commit that landed the changes.
+
+Updated `CLAUDE.md` — documents the `c:[]/q:[]` dual-array structure and the rule:
+new SBAs always go in `q:[]` of the correct topic block.
+
+### Commits this session (all pushed)
+1. `fix: move 21 Greenberg functional SBAs into correct block`
+2. `add block/topic mismatch validator and pre-commit hook`
+
+### Totals (unchanged — no new content)
+- **590 SBAs** | **444 flashcards**
+- functional block: now correctly shows 21 Greenberg SBAs in Quiz ✓
+
+### Open question
+Pre-existing 527 cross-block TJones SBAs: they appear in spinal-anatomy Quiz
+instead of their tagged topics (neuro-icu, paeds, neuro-onco-cranial, etc.).
+This is a separate remediation task — requires moving ~500 SBAs to correct blocks.
+Not urgent but should be tracked.
+
+### Next
+Resume content mining: Greenberg §114 Seizure Surgery (PDF pp.1881-1889)
+`python3 mine.py extract greenberg 1881-1889`
