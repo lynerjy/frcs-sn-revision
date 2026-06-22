@@ -734,6 +734,12 @@ def parse_content_js():
     return topics
 
 
+# Baseline mismatch count established 2026-06-22.  Represents pre-existing TJones
+# SBAs stored in catch-all blocks with cross-topic tags.  These are a known
+# remediation task (moving ~527 TJones SBAs to their correct topic blocks).
+# The pre-commit hook fails only if the count INCREASES above this baseline.
+MISMATCH_BASELINE = 527
+
 def validate_content_js():
     """Check for common structural errors in content.js."""
     text = CONTENT.read_text()
@@ -774,6 +780,30 @@ def validate_content_js():
         missing_learn = topics_in_js - learn_in_js
         if missing_learn:
             errors.append(f"LEARN entries missing for topics: {missing_learn}")
+
+    # Check: SBAs with explicit topic: field must be inside the matching block.
+    # This catches the recurring bug where SBAs are inserted into the wrong block.
+    block_pattern = re.compile(r'"([a-z][a-z-]+)":\{src:"[^"]+",c:\[')
+    lines = text.splitlines()
+    current_block = None
+    misplaced = []
+    for lineno, line in enumerate(lines, 1):
+        bm = block_pattern.search(line)
+        if bm:
+            current_block = bm.group(1)
+        if current_block:
+            tm = re.search(r'topic:"([a-z][a-z-]+)"', line)
+            if tm and tm.group(1) != current_block:
+                misplaced.append(
+                    f"  line {lineno}: topic:\"{tm.group(1)}\" inside \"{current_block}\" block"
+                )
+    if misplaced:
+        errors.append(
+            f"BLOCK/TOPIC MISMATCH — {len(misplaced)} SBA(s) have topic: field that "
+            f"does not match their containing block (Quiz will show them under the wrong topic):\n"
+            + "\n".join(misplaced[:10])
+            + ("" if len(misplaced) <= 10 else f"\n  ... and {len(misplaced)-10} more")
+        )
 
     return errors
 
@@ -1073,14 +1103,51 @@ def cmd_done(args):
 
 
 def cmd_validate(args):
+    strict = "--strict" in args
     print("\n  Validating content.js...\n")
     errors = validate_content_js()
+
+    # Separate errors by severity:
+    # - BLOCK/TOPIC MISMATCH: gated against a baseline (the real recurring bug)
+    # - stem/opts/ans structural errors: always fatal
+    # - ref warnings: informational only, not a commit gate
+    mismatch_errors   = [e for e in errors if "BLOCK/TOPIC MISMATCH" in e]
+    structural_errors = [e for e in errors if any(k in e for k in ("stem/opts", "stem/ans", "q/a mismatch", "LEARN entries missing"))]
+    ref_warnings      = [e for e in errors if e not in mismatch_errors and e not in structural_errors]
+
+    mismatch_count = 0
+    if mismatch_errors:
+        # Parse count from the error message
+        import re as _re
+        m = _re.search(r"(\d+) SBA", mismatch_errors[0])
+        if m:
+            mismatch_count = int(m.group(1))
+
     if not errors:
         print("  No structural errors found.\n")
     else:
-        for e in errors:
+        for e in structural_errors:
             print(f"  ERROR: {e}")
+        for e in ref_warnings:
+            print(f"  WARN:  {e}")
+        if mismatch_errors:
+            delta = mismatch_count - MISMATCH_BASELINE
+            if delta > 0:
+                print(f"  ERROR: {mismatch_errors[0]}")
+                print(f"  !! MISMATCH COUNT INCREASED by {delta} (was {MISMATCH_BASELINE}, now {mismatch_count})")
+                print(f"  !! Move the new SBAs into the correct topic block before committing.\n")
+            else:
+                print(f"  NOTE: {mismatch_count} SBA(s) have topic: field not matching their block")
+                print(f"  (within baseline of {MISMATCH_BASELINE} — pre-existing TJones cross-block tags, not new).\n")
         print()
+
+    # Commit gate: fail on structural errors or mismatch count increase only.
+    # ref warnings are informational and do not block commits.
+    has_fatal = bool(structural_errors) or (mismatch_count > MISMATCH_BASELINE)
+    if strict and mismatch_count > 0:
+        has_fatal = True
+    if has_fatal:
+        sys.exit(1)
 
 
 def cmd_stats(args):

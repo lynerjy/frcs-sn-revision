@@ -53,6 +53,31 @@ Greenberg must be mined by **recall-bank frequency**, not by whatever claude-ai 
 
 ---
 
+## content.js structure — where to insert new SBAs (MANDATORY)
+
+Each topic block has TWO separate arrays:
+```
+"topic-id":{src:"...", c:[
+  {q:"...", a:"..."},        ← flashcards go here (c:[])
+  ...
+],q:[
+  {stem:"...", opts:[...]},  ← SBAs go here (q:[])
+  ...
+]},
+```
+
+**Rule: new SBAs must go inside the `q:[]` array of the CORRECT topic block.**
+
+Common failure modes (both have occurred):
+1. Inserting into the wrong block entirely (spinal-anatomy instead of functional)
+2. Inserting into `c:[]` instead of `q:[]` within the right block
+
+**Always run `python3 mine.py validate` before committing.** A pre-commit hook does this automatically, but running it manually after insertion confirms the mismatch count has not increased. The baseline is 527 (pre-existing TJones cross-block SBAs — a separate remediation task).
+
+If the mismatch count increases, find the misplaced SBAs (look for `topic:"X"` inside the wrong block's `q:[]`), remove them, and reinsert inside the correct block's `q:[]` before the closing `]},`.
+
+---
+
 ## MANDATORY: End-of-session log update
 
 **Every session that touches this project must end with an entry in `project_log.md`.**
