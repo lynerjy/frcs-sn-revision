@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 mine.py validate)",
+      "Bash(python3 mine.py stats)",
+      "Bash(python3 mine.py status)",
+      "Bash(python3 mine.py next)",
+      "mcp__matlab__check_matlab_code"
+    ]
+  }
+}

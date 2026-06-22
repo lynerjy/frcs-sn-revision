@@ -947,3 +947,41 @@ All changes are UI/animation only. SBA total remains 552, cards 444.
 2. **§112 HFS + §113 pain procedures** (PDF pp.~1862-1897)
 3. **Infographic Guide 2025** (70pp)
 4. **Alleyne/Citow** — carotid (2), neuroradiology (6), neuropathology (7)
+
+---
+
+## Session 18 — 2026-06-21
+
+### What was done
+- Mined Greenberg §85–89 vascular-aneurysm, PDF pp. 1408–1453 (book pp. 1416–1461)
+  - Chapters covered: 85 (SAH overview, grading scales, investigations), 86 (critical care, vasospasm/DCI), 87 (aneurysm epidemiology, treatment, ISAT/BRAT)
+- Added **15 new SBAs** to `vascular-aneurysm` topic in content.js
+  - 10 standard + 5 hard:true
+  - All tagged: `src_id:"greenberg"`, `korky:true`, `recall:true`
+  - Topics: WFNS grading (p.1418), Hunt & Hess (p.1417), CT sensitivity decay (p.1421), xanthochromia timing (p.1422), Modified Fisher scale (p.1442), TCD/Lindegaard ratio (p.1443), vasospasm time course (p.1441), aneurysm location distribution (p.1453), infundibulum criteria (p.1423), Terson syndrome (p.1420), neurogenic stress cardiomyopathy (p.1438, hard), TXA antifibrinolytic (p.1437, hard), CSW vs SIADH (p.1435, hard), post-SAH seizures/ASM choice (p.1436), ADPKD screening (p.1456, hard)
+- vascular-aneurysm now: 38 SBAs, 37 flashcards (was 23/37)
+- `python3 mine.py done greenberg 1408-1453 15` recorded (Greenberg total: 170 cards)
+
+### Totals
+- **567 SBAs** | **444 flashcards** (was 552/444)
+- Pushed to GitHub Pages ✓
+
+### User question mid-session
+Carolyn asked about reducing bash permission prompts — mentioned `/fewer-permission-prompts` skill but did not run it this session.
+
+### Next content priorities
+1. **Greenberg §85-89 remainder** (PDF pp. 1454–1495 = book pp. 1462–1503) — specific aneurysm types: MCA, basilar, PICA, cavernous ICA approaches
+2. **§112 HFS + §113 pain procedures** (PDF pp.~1862-1897) — functional topic
+3. **Infographic Guide 2025** (`infographic-2025`, 70pp)
+4. **Alleyne/Citow Board Review** — carotid (2), neuroradiology (6), neuropathology (7)
+5. **NG217 Epilepsy guideline** (150pp)
+
+### Addendum — session 18 continued (2026-06-22)
+- Ran `/fewer-permission-prompts` skill: scanned 50 JSONL transcripts across all projects
+- Created `.claude/settings.json` with 5 auto-allow patterns:
+  - `Bash(python3 mine.py validate)` — 24 hits
+  - `Bash(python3 mine.py stats)` — 16 hits
+  - `Bash(python3 mine.py status)` — 6 hits
+  - `Bash(python3 mine.py next)` — 6 hits
+  - `mcp__matlab__check_matlab_code` — 6 hits
+- Cannot auto-allow `python3 mine.py extract *` (python3 wildcards prohibited — equivalent to arbitrary code execution)
