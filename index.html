@@ -654,7 +654,7 @@ function renderSourcesTable(){
       </tr>`;
       srcs.forEach((s,i)=>{
         const ss=state.sources[s.id]||{enabled:true};const enabled=ss.enabled!==false;
-        const effectiveCards=s.cards||(liveCountBySrc[s.id]||0);
+        const effectiveCards=liveCountBySrc[s.id]||0;
         const miningCell=isAI?'<span style="color:var(--g400);font-size:.75rem">—</span>':
           effectiveCards>0&&s.partial?`<span style="background:#fffbeb;color:#92400e;border:1px solid #f59e0b;padding:2px 7px;border-radius:3px;font-size:.62rem;font-weight:600;white-space:nowrap">partial — ${effectiveCards}</span>`:
           effectiveCards>0?`<span style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;padding:2px 7px;border-radius:3px;font-size:.62rem;font-weight:600;white-space:nowrap">✓ ${effectiveCards}</span>`:
