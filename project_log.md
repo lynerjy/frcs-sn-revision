@@ -1154,3 +1154,37 @@ Start: `python3 mine.py extract greenberg 116-152`
 ### After neuro-icu
 head-injury (19) → spinal-trauma (17) → peripheral-nerve (17) → pituitary (15) →
 epilepsy-surgery (13)
+
+---
+## Session 22 — 2026-06-23
+
+**What was done:**
+- Mined Greenberg §5–7: §5 Sodium Homeostasis (pp.114–129), §6 General Neurocritical Care (pp.131–138), §7 Sedatives, Paralytics, Analgesics (pp.139–150). PDF pages 116–152.
+- PDF offset confirmed: book page = PDF page − 2.
+- Added 12 new SBAs to neuro-icu block, all recall:true, src_id:"greenberg", korky:true.
+
+**New SBAs (12):**
+1. Serum osmolality clinical thresholds (p.114)
+2. SIADH aggressive treatment protocol (pp.120–121)
+3. Osmotic demyelination / Na+ correction rate limits (pp.119–120) [hard]
+4. Triphasic DI response post-pituitary surgery (pp.125–126) [hard]
+5. Dopamine dose-response (p.133)
+6. Nicardipine vs NTG — ICP effects + nicardipine dosing (pp.130–131)
+7. Stress ulcer prophylaxis in neurosurgery — Cushing's ulcers (pp.134–135)
+8. Rhabdomyolysis in prone spine surgery — LR vs NS (pp.136–138)
+9. Propofol infusion syndrome — metabolic acidosis rule (p.141)
+10. Succinylcholine contraindications — UMN injury, paeds, penetrating eye injury (p.142)
+11. RASS scale key anchors (p.139)
+12. Dexmedetomidine — alpha-2 agonist, bradycardia risk, dosing (p.141)
+
+**Card counts after session:**
+- Total SBAs: 614 (was 602)
+- neuro-icu SBAs: 48 (was 36)
+- Greenberg total: 217 cards
+
+**Next target by recall count:**
+- head-injury (19 recalls, 0 Greenberg content) → Greenberg §24.3 Head Trauma chapters
+- Also consider: §62 ICU of Brain-Injured (book pp.1036-1061, PDF ~1038-1063) for more neuro-icu
+- After that: peripheral-nerve (17 recalls) → spinal-trauma (17 recalls) → pituitary (15 recalls)
+
+**Infrastructure note:** Greenberg §5–7 neuro-ICU PDF offset = book page + 2 (confirmed).
