@@ -1188,3 +1188,46 @@ epilepsy-surgery (13)
 - After that: peripheral-nerve (17 recalls) → spinal-trauma (17 recalls) → pituitary (15 recalls)
 
 **Infrastructure note:** Greenberg §5–7 neuro-ICU PDF offset = book page + 2 (confirmed).
+
+---
+
+## 2026-06-23 — Session 23: Sources tab fix + Greenberg §60 head trauma (12 SBAs)
+
+**What was done:**
+
+1. **Bug fix — Sources tab mining counts** (`index.html`):
+   - Root cause: `effectiveCards = s.cards || liveCountBySrc[s.id]` — hardcoded `cards:` field in SOURCES entries was taking precedence over the live count derived from `src_id` tags in LEARN.
+   - Fix: removed `s.cards ||`, so the column always reflects the live count.
+   - All sources (including Greenberg at 229 cards) now show accurate counts.
+   - Pushed to GitHub Pages.
+
+2. **Greenberg §60 head trauma mined** (book pp.1000–1018, PDF pp.992–1010):
+   - PDF offset for this region confirmed: book page = PDF page + 8 (same as §85-89 vascular).
+   - 12 new SBAs added to `head-injury` block, all `recall:true`, `src_id:"greenberg"`, `korky:true`.
+
+**New SBAs (12):**
+1. GCS stratification: mild 14–15, moderate 9–13, severe ≤8 (p.1001)
+2. "Talk and die" / delayed deterioration — 75% intracranial haematoma (p.1000)
+3. Hypotension doubles mortality; hypotension + hypoxia triples mortality (p.1002)
+4. Prophylactic HPV not recommended — Level II (p.1003)
+5. HPV target PaCO₂ = 30–35 mmHg when indicated (p.1003)
+6. Mannitol contraindicated in hypovolaemia/hypotension (p.1004)
+7. Prophylactic ASMs do not prevent late PTS — Level II (p.1004)
+8. Early PTS risk factors — age >65 is NOT one of them [hard] (p.1004–1005)
+9. Canadian CT Head Rule — high-risk criteria (GCS <15 at 2h, etc.) (p.1007)
+10. CCTHR sensitivity reduced to 70% with intoxication [hard] (p.1007)
+11. Exploratory burr holes — first burr hole ipsilateral temporal to blown pupil (p.1015)
+12. Marshall CT classification — Category III vs II: cisterns, not MLS [hard] (p.1010)
+
+**Card counts after session:**
+- Total SBAs: 627 (was 614)
+- Total flashcards: 444 (unchanged)
+- head-injury SBAs: 38 (was 26)
+- Greenberg total mined: 229 cards
+
+**Next target:**
+- **§63 Skull fractures** (book pp.1062–1070, PDF pp.1054–1062) — basal skull, depressed
+- **§64 Traumatic haemorrhage** (book pp.1071–1092, PDF pp.1063–1084) — EDH, ASDH, CSDH
+- After head-injury: peripheral-nerve (17 recalls) → spinal-trauma (17 recalls) → pituitary (15 recalls)
+
+**Infrastructure note:** Greenberg §60 head trauma PDF offset = book page + 8 (confirmed; same as §85-89).
