@@ -1101,3 +1101,56 @@ Not urgent but should be tracked.
 ### Next
 Resume content mining: Greenberg §114 Seizure Surgery (PDF pp.1881-1889)
 `python3 mine.py extract greenberg 1881-1889`
+
+---
+
+## 2026-06-23 — Greenberg §24-25 Hydrocephalus mining
+
+### What was done
+
+**Corrected mining priority rule (permanent fix to memory)**
+- CLAUDE.md and memory file (`feedback_frcs_mining_priority.md`) updated with the
+  correct rule: sort topics by recall count descending; find first with ZERO content
+  from current source (Greenberg); mine that. Having ANY content from that source = skip.
+- Previous plan incorrectly listed §114 epilepsy-surgery as next target. Corrected
+  to hydrocephalus (24 recalls) — confirmed 0 Greenberg SBAs in hydrocephalus block.
+
+**Greenberg §24 General Aspects of Hydrocephalus (PDF pp.428-453, book pp.426-451)**
+6 new SBAs added to hydrocephalus q[]:
+1. Most common causes of acquired communicating HCP: infectious (post-meningitis)
+   #1, post-haemorrhagic #2 — 20-50% permanent HCP after large IVH (p.427)
+2. Probable iNPH criteria exclusion — prior SAH makes it Secondary NPH (p.444, hard)
+3. Tap test negative does NOT exclude NPH — sensitivity only 26-61% (p.443)
+4. Hakim's triad post-shunt response order: incontinence → gait → dementia (p.447)
+5. VP shunt complications in NPH up to 35%; SDH most common; ~1/3 need evacuation (p.447)
+6. ETV not first-line for NPH — mechanistically unexplained; non-validated evidence (p.447)
+
+**Greenberg §25 Treatment of Hydrocephalus (PDF pp.454-473, book pp.452-471)**
+6 new SBAs added to hydrocephalus q[]:
+1. VA shunt: treatment of choice when abdomen unsuitable (NEC, peritonitis,
+   morbid obesity, extensive prior abdominal surgery) (p.454)
+2. LP shunt complications in children: scoliosis 14% (from laminectomy);
+   acquired Chiari I malformation in up to 70% of cases (p.456)
+3. ETV complications: hypothalamic injury → hyperphagia; cardiac arrest also
+   reported; DI/amenorrhoea from pituitary stalk injury (p.453)
+4. Slit ventricle syndrome (SVS): mechanism = ependymal coaptation over inlet
+   ports; incidence 2-5% of shunted patients; NOT postural headache (p.463)
+5. SDH after shunting: NPH 20-46% vs hypertensive HCP 0.4-5%; bilateral 47%
+   of collections; ~1/3 require evacuation (p.465)
+6. Programmable valve must be rechecked after every MRI — all current models
+   can be inadvertently reprogrammed by MRI magnetic fields (p.457)
+
+### Totals
+- **602 SBAs** | **444 flashcards**
+- Greenberg total cards: **205**
+- Hydrocephalus SBAs: 33 total (16 korky)
+
+### Next Greenberg target
+By recall bank priority rule: neuro-icu (22 recalls) — 0 Greenberg content.
+Chapter reference: §5-7 (Critical Care; book pp.114-150, PDF ~pp.116-152)
+and §62 Intensive Care of Brain-Injured Patients (book pp.1036-1061, PDF ~pp.1038-1063).
+Start: `python3 mine.py extract greenberg 116-152`
+
+### After neuro-icu
+head-injury (19) → spinal-trauma (17) → peripheral-nerve (17) → pituitary (15) →
+epilepsy-surgery (13)
