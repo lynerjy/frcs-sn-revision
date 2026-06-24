@@ -1405,3 +1405,31 @@ epilepsy-surgery (13)
 2. epilepsy-surgery §114 (book pp.~1889–1897, PDF ~1881–1889 if offset = +8) — 13 recalls
 3. cranial-anatomy §gap (42 recalls, need to identify thin chapters)
 4. After Greenberg: TJones (79pp) → Infographic Guide 2025 → Alleyne/Citow
+
+---
+
+## 2026-06-24 — Session 29: Pituitary §54 surgical management (Greenberg pp.896–906)
+
+**Source mined:** Greenberg 10e §54 PitNET/Adenomas – Surgical Management, Outcome and Recurrence, PDF pp.888–898 (book pp.896–906)
+**Topic:** pituitary
+
+**6 new SBAs inserted into pituitary q:[]:**
+1. Transcranial vs TSS approach indications — 'cottage loaf' tumour (tight diaphragma, minimal sellar enlargement), fibrous tumour, middle fossa extension > intrasellar, parasellar aneurysm (p.897)
+2. Triphasic DI response — stage 1 DI → stage 2 SIADH-like (ADH from hypothalamic neuron endings) → stage 3 DI; danger = overtreatment during stage 1 continues into stage 2 → iatrogenic hyponatraemia (p.902)
+3. DI diagnostic criteria: UO >250 ml/hr × 2hrs AND SG <1.005; management: replace ml-for-ml with ½NS + vasopressin if too high (p.901)
+4. Cushing's disease remission: early morning cortisol ≤140 nmol/L (≤5 mcg/dl) on POD 1-2 without steroids → 97% sustained remission (31/32); only 12.5% sustained without early remission (p.895)
+5. Acromegaly TSS outcomes: 85% cure for microadenoma <10mm, no invasion, random GH <40; 50% overall; only 30% macroadenomas cured (p.903)
+6. Post-op cortisol Table 54.1: ≥9 mcg/dl = normal; 3-9 = possible ACTH def → HC + cosyntropin at 1 month; ≤3 = ACTH deficient (p.902)
+
+**Counts post-session 29:**
+- pituitary SBAs: 15 → 21 (+6)
+- Total SBAs: 680 → 686
+- Greenberg manifest: 284 → 290 cards
+
+**Validate:** 527 mismatch baseline unchanged
+
+**Next session (autonomous queue):**
+1. paeds NTDs (Greenberg §16-19, book pp.~200-268, PDF ~202-270) — 46 recalls, highest unmined
+2. functional §111-113 (book pp.~1838-1888, PDF ~1830-1880 if offset ~-8) — 30 recalls
+3. vascular-aneurysm §85-89 (book pp.1416-1503, PDF ~1408-1495) — 26 recalls
+4. After Greenberg: TJones → Infographic Guide 2025 → Alleyne/Citow
