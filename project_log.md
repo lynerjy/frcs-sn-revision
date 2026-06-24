@@ -1231,3 +1231,37 @@ epilepsy-surgery (13)
 - After head-injury: peripheral-nerve (17 recalls) → spinal-trauma (17 recalls) → pituitary (15 recalls)
 
 **Infrastructure note:** Greenberg §60 head trauma PDF offset = book page + 8 (confirmed; same as §85-89).
+
+## 2026-06-23 — Session 24: Greenberg §63-64 skull fractures + traumatic haemorrhage
+
+**What was done:**
+- Mined Greenberg §63 (skull fractures, book pp.1062–1070, PDF pp.1054–1062) and §64 (traumatic haemorrhagic conditions, book pp.1071–1084, PDF pp.1063–1076)
+- Added 17 new SBAs to `head-injury` topic block
+- head-injury SBAs: 38 → 55; total SBAs: 627 → 643; Greenberg total: 229 → 246
+
+**New SBAs written (all: recall:true, src_id:"greenberg", korky:true):**
+1. Depressed skull fracture — 5-criteria nonsurgical management (hard) — p.1062
+2. Elevation does NOT prevent posttraumatic seizures — p.1063
+3. Temporal bone — facial palsy rates (longitudinal 15-20% vs transverse 50%) — p.1064
+4. Temporal bone — OCS vs OCV modern classification (hard) — p.1064
+5. Basal skull fracture — clinical signs (Battle's, raccoon eyes, haemotympanum, CN injuries) — p.1065
+6. NGT contraindication in BSF — 64% fatal if intracranial passage — p.1065
+7. CSF leak — no prophylactic antibiotics, give pneumococcal vaccine — p.1066
+8. Tension pneumocephalus — Mt. Fuji sign, 100% O2 / urgent drainage — p.1068-1069
+9. EDH incidence (1%), sex ratio (4:1), MMA arterial source (85%), pterion epicentre (70%) — p.1072
+10. EDH classic triad in <10-27%; no initial LOC in 60%; no lucid interval in 20% (hard) — p.1072-1073
+11. EDH CT: biconvex 84%; crosses dural barriers; limited by sutures (unlike SDH) (hard) — p.1073
+12. EDH surgical criteria: >30cm³ regardless of GCS; non-surgical if all 5 criteria met — p.1073-1074
+13. ASDH surgical criteria: >10mm or MLS >5mm regardless of GCS; ICP monitor GCS <9 (hard) — p.1078
+14. ASDH four-hour rule: Seelig 1981; 30% vs 90% mortality — p.1078
+15. ASDH CT density over time: acute hyperdense → subacute isodense → chronic hypodense; membranes ≈4 days — p.1077
+16. CSDH: flat post-op (2.3% vs 19% recurrence); subdural drain (19%→10%); drain bag 50-80cm below — p.1083-1084
+17. CSDH complications: ICH 0.7-5% (1/3 die); cortical hyperaemia in 60% ≥75yrs (hard) — p.1084
+
+**PDF offset confirmed for §63-64: book page = PDF page + 8**
+
+**Next session:**
+- Continue head-injury: §65+ (not yet extracted — delayed haematomas, ICP monitoring chapters)  
+  OR pivot to peripheral-nerve (17 recalls, thin at 11 SBAs) or spinal-trauma (17 recalls)
+- Run `python3 mine.py stats` to check priorities
+- Pending UI feature: flagged questions clickable to navigate back to that SBA in quiz
