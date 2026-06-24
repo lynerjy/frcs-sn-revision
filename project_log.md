@@ -1433,3 +1433,32 @@ epilepsy-surgery (13)
 2. functional §111-113 (book pp.~1838-1888, PDF ~1830-1880 if offset ~-8) — 30 recalls
 3. vascular-aneurysm §85-89 (book pp.1416-1503, PDF ~1408-1495) — 26 recalls
 4. After Greenberg: TJones → Infographic Guide 2025 → Alleyne/Citow
+
+---
+
+## 2026-06-24 — Session 30: Paeds §16 Primary Spinal Developmental Anomalies (Greenberg pp.280–298)
+
+**Source mined:** Greenberg 10e §16 Primary Spinal Developmental Anomalies, PDF pp.282–300 (book pp.280–298)
+**Topic:** paeds
+
+**5 new SBAs inserted into paeds q:[]:**
+1. MMC outcomes with modern treatment: 85% survive; 80% normal IQ; mental retardation linked to shunt infection; 40-85% ambulatory with bracing; 3-10% normal urinary continence (p.284)
+2. Simultaneous MMC repair + VP shunting: permitted for overt HCP at birth (ventriculomegaly + enlarged OFC + symptoms) — no increased infection rate, shorter hospitalisation; wait ≥3 days if no overt HCP (p.283)
+3. MMC late deterioration: ALWAYS exclude shunt malfunction FIRST before attributing to tethered cord/syringomyelia/Chiari — hydrocephalus can mimic ~anything (p.284)
+4. Tethered cord diagnostic criteria: conus below L2 + filum >2 mm (pathological; normal <1 mm) — pre-op urodynamics strongly recommended (p.292)
+5. Lipomyelomeningocele: lipoma through lumbodorsal fascia → dura → tethered cord; 56% back mass, 32% bladder, 10% foot deformities; surgery outcomes: 19% improve, 75% unchanged, 6% worsen (p.283-285)
+
+**Counts post-session 30:**
+- paeds SBAs: 95 → 100 (+5)
+- Total SBAs: 686 → 691
+- Greenberg manifest: 290 → 295 cards
+
+**Validate:** 527 mismatch baseline unchanged
+
+**Already well-covered in paeds (no need to re-mine):** folic acid, Chiari II associations, MMC closure timing, Chiari II vs I, brainstem symptoms → check shunt first, cutaneous stigmata, MMC level of lesion table
+
+**Next session (autonomous queue):**
+1. Chiari I/II surgical chapter §17 (if not already fully covered) — PDF ~296-320 (book ~294-318)
+2. functional §111-113 (book pp.~1838-1888) — 30 recalls
+3. vascular-aneurysm §85-89 (book pp.1416-1503) — 26 recalls
+4. After Greenberg: TJones → Infographic Guide 2025 → Alleyne/Citow
