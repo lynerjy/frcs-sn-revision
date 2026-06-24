@@ -1341,3 +1341,39 @@ epilepsy-surgery (13)
 3. peripheral-nerve §30–32 (book pp.530–585) — 17 recalls, 11 SBAs, gap ~6
 4. pituitary §8 + §54 (book pp.151–159, ~896+) — 15 recalls, 9 SBAs
 5. epilepsy-surgery §114 (book pp.~1889–1897) — 13 recalls
+
+---
+
+## 2026-06-24 — Session 27: peripheral-nerve §30–32 (Greenberg 10e, book pp.530–585)
+
+**What was done:**
+- Extracted Greenberg §30–32 (PDF pages 532–587, book pages 530–585, offset book = PDF − 2, confirmed)
+- Mined §30 (nerve anatomy, Seddon/Sunderland, brachial plexus), §31 (CTS, UNE, radial nerve, peroneal, meralgia paresthetica), §32 (non-entrapment, brachial plexus injury, TOS)
+- Inserted 10 new SBAs into peripheral-nerve q:[] block in content.js
+- Validate: 527 mismatch baseline unchanged
+- Greenberg total: 278 cards (was 268)
+
+**SBAs written (all from extracted source text):**
+1. CTS management: CTR Grade A recommendation, 75–90% satisfaction, most common failure = incomplete TCL transection (p.550–553)
+2. Guyon's canal types I/II/III: dorsal hand sensation PRESERVED (dorsal cutaneous branch exits 5–8cm proximal to wrist); Type I = all intrinsics + palmar sensory, Type II = motor only, Type III = sensory only (p.558–560)
+3. UNE: simple decompression vs transposition — RCTs show equivalent success, lower complications with simple decompression; results 60% good/excellent, 25% fair, 15% poor (p.557)
+4. Saturday night palsy: spiral groove compression; triceps SPARED (branch exits above spiral groove); C7 radiculopathy = triceps weak (p.559)
+5. Complete brachial plexus injury: flail arm + Horner = 0% spontaneous recovery; Erb's C5+6 = bellhop's tip; Klumpke C8+T1 = claw (p.581–582)
+6. Neuralgic amyotrophy (Parsonage-Turner): pain→weakness pattern, normal paraspinal EMG, recovery 36%/75%/89% at 1/2/3yr (p.570–571)
+7. 24-month denervation rule: most muscles cannot recover after 24 months; exceptions facial + large bulky muscles (p.530)
+8. Meralgia paresthetica: LFCN L2+3, pure sensory, obesity, 91% respond to non-surgical (p.561–562)
+9. Preganglionic brachial plexus avulsion signs: Horner + serratus winging + rhomboid weakness + NORMAL SNAP in anaesthetic territory + pseudomeningocele (p.579–580)
+10. Erb's/Klumpke/complete BBPI: recovery rates (p.582)
+
+**Counts post-session 27:**
+- peripheral-nerve SBAs: 11 → 20 (+9; 10 inserted but 1 was the complete/Klumpke SBA which overlaps with SBA 5 above — counted as 9 net unique)
+- peripheral-nerve SBAs: 20 total
+- Total SBAs: 665 → 674
+
+**PDF offset confirmed:** §30–32: book = PDF − 2
+
+**Next session (autonomous queue):**
+1. pituitary §8 (book pp.151–159, PDF 153–161) + §54 (book pp.~896+) — 15 recalls, 9 SBAs
+2. epilepsy-surgery §114 (book pp.~1889–1897) — 13 recalls, 20 SBAs (already reasonable coverage)
+3. Revisit cranial-anatomy — 36 SBAs but 42 recalls, gap = 6
+4. After Greenberg: TJones (79pp) → Infographic Guide 2025 → Alleyne/Citow
