@@ -1265,3 +1265,44 @@ epilepsy-surgery (13)
   OR pivot to peripheral-nerve (17 recalls, thin at 11 SBAs) or spinal-trauma (17 recalls)
 - Run `python3 mine.py stats` to check priorities
 - Pending UI feature: flagged questions clickable to navigate back to that SBA in quiz
+
+---
+
+## Session 25 — 2026-06-24
+
+**Topic:** Greenberg §69–70: Management of SCI + Occipitoatlantoaxial Injuries
+
+**What was done:**
+- Mined Greenberg §69 (SCI management, pp.1138–1152) + §70 (occipitoatlantoaxial injuries, pp.1153–1172)
+- 13 new Greenberg SBAs inserted into spinal-trauma q:[] block
+- Validated: mismatch count 527 (unchanged)
+- Greenberg total: 259 cards (was 246)
+
+**SBAs written (all from extracted source text):**
+1. Methylprednisolone Level I NOT recommended — no Class I/II benefit, Class I/II/III evidence of harm (p.1140–1141)
+2. MAP 85–90 mmHg first 7 days, dopamine preferred, avoid phenylephrine (p.1139–1140)
+3. DVT prophylaxis Level I: LMWH/rotating beds/adjusted-dose heparin OR low-dose heparin + pneumatic compression; low-dose heparin alone NOT recommended (p.1141)
+4. NEXUS Low-Risk Criteria — Level I/II: radiographic C-spine clearance criteria (p.1141–1142)
+5. CT Level I for obtunded patients; 3-view X-rays NOT recommended if CT available (p.1143)
+6. Early decompression: within 24hrs (up to 36hrs) → improved motor/ASIA scores; plateaus after 24–36hrs (p.1150–1151)
+7. AOD: traction contraindicated, 10% neuro deterioration; halo/sandbags + occipitocervical fusion (p.1155–1156)
+8. Hangman Type IIA: flexion-distraction mechanism; traction contraindicated (accentuates deformity); halo-vest in extension, 95% union (p.1167–1169)
+9. Odontoid Anderson D'Alonzo classification: Type II most common, highest non-union; Type I/II/IIA/III described (p.1171–1172)
+10. Odontoid Type II surgery criteria: age ≥50, displacement ≥5mm, TypeIIA, inability to maintain alignment (p.1173)
+11. C1 fractures: TAL integrity = most important determinant; rule of Spence ≥7mm (inaccurate, not sole criterion); Dickman I → surgery, II → halo (74% heal) (p.1162–1164)
+12. Steele's rule of thirds: dens/space/cord each one-third at C1; explains rarity of neuro deficit in Jefferson fractures (p.1165)
+13. Grisel syndrome + Fielding & Hawkins classification: Type I (TAL intact, soft collar) → Type II (one facet, rigid collar) → Type III/IV (halo) (p.1158–1160)
+14. Occipital condyle fractures Anderson-Montesano: Type I (comminuted/axial), II (basal skull extension), III (avulsion/unstable, 6–8wks immobilisation) (p.1157–1158)
+
+**Counts post-session 25:**
+- spinal-trauma SBAs: 10 → 23 (+13)
+- Total SBAs: 643 → 656
+
+**PDF offset confirmed:** §69–70: book = PDF page + 8
+
+**Next session (autonomous queue):**
+1. neuro-onco-cranial §38–44 (book pp.679–767) — highest recall count (62), gap = 11 SBAs vs recalls
+2. degenerative-spine §81 remaining content (book pp.1327–1351) — 52 recalls, gap = 9
+3. cranial-anatomy §1–2 (book pp.56–89) — 42 recalls
+4. peripheral-nerve §30–32 (book pp.530–585) — 17 recalls, thin at 11 SBAs
+5. pituitary §8 + §54 (book pp.151–159, ~896+) — 15 recalls, only 9 SBAs
