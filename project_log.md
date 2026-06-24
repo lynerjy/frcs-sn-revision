@@ -1462,3 +1462,31 @@ epilepsy-surgery (13)
 2. functional §111-113 (book pp.~1838-1888) — 30 recalls
 3. vascular-aneurysm §85-89 (book pp.1416-1503) — 26 recalls
 4. After Greenberg: TJones → Infographic Guide 2025 → Alleyne/Citow
+
+---
+
+## Session 31 — 2026-06-24
+
+**Source mined:** Greenberg 10e §111-113 Functional/Stereotactic Neurosurgery (PDF 1830-1896, book 1838-1888)
+
+**Topic:** functional (3 new SBAs)
+
+**SBAs written:**
+1. SRS for TGN: dose 70-80 Gy, 4-5 mm isocenter at REZ, no anticoagulation reversal needed, median latency 3 months, 80-96% initial pain relief, 65% pain-free, 10-25% recurrence within 3 years, 20% hypesthesia; can repeat after 4 months (p.1853)
+2. Post-MVD aseptic meningitis: incidence ~20%, culture-negative pleocytosis 3-7 days post-op, responds to LP + steroids; distinguished from bacterial meningitis (0.9%) which is culture-positive (p.1862)
+3. Bilateral cervical cordotomy: Ondine's curse (sleep-induced apnea) in 3% vs 0.3% unilateral; mandates staged approach with respiratory function/CO2 testing after first side (p.1878)
+
+**Key content already covered (21 pre-existing Greenberg functional SBAs):** DBS targets (STN/GPi/VIM/GPi-dystonia/OCD), ITB indications/withdrawal, TGN features/medical/V-division PTR selection/poor-risk PTR, HFS features/treatment/atypical HFS, MVD for TGN outcomes, glossopharyngeal/geniculate neuralgia, cordotomy for unilateral pain, SCS for FBSS/CRPS, DREZ for brachial plexus avulsion
+
+**Counts post-session 31:**
+- functional SBAs: 38 → 41 (+3)
+- Total SBAs: 691 → 694
+- Greenberg manifest: 295 → 298 cards
+
+**Validate:** 527 mismatch baseline unchanged
+
+**Next session (autonomous queue — Greenberg by recall count):**
+1. vascular-aneurysm §85-89 (book pp.1416-1503, PDF ~1408-1495) — 26 recalls; needs SAH management, PHASES score, vasospasm, Hunt-Hess/WFNS/Fisher grades
+2. cranial-anatomy §1-2 (book pp.56-89, PDF ~58-91) — 42 recalls (thin SBA coverage vs recall count)
+3. Chiari §17 (book ~294-318, PDF ~296-320) — paeds sub-topic
+4. After Greenberg: TJones (79pp) → Infographic Guide 2025 → Alleyne/Citow
