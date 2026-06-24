@@ -1377,3 +1377,31 @@ epilepsy-surgery (13)
 2. epilepsy-surgery §114 (book pp.~1889–1897) — 13 recalls, 20 SBAs (already reasonable coverage)
 3. Revisit cranial-anatomy — 36 SBAs but 42 recalls, gap = 6
 4. After Greenberg: TJones (79pp) → Infographic Guide 2025 → Alleyne/Citow
+
+---
+
+## 2026-06-24 — Session 28: Pituitary §8 endocrinology (Greenberg pp.151–159)
+
+**Source mined:** Greenberg 10e §8 Endocrinology, PDF pp.153–161 (book pp.151–159)
+**Topic:** pituitary
+
+**6 new SBAs inserted into pituitary q:[]:**
+1. Corticosteroid equivalences (Table 8.1, p.154): dexamethasone 0.75 mg = hydrocortisone 20 mg = methylprednisolone 4 mg = prednisone 5 mg = cortisone 25 mg
+2. HPA suppression thresholds (p.155): almost certain after >2 weeks high-dose; may persist 1 year after month+ of steroids; unlikely <40 mg prednisone equivalent for <7 days
+3. Addisonian crisis: HC sodium succinate 100 mg IV STAT then 50 mg q6hrs; methylprednisolone explicitly NOT recommended (p.157)
+4. Prolactin control: only anterior pituitary hormone under predominantly INHIBITORY hypothalamic control; dopamine = primary PIF; explains drug-induced hyperprolactinaemia from dopamine antagonists (p.153)
+5. Pituitary embryology: posterior = neural ectoderm (floor 3rd ventricle); anterior = Rathke's pouch (oropharyngeal ectoderm); failure of separation → craniopharyngeal duct → source of recurrent meningitis (p.151)
+6. Stress doses for elective surgery (Table 8.3, p.156): cortisone acetate 50 mg IM pre-op + HC 200 mg IV over 24hrs, then 7-day taper
+
+**Counts post-session 28:**
+- pituitary SBAs: 9 → 15 (+6)
+- Total SBAs: 674 → 680
+- Greenberg manifest total: 278 → 284 cards
+
+**Validate:** 527 mismatch baseline unchanged
+
+**Next session (autonomous queue):**
+1. Pituitary §54 (book pp.~896+, PDF ~888+, book = PDF + 8) — surgical/procedural content
+2. epilepsy-surgery §114 (book pp.~1889–1897, PDF ~1881–1889 if offset = +8) — 13 recalls
+3. cranial-anatomy §gap (42 recalls, need to identify thin chapters)
+4. After Greenberg: TJones (79pp) → Infographic Guide 2025 → Alleyne/Citow
