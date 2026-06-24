@@ -1306,3 +1306,38 @@ epilepsy-surgery (13)
 3. cranial-anatomy §1–2 (book pp.56–89) — 42 recalls
 4. peripheral-nerve §30–32 (book pp.530–585) — 17 recalls, thin at 11 SBAs
 5. pituitary §8 + §54 (book pp.151–159, ~896+) — 15 recalls, only 9 SBAs
+
+---
+
+## 2026-06-24 — Session 26: neuro-onco-cranial §38–45 (Greenberg 10e, book pp.679–767)
+
+**What was done:**
+- Extracted Greenberg §38–45 (PDF pages 681–769, book pages 679–767, offset book = PDF − 2, confirmed)
+- Mined §41 (ependymoma), §43 (medulloblastoma + AT/RT), §45 (schwannoma) for FRCS-relevant content
+- Inserted 9 new SBAs into neuro-onco-cranial q:[] block in content.js
+- Validate: 527 mismatch baseline unchanged (no new errors)
+- Greenberg total: 268 cards (was 259)
+
+**SBAs written (all from extracted source text):**
+1. MYC amplification + residual >1.5cm² → worst outcome in non-WNT/non-SHH group 3 MDB (p.747–750)
+2. Desmoplastic/nodular SHH-TP53-wt in infants = low risk; Gorlin syndrome / PTCH1 germline (p.749–752)
+3. Chang M-staging system: M0 (no CSF/drop mets) → M3 (gross spinal nodules) → M4 (extraneural) (p.746–747)
+4. Vismodegib (SMO inhibitor) for SHH-activated adult MDB with PTCH/SMO mutations (p.747)
+5. Posterior fossa ependymoma: floor of 4th ventricle; CN VI+VII palsy at facial colliculus; "toothpaste" extension through Luschka/Magendie foramina (p.728–729)
+6. Ependymoma XRT benefit: 20–40% → 40–80% 5YS; 2nd most radiosensitive (after MDB) (p.729–730)
+7. PFA vs PFB: PFA = children (median 3yr), H3K27me3 loss, infratentorial, worse prognosis; PFB = adults (median 30yr), better prognosis (p.732–734)
+8. AT/RT: WHO grade 4, SMARCB1/INI1 biallelic inactivation, infants <2yr, poor prognosis (p.754–755)
+9. Schwannoma: Antoni A (compact, Verocay bodies) + Antoni B (loose, hyalinised); S100/SOX10+; NF2 gene 22q12.2 → merlin loss; bilateral VS = NF2 (p.768–769)
+
+**Counts post-session 26:**
+- neuro-onco-cranial SBAs: 51 → 60 (+9)
+- Total SBAs: 656 → 665
+
+**PDF offset confirmed:** §38–45: book = PDF − 2
+
+**Next session (autonomous queue):**
+1. degenerative-spine §81 remaining content (book pp.1327–1351) — 52 recalls, gap ~9
+2. cranial-anatomy §1–2 (book pp.56–89) — 42 recalls, gap ~6
+3. peripheral-nerve §30–32 (book pp.530–585) — 17 recalls, 11 SBAs, gap ~6
+4. pituitary §8 + §54 (book pp.151–159, ~896+) — 15 recalls, 9 SBAs
+5. epilepsy-surgery §114 (book pp.~1889–1897) — 13 recalls
