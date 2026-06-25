@@ -1545,3 +1545,39 @@ Also confirmed: cranial-anatomy §1-2 (book pp.56-89) was already mined in a pri
 1. Neuro-onco-cranial (62 recalls) — check if any thin sub-topics remain in §38-44, especially oligodendroglioma, PCNSL, meningioma grading, NF types
 2. Paeds: Chiari §17 (pp.294-318), NTDs (pp.200-231), paeds tumours (~pp750s) — 46 recalls, 100 SBAs (may be saturated)
 3. Consider: neuro-icu §5 (sodium/osmolality gaps), peripheral-nerve remaining sections
+
+---
+
+## 2026-06-25 — Session 34: Greenberg neuro-onco-cranial §45 VS + §49 PCNSL (2 SBAs)
+
+**Topic:** neuro-onco-cranial (62 recalls, highest priority)
+
+**Pages extracted:** Greenberg PDF 770–840 (book 778–848) — vestibular schwannoma management through CNS lymphoma
+
+**Chapter structure identified in PDF 770–840:**
+- PDF 770–793 (book 778–801): §45 Vestibular schwannoma — clinical, evaluation, Koos grading, management
+- PDF 795–819 (book 803–827): §46 Meningioma — ALREADY MINED [795-819]
+- PDF 819–840 (book 827–848): §47-49 Soft tissue/melanocytic/germ cell/CNS lymphoma
+
+**Gap analysis for neuro-onco-cranial:**
+- VS Koos grading (p.784-785): NOT previously in any SBA → mined
+- PCNSL ghost tumour sign (p.843-845): NOT previously as main SBA topic → mined
+- Germ cell tumour markers: exist only as claude-ai SBAs (kept, not replaced)
+- LCH/Hand-Schüller-Christian triad: only recall note exists; not mined this session (lower frequency)
+
+**SBAs written:**
+1. Koos grading + VS management decision (p.784-785): Grade I (intracanalicular, 0.3cc); II (CPA no brainstem, 0.6cc); III (brainstem surface, 1.8cc); IV (displaces brainstem, 4.2cc). Level III: observation for Koos I/intracanalicular or <2cm without tinnitus; 83% of intracanalicular show no growth; SRS <13 Gy when intervention needed.
+2. PCNSL ghost tumour sign (p.843-845): Rapid complete lesion resolution on steroid pre-treatment = almost diagnostic; steroids must be withheld until biopsy — lympholytic effect renders tissue non-diagnostic. Imaging: 60% hyperdense CT; >90% enhance (homogeneous in immunocompetent, ring-enhancing in AIDS); 50-60% cerebral lobes, 25% deep midline (corpus callosum/basal ganglia), 25% infratentorial; DWI restricted. Prognosis: untreated 1.8-3.3 months, with XRT 10 months.
+
+**Correction:** Initial insertion placed SBAs in spinal-anatomy q:[] block (wrong location). Detected via validate (529 mismatches vs 527 baseline). Fixed by moving to neuro-onco-cranial q:[] block.
+
+**Counts post-session 34:**
+- neuro-onco-cranial SBAs: 60 → 62 (+2)
+- Greenberg manifest: 303 → 305 cards
+- Validate: 527 mismatch baseline unchanged
+
+**Next session (autonomous queue — Greenberg by recall count):**
+1. Continue neuro-onco-cranial gaps: PDF 865-888 (book 873-896) — between manifest entries [841-865] and [888-898]; identify chapter content and FRCS yield
+2. Paeds: Chiari §17 (PDF 294-318), NTDs, paeds tumours (~PDF 750s) — 46 recalls, 100 SBAs already (may be close to saturation)
+3. Vascular-aneurysm: PHASES score, unruptured aneurysm management chapter
+
