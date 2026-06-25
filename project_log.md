@@ -1611,3 +1611,32 @@ Also confirmed: cranial-anatomy §1-2 (book pp.56-89) was already mined in a pri
 
 **Next session:** Mine Greenberg ethics chapter for ethics (36R). Then verify hydrocephalus/neuro-icu/head-injury Greenberg coverage before declaring Greenberg top-10 pass complete. Then move to Infographic Guide 2025 for the same top-10 scan.
 
+
+
+---
+
+## 2026-06-25 — Session 35: Infographic Guide 2025, neuro-onco-cranial (6 SBAs)
+
+**What changed:** First Infographic Guide mining session. Applied top-10 batch cycling rule — neuro-onco-cranial (62R) is the highest-recall topic with zero Infographic Guide coverage → mined first.
+
+**Source:** Infographic Guide to Neurosurgery 2025 (infographic-2025). Full 70pp already extracted to /tmp/infographic_full.txt. Pages mined this session: p25 (IDH-Mutant Gliomas), p26 (IDH-Wild-Type Gliomas), p35 (NF1), p36 (NF2), p39 (Oligodendroglioma), p42 (Pilocytic Astrocytoma).
+
+**SBAs added:** 6 to neuro-onco-cranial q:[]. Topics:
+1. NF2 bilateral VS surgery sequence (remove smaller first → if hearing preserved, address larger; if hearing lost, follow larger conservatively to prevent total deafness) — p36
+2. IDH-mutant grade 2 risk stratification + INDIGO trial (vorasidenib, IDH1/2 inhibitor); low-risk = age ≤40 + GTR → watch and wait; high-risk = RT + PCV/TMZ — p25
+3. GBM tumour-treating fields: TTFields added in adjuvant phase improves median OS to 20.9 months (vs 14.6 months Stupp, vs 12.1 months RT alone) — p26
+4. Oligodendroglioma histology: IDH + 1p/19q; 'fried egg' + 'chicken wire'; seizures 2/3; frontal >50%; CT calcification ~90%; median survival 9–10 years grade 2 — p39
+5. NF1 diagnostic criteria: 17q11.2, 100% penetrance, 1/3000; ≥2/7 criteria; OPG most common CNS tumour; life expectancy ~half — p35
+6. Pilocytic astrocytoma cyst-wall principle: nodule alone sufficient (cyst wall not neoplastic); 95% 5yr and 10yr survival after GTR; BRAF mutations 70–75% — p42
+
+**Counts:** neuro-onco-cranial: 62R SBAs → 68 SBAs (was 62, +6). Validate: 527 mismatches (baseline unchanged).
+
+**Infographic page map (neuro-onco-cranial remaining):** Not yet mined: p21 (GBM), p22 (Hemangioblastomas), p32 (Medulloblastomas), p37 (Occipital Neuralgia — not relevant), p38 (OGM), p43 (Sphenoid Wing Meningioma), p48 (VS already well-covered by Greenberg).
+
+**Next session — Infographic top-10 scan (continue):**
+- neuro-onco-cranial: continue with remaining pages (p21 GBM, p22 Hemangioblastoma, p32 Medulloblastoma, p38 OGM, p43 Sphenoid Wing)
+- degenerative-spine (52R): check Infographic pages (pp51+ spinal content, p51 Ankylosing Spondylitis)
+- paeds (46R): check Infographic for relevant paeds tumour pages
+- cranial-anatomy (42R): check Infographic
+- ethics (36R): not in Infographic; still need Greenberg ethics mining
+After completing Infographic top-10: move to Alleyne & Citow.
