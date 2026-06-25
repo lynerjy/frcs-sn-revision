@@ -1640,3 +1640,67 @@ Also confirmed: cranial-anatomy §1-2 (book pp.56-89) was already mined in a pri
 - cranial-anatomy (42R): check Infographic
 - ethics (36R): not in Infographic; still need Greenberg ethics mining
 After completing Infographic top-10: move to Alleyne & Citow.
+
+
+---
+
+## 2026-06-25 — Session 35 cont'd: Infographic top-10 pass complete (6 more SBAs)
+
+**What changed:** Completed Infographic Guide 2025 top-10 pass. After establishing neuro-onco-cranial coverage in the first sub-session (6 SBAs), added 1 SBA each to the remaining 6 zero-coverage top-10 topics.
+
+**SBAs added this sub-session:**
+- degenerative-spine: Lumbar DDD most common levels L4-5/L5-S1 + cauda equina red flags — p57
+- paeds: DIPG — no resection, RT 54-60Gy over 6wk, median 9mo, 2yr 10%, 5yr <1%, leading cause childhood brain tumour deaths — p16
+- functional: TGN — SCA 80% offending vessel, 75% fail medical therapy → MVD (fit patients), percutaneous/SRS for unfit — p46
+- hydrocephalus: Colloid cyst — pathognomonic lateral-only hydrocephalus (bilateral foramina of Monro obstruction), T1 bright/T2 iso/no DWI restriction, complete resection curative — p13
+- vascular-aneurysm: dAVF — 15% of cerebral malformations, 61-66% female; benign symptoms (tinnitus, eye) annual haem 1.4%/mortality 0% → conservative; aggressive symptoms annual haem 7.4%/mortality 3.8% → urgent; Borden/Cognard classification — p17
+- neuro-icu: Malignant MCA infarction — hemicraniectomy for cerebral oedema; avoid hypotension acutely; avoid hypertension in recovery; tPA ≤3-4.5h; thrombectomy ≤6-24h (DAWN) — p29
+
+**Infographic top-10 pass status:**
+- neuro-onco-cranial ✓, degenerative-spine ✓, paeds ✓, functional ✓, vascular-aneurysm ✓, hydrocephalus ✓, neuro-icu ✓
+- cranial-anatomy: no Infographic content → SKIP
+- ethics: no Infographic content → SKIP  
+- head-injury: no Infographic content → SKIP
+- **PASS COMPLETE** (7/10 topics covered; 3 skipped due to absent source content)
+
+**Validate:** 527 mismatches (baseline unchanged). 12 total infographic-2025 SBAs.
+
+**Next:** Alleyne & Citow Board Review (3rd ed, alleyne-board-review) — same top-10 scan. Zero Alleyne SBAs across all topics currently. Book is Q&A format (434pp). Section 1 = Neurosurgery (pp1-55 book pages). Mine the explanations in 1C for relevant top-10 topic content.
+
+
+---
+
+## 2026-06-25 — Session 35 cont'd 2: Alleyne & Citow top-10 pass (11 SBAs)
+
+**What changed:** Completed Alleyne & Citow Board Review (3rd ed) top-10 pass. Extracted and read Section 1C (Neurosurgery Answers and Explanations, book pp29–35) and Section 7C (Critical Care, book p401).
+
+**SBAs added:**
+- neuro-onco-cranial (2): Q12 brainstem glioma initial symptoms = cranial neuropathies (CN VI/VII most common; headache/N&V/papilloedema occur later) — p29; Q58 trilateral retinoblastoma = bilateral retinoblastoma + pineoblastoma (pineal = photoreceptor organ) — p35
+- degenerative-spine (1): Q56 lateral recess stenosis — superior articular facet hypertrophy is most common cause; SAF lies anterolateral to IAF of level above, forms posterior wall of lateral recess — p35
+- paeds (2): Q29 sagittal synostosis = most common (up to 50%), causes scaphocephaly; metopic → trigonocephaly, coronal → anterior plagiocephaly — p32; Q27 IVH preterm vs full-term: preterm = germinal matrix (involutes by 43wk); full-term = choroid plexus — p31
+- cranial-anatomy (1): Q60 foramen magnum meningioma — clockwise quadriparesis (ipsilateral arm → leg → contralateral leg → arm) is pathognomonic — p35
+- functional (1): Q21 uncinate seizures — mesial temporal lobe → olfactory hallucinations; insula → gustatory; superoposterior temporal → vertiginous; occipital → visual — p31
+- vascular-aneurysm (1): Q32-36 aneurysm presentations — PComA = pupil-involving CN III palsy; AComA = DI (hypothalamus); ICA cavernous = CCF/exophthalmos; MCA = seizures; ophthalmic = inferior nasal field defect — p32
+- hydrocephalus (1): Q19 choroid plexus papilloma — 4 mechanisms of hydrocephalus: overproduction of CSF, obstruction of CSF pathways, haemorrhage-induced arachnoiditis blocking reabsorption, tumour bulk expansion — p30
+- neuro-icu (1): Q139 Cushing's reflex = rise in systemic arterial pressure due to increased sympathetic activity in response to ICP; Cushing's triad = hypertension + bradycardia + abnormal breathing; reflex = specifically the hypertensive component — p401
+- head-injury (1): Q31 coup vs contrecoup — coup = cerebral convexities, least common; contrecoup = rotational force, frontal/temporal poles against bony prominences, more common — p32
+
+**Ethics:** No relevant Alleyne content in Section 1 or Section 7. Skip for Alleyne pass.
+
+**Alleyne top-10 pass status:**
+- neuro-onco-cranial ✓, degenerative-spine ✓, paeds ✓, cranial-anatomy ✓, functional ✓, vascular-aneurysm ✓, hydrocephalus ✓, neuro-icu ✓, head-injury ✓
+- ethics: absent from Alleyne neurosurgery sections → SKIP
+- **PASS COMPLETE** (9/10 topics covered; ethics skipped)
+
+**Counts:** +11 SBAs. Validate: 527 mismatches (baseline unchanged). Pushed to GitHub Pages.
+
+**Textbook top-10 pass summary (as of this session):**
+- Greenberg 10e: COMPLETE (ethics absent)
+- TJones (Aberdeen): FULLY MINED (all 79pp done)
+- Infographic Guide 2025: COMPLETE (ethics + cranial-anatomy + head-injury absent from source)
+- Alleyne & Citow 3e: COMPLETE (ethics absent)
+- **Next textbook: Birinyi / Harbaugh** — apply same top-10 scan. Currently 0 SBAs from this source.
+
+**After Birinyi/Harbaugh pass:** Expand to topics 11–20 across all textbooks.
+
+**Open question:** Ethics (36R) has zero textbook coverage from any source because it doesn't appear in Greenberg, Infographic, or Alleyne neurosurgery sections. Need to identify which source covers consent/mental capacity/ethics for neurosurgery — possibly TJones Aberdeen notes (already fully mined), or may need to write claude-ai SBAs from GMC/BMA guidelines.

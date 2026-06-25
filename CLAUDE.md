@@ -39,21 +39,30 @@ Greenberg must be mined by **recall-bank frequency**, not by whatever claude-ai 
 **CARDINAL RULE — TOP-N BATCH CYCLING (N=10, updated 2026-06-25):**
 
 Mine textbooks in this exact sequence:
-1. For each textbook (Greenberg → Infographic → Alleyne/Citow → ...), scan the **top 10 recall topics** in order.
+1. For each textbook (Greenberg → TJones → Infographic → Alleyne/Citow → Birinyi/Harbaugh), scan the **top 10 recall topics** in order.
 2. For each topic: if it has **zero** content from this textbook → mine it. If it has **any** content → skip.
 3. Complete the full top-10 pass for ALL textbooks before expanding to topics 11–20.
 
 **Top 10 topics by recall count (RECALL array only — matches quiz site NR badges):**
-1. neuro-onco-cranial (62R) — has Greenberg → skip
-2. degenerative-spine (52R) — has Greenberg → skip
-3. paeds (46R) — has Greenberg → skip
-4. cranial-anatomy (42R) — has Greenberg → skip
-5. **ethics (36R) — 0 Greenberg → CURRENT TARGET**
-6. functional (30R) — has Greenberg → skip
-7. vascular-aneurysm (26R) — has Greenberg → skip
-8. hydrocephalus (24R) — verify Greenberg coverage
-9. neuro-icu (22R) — verify Greenberg coverage
-10. head-injury (19R) — verify Greenberg coverage
+1. neuro-onco-cranial (62R) — all textbooks done ✓
+2. degenerative-spine (52R) — all textbooks done ✓
+3. paeds (46R) — all textbooks done ✓
+4. cranial-anatomy (42R) — all textbooks done ✓ (absent from Infographic; foramen magnum clockwise from Alleyne)
+5. ethics (36R) — absent from ALL textbooks; needs separate source (GMC/BMA guidelines or TJones)
+6. functional (30R) — all textbooks done ✓
+7. vascular-aneurysm (26R) — all textbooks done ✓
+8. hydrocephalus (24R) — all textbooks done ✓
+9. neuro-icu (22R) — all textbooks done ✓
+10. head-injury (19R) — all textbooks done ✓
+
+**CURRENT NEXT TARGET: Birinyi / Harbaugh — apply top-10 scan. Then expand to topics 11–20.**
+
+**Textbook top-10 pass status (updated 2026-06-25):**
+- Greenberg 10e: COMPLETE (ethics absent from Greenberg)
+- TJones (Aberdeen): FULLY MINED (all 79pp done)
+- Infographic Guide 2025: COMPLETE (ethics + cranial-anatomy + head-injury absent)
+- Alleyne & Citow 3e: COMPLETE (ethics absent; 11 SBAs added)
+- Birinyi / Harbaugh: **NEXT** — 0 SBAs currently
 
 **What went wrong (sessions 5 and 34):** Continuing to mine gaps in topics that already have textbook coverage (e.g. more neuro-onco Greenberg when neuro-onco already has 62 SBAs matching 87 recalls). The fix: always run this checklist before mining.
 
