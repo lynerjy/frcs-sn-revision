@@ -1517,3 +1517,31 @@ epilepsy-surgery (13)
 1. cranial-anatomy §1-2 (book pp.56-89, PDF ~54-87, offset PDF = book - 2) — 42 recalls (only 8 Korky-Q, low coverage relative to recall count)
 2. Paeds: Chiari §17, craniosynostosis, NTDs — 46 recalls total
 3. After Greenberg: TJones (79pp) → Infographic Guide 2025 → Alleyne/Citow
+
+---
+
+## Session 33 — 2026-06-25
+
+**Source mined:** Greenberg 10e §82 Adult Spinal Deformity and Degenerative Scoliosis (PDF 1345–1362, book 1353–1370)
+
+**Topic:** degenerative-spine (2 new SBAs)
+
+**Context:** Gap identified between previously mined §81 (book 1327–1353) and §82 merger region. §79 (Spine Measurements) and §80 (Idiopathic Scoliosis) at PDF 1303–1319 were NOT mined — low yield for FRCS SN. §82 adult spinal deformity at PDF 1345–1362 mined for high-yield spinopelvic parameters and osteotomy classification.
+
+Also confirmed: cranial-anatomy §1-2 (book pp.56-89) was already mined in a prior session (8 Greenberg Korky-Q SBAs confirmed: pterion, hand knob, Brodmann areas, AC-PC line, PICA, PPTA, Adamkiewicz, cavernous sinus CN VI).
+
+**SBAs written:**
+1. Schwab spinal osteotomy classification (p.1356–1358): Grade 1 = SPO (5–10°); Grade 2 = Ponte (10–12°); Grade 3 = PSO (30–40°, ~3L blood loss, 23% PJK); Grade 4 = PSO + disc; Grade 5 = VCR; Grade 6 = multi-level VCR. Lordosis by technique: TLIF/PLIF ≤2°, LLIF 1°, ALIF 6°, SPO 5–10°, PSO 30–40°.
+2. Spinopelvic parameters / flatback syndrome (p.1355–1357): PI-LL >9° = flatback; PT >20° = compensation; LL increase formula = (PI–LL–9) + (PT–20). SRS-Schwab modifiers: PI-LL 0-9°=0, 10-20°=+, >20°=++; PT <20°=0, 20-30°=+, >30°=++.
+
+**Counts post-session 33:**
+- degenerative-spine SBAs: 43 → 45 (+2)
+- Total SBAs: 697 → 699
+- Greenberg manifest: 301 → 303 cards
+
+**Validate:** 527 mismatch baseline unchanged
+
+**Next session (autonomous queue — Greenberg by recall count):**
+1. Neuro-onco-cranial (62 recalls) — check if any thin sub-topics remain in §38-44, especially oligodendroglioma, PCNSL, meningioma grading, NF types
+2. Paeds: Chiari §17 (pp.294-318), NTDs (pp.200-231), paeds tumours (~pp750s) — 46 recalls, 100 SBAs (may be saturated)
+3. Consider: neuro-icu §5 (sodium/osmolality gaps), peripheral-nerve remaining sections
