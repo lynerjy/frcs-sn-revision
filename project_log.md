@@ -1490,3 +1490,30 @@ epilepsy-surgery (13)
 2. cranial-anatomy §1-2 (book pp.56-89, PDF ~58-91) — 42 recalls (thin SBA coverage vs recall count)
 3. Chiari §17 (book ~294-318, PDF ~296-320) — paeds sub-topic
 4. After Greenberg: TJones (79pp) → Infographic Guide 2025 → Alleyne/Citow
+
+---
+
+## Session 32 — 2026-06-24
+
+**Source mined:** Greenberg 10e §85-87 Vascular/Aneurysm (book pp.1424–1465, gap pages for rebleeding §86.2, vasospasm management §86.5.7, ISAT §87.7.5)
+
+**Topic:** vascular-aneurysm (3 new SBAs)
+
+**Context:** 28 Greenberg SBAs already existed for this topic (pages 1417–1423, 1435–1443, 1453–1463, 1474–1482, 1488–1498). Session 32 targeted uncovered gaps: rebleeding natural history, vasospasm Level I/II treatment guidelines, and ISAT results with clip vs coil decision factors.
+
+**SBAs written:**
+1. Rebleeding natural history (p.1437–1438): Day 1 peak 4–13.6%; >1/3 within 3h; 1.5%/day for 13 days thereafter; 15–20% within 14d; 50% within 6 months; ~3%/yr with 2%/yr mortality. Risk factors: female, high H&H, large aneurysm, BP >160. Antifibrinolytic for unavoidable delay: tranexamic acid 1g IV then 1g q6h, max 72h (Level II).
+2. Vasospasm management guidelines (p.1447): Level I = euvolemia + induced HTN ("hemodynamic augmentation" — replaces "triple-H"). Level II = angioplasty ± IA vasodilator if not responding in 6h. Nimodipine does NOT reverse vasospasm but improves outcome in survivors.
+3. ISAT + clip vs coil (p.1459–1460): ISAT 2143 patients, stopped early. 1-year poor outcome coiling 24% vs clipping 31% (7% abs reduction). Rebleeding coiling 2.6% vs clipping 1.0%. Complete occlusion clipping 82% vs coiling 66%. Retreatment coiling 15.1% vs clipping 4.2%. Level B: coiling should be considered for technically amenable ruptured aneurysms. Coiling preferred (Level C): >70yo, WFNS IV/V, basilar apex. Clipping preferred (Level C): MCA + large IPH (>50ml); complete 3rd nerve palsy (6/7 vs 2/6).
+
+**Counts post-session 32:**
+- vascular-aneurysm SBAs: 51 → 54 (+3)
+- Total SBAs: 694 → 697
+- Greenberg manifest: 298 → 301 cards
+
+**Validate:** 527 mismatch baseline unchanged
+
+**Next session (autonomous queue — Greenberg by recall count):**
+1. cranial-anatomy §1-2 (book pp.56-89, PDF ~54-87, offset PDF = book - 2) — 42 recalls (only 8 Korky-Q, low coverage relative to recall count)
+2. Paeds: Chiari §17, craniosynostosis, NTDs — 46 recalls total
+3. After Greenberg: TJones (79pp) → Infographic Guide 2025 → Alleyne/Citow
