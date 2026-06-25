@@ -36,20 +36,26 @@ Policy changed: do NOT rewrite or replace claude-ai SBAs when mining a real sour
 
 Greenberg must be mined by **recall-bank frequency**, not by whatever claude-ai SBAs happen to exist.
 
-**What went wrong in session 5 (2026-06-12):** All 11 Greenberg sessions were driven by "which page verifies this claude-ai SBA" rather than "which topic has the most recalls." Paediatric neurosurgery (46 recalls — 3rd highest) was never touched. This must not happen again.
+**CARDINAL RULE — TOP-N BATCH CYCLING (N=10, updated 2026-06-25):**
 
-**Rule for every Greenberg mining session:**
-1. Run `python3 mine.py stats` and check which topics are thinnest relative to their recall count.
-2. Look up the corresponding Greenberg 10e chapter for that topic (use the index or table of contents).
-3. Mine that chapter. Do not mine a different chapter because it happens to relate to an existing claude-ai SBA.
-4. Record the pages and card count with `python3 mine.py done greenberg <pages> <N>`.
+Mine textbooks in this exact sequence:
+1. For each textbook (Greenberg → Infographic → Alleyne/Citow → ...), scan the **top 10 recall topics** in order.
+2. For each topic: if it has **zero** content from this textbook → mine it. If it has **any** content → skip.
+3. Complete the full top-10 pass for ALL textbooks before expanding to topics 11–20.
 
-**Priority order for remaining Greenberg chapters (by recall count):**
-1. Paediatric neurosurgery (46 recalls) — craniosynostosis ~pp1140s, NTDs ~pp200s, paeds tumours ~pp750s
-2. Neuro-oncology cranial (62 recalls) — already partially covered; check thin sub-topics
-3. Degenerative spine (52 recalls) — partially covered pp659-680; check what remains
-4. Vascular aneurysm (26 recalls) — check PHASES, unruptured management chapters
-5. Carotid (thin topic, 2 SBAs) — carotid endarterectomy chapter
+**Top 10 topics by recall count (RECALL array only — matches quiz site NR badges):**
+1. neuro-onco-cranial (62R) — has Greenberg → skip
+2. degenerative-spine (52R) — has Greenberg → skip
+3. paeds (46R) — has Greenberg → skip
+4. cranial-anatomy (42R) — has Greenberg → skip
+5. **ethics (36R) — 0 Greenberg → CURRENT TARGET**
+6. functional (30R) — has Greenberg → skip
+7. vascular-aneurysm (26R) — has Greenberg → skip
+8. hydrocephalus (24R) — verify Greenberg coverage
+9. neuro-icu (22R) — verify Greenberg coverage
+10. head-injury (19R) — verify Greenberg coverage
+
+**What went wrong (sessions 5 and 34):** Continuing to mine gaps in topics that already have textbook coverage (e.g. more neuro-onco Greenberg when neuro-onco already has 62 SBAs matching 87 recalls). The fix: always run this checklist before mining.
 
 ---
 

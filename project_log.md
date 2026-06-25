@@ -1581,3 +1581,33 @@ Also confirmed: cranial-anatomy §1-2 (book pp.56-89) was already mined in a pri
 2. Paeds: Chiari §17 (PDF 294-318), NTDs, paeds tumours (~PDF 750s) — 46 recalls, 100 SBAs already (may be close to saturation)
 3. Vascular-aneurysm: PHASES score, unruptured aneurysm management chapter
 
+
+---
+
+## 2026-06-25 — Priority rule fix (no SBAs added)
+
+**What changed:** No mining this sub-session. Identified and fixed a repeated violation of the textbook cycling rule.
+
+**Violation identified:** Session 34 continued mining neuro-onco-cranial (already 62 SBAs vs 62 recalls — saturated) instead of moving to ethics. Root cause: the memory file had an incomplete priority table (jumped from functional→epilepsy-surgery, skipping 8 topics), and the rule description was too vague to catch the error on context reload.
+
+**Fixes applied:**
+1. `feedback_frcs_mining_priority.md` (global memory) — full rewrite with N=10 batch cycling rule, complete top-10 table, step-by-step checklist, current state
+2. `MEMORY.md` — pointer line updated to be alarming and include the violation pattern explicitly
+3. `CLAUDE.md` (project) — old incomplete priority list replaced with full top-10 table using quiz-site NR counts
+
+**Correct priority counts:** RECALL array only (= quiz site NR badge). Do NOT add rit/rpn entries.
+
+**Full priority table (top 10):**
+1. neuro-onco-cranial (62R) → has Greenberg → skip
+2. degenerative-spine (52R) → has Greenberg → skip
+3. paeds (46R) → has Greenberg → skip
+4. cranial-anatomy (42R) → has Greenberg → skip
+5. **ethics (36R) → 0 Greenberg → CURRENT TARGET**
+6. functional (30R) → has Greenberg → skip
+7. vascular-aneurysm (26R) → has Greenberg → skip
+8. hydrocephalus (24R) → verify Greenberg coverage
+9. neuro-icu (22R) → verify Greenberg coverage
+10. head-injury (19R) → verify Greenberg coverage
+
+**Next session:** Mine Greenberg ethics chapter for ethics (36R). Then verify hydrocephalus/neuro-icu/head-injury Greenberg coverage before declaring Greenberg top-10 pass complete. Then move to Infographic Guide 2025 for the same top-10 scan.
+
