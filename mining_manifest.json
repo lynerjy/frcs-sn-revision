@@ -1059,6 +1059,22 @@
           "cards": 1
         }
       ]
+    },
+    "alleyne-board-review": {
+      "pages_done": [
+        [
+          29,
+          29
+        ]
+      ],
+      "cards_added": 11,
+      "sessions": [
+        {
+          "date": "2026-06-25",
+          "pages": "29-29",
+          "cards": 11
+        }
+      ]
     }
   },
   "sessions": []
