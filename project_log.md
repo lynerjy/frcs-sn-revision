@@ -1704,3 +1704,50 @@ After completing Infographic top-10: move to Alleyne & Citow.
 **After Birinyi/Harbaugh pass:** Expand to topics 11–20 across all textbooks.
 
 **Open question:** Ethics (36R) has zero textbook coverage from any source because it doesn't appear in Greenberg, Infographic, or Alleyne neurosurgery sections. Need to identify which source covers consent/mental capacity/ethics for neurosurgery — possibly TJones Aberdeen notes (already fully mined), or may need to write claude-ai SBAs from GMC/BMA guidelines.
+
+---
+
+## 2026-06-27 — Infographic expansion to ≥10 SBAs/topic + block-fix
+
+### What was fixed
+
+**Wrong-block insertion (7 SBAs):** The previous session's Python insertion script used `rfind` on the short anchor `topic:"neuro-onco-cranial"},\n]},`. That pattern appears twice in the file — once at the correct end of the neuro-onco-cranial q:[] block, and once at the end of the spinal-anatomy block where a TJones cross-tag SBA happened to be the last entry. rfind found the spinal-anatomy occurrence (later in file) and inserted there. Fix: rewrote the Python script to use a unique long-form anchor (Alleyne trilateral retinoblastoma SBA text), and correctly extracted and re-inserted the 7 SBAs. Mismatch count returned to 527 baseline.
+
+**Lesson recorded:** Never use short topic-tag anchors; always use a long, unique string from the actual SBA content. The 527 TJones cross-block SBAs create false anchors throughout the file.
+
+### What was added — Infographic expansion
+
+Goal: reach ≥10 Infographic SBAs per top-10 topic (previously 1–6/topic).
+
+Added 34 Infographic SBAs total (7 neuro-onco from fix + 27 new):
+
+| Topic | Infographic count before | After |
+|---|---|---|
+| neuro-onco-cranial | 6 (some misplaced) | 13 ✓ |
+| degenerative-spine | 6 | 10 ✓ |
+| paeds | 6 | 10 ✓ |
+| functional | 6 | 10 ✓ |
+| vascular-aneurysm | 4 | 10 ✓ |
+| hydrocephalus | 6 | 10 ✓ |
+| neuro-icu | 5 | 10 ✓ |
+| cranial-anatomy | 0 | 0 (absent from Infographic) |
+| head-injury | 0 | 0 (absent from Infographic) |
+
+Source pages used this session: p2, p3, p4, p5, p6, p7, p8, p9, p11, p14, p16, p20, p21, p22, p23, p27, p32, p34, p35, p36, p37, p38, p42, p48, p49 of Infographic Guide to Neurosurgery 2025.
+
+### Current status
+
+**Infographic pass: COMPLETE** (7/9 topics ≥10 SBAs; cranial-anatomy and head-injury absent from Infographic as expected).
+
+**Alleyne & Citow pass: NEEDS EXPANSION** — currently 1–2 SBAs per topic, need ≥10 each. Section 1C (Neurosurgery Answers) was being read at the pause point (pp46-57 read, covering cisterns, synostoses, fracture mechanisms, HFS anatomy, meningioma recurrence, IVH in preterm vs full-term). Alleyne section structure:
+- 1C (Neurosurgery Answers): pp46-65 — Q12-Q168 answers
+- 5C (Neuropathology Answers): pp251-293 — neuro-onco/paeds content
+- 7A/7C (Clinical Skills/Critical Care): pp368-402 — neuro-icu/head-injury content
+- 3C (Neuroanatomy Answers): pp140-168 — cranial-anatomy content
+
+**Next steps:**
+1. Resume Alleyne expansion — read Sections 1C (cont'd), 3C, 5C, 7C to get ≥10 SBAs per topic from Alleyne
+2. After Alleyne: Birinyi/Harbaugh top-10 pass
+3. After all 5 textbooks at ≥10/topic: expand to topics 11–20
+
+**Commit:** 2d0f0ba — pushed to main
