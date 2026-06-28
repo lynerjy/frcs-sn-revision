@@ -1751,3 +1751,35 @@ Source pages used this session: p2, p3, p4, p5, p6, p7, p8, p9, p11, p14, p16, p
 3. After all 5 textbooks at ≥10/topic: expand to topics 11–20
 
 **Commit:** 2d0f0ba — pushed to main
+
+---
+
+### 2026-06-28 — Bugfix session: content.js parse failure
+
+**Problem:** App completely blank on both localhost and GitHub Pages. Browser console showed:
+- `content.js:199 Uncaught SyntaxError: Unexpected token '{'`
+- `(index):485 Uncaught ReferenceError: RECALL is not defined`
+
+**Root cause:** The Infographic expansion session (2026-06-27, commit 2d0f0ba) introduced two classes of comma errors via its Python insertion script, across 5 topic blocks (vascular-aneurysm, hydrocephalus, paeds, neuro-icu, functional):
+
+1. **Missing commas** — `}` at end of line with no comma, followed by `{` on next line. JavaScript parse error: `Unexpected token '{'`. This is what actually broke the app — content.js failed to parse entirely, so `RECALL` was never defined and nothing loaded. 5 instances fixed.
+
+2. **Double commas** — `},,` at end of the last SBA in some blocks. Creates sparse array holes. 5 instances fixed (these were a separate symptom, not the fatal one).
+
+**Commits this session:**
+- `7cf746b` — first `},` fix (vascular-aneurysm)
+- `40137cc` — 4 remaining `},,` fixes (hydrocephalus, paeds, neuro-icu, functional)
+- `a68fd22` — added `DOUBLE-COMMA` check to `mine.py validate` (fatal gate)
+- `26dde7e` — fixed 5 missing-comma gaps (`}` → `{` with no separator)
+- `deb1568` — added `MISSING-COMMA` check to `mine.py validate` (fatal gate)
+
+**mine.py validate now catches (fatal, blocks commits):**
+- `,,` anywhere in file → DOUBLE-COMMA SYNTAX ERROR
+- `}` line followed by `{` line → MISSING-COMMA SYNTAX ERROR
+
+**App state:** Fully restored. No content added this session.
+
+**Next steps (unchanged from previous session):**
+1. Resume Alleyne & Citow expansion — Sections 1C (cont'd), 3C, 5C, 7C — target ≥10 SBAs/topic
+2. After Alleyne: Birinyi/Harbaugh top-10 pass
+3. After all 5 textbooks at ≥10/topic: expand to topics 11–20
