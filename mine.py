@@ -805,6 +805,20 @@ def validate_content_js():
             + ("" if len(misplaced) <= 10 else f"\n  ... and {len(misplaced)-10} more")
         )
 
+    # Check for double-comma array holes (e.g. },,) — these create undefined
+    # elements that crash SBA rendering at runtime.
+    double_comma_lines = [
+        f"  line {i+1}: {line.rstrip()[:100]}"
+        for i, line in enumerate(lines)
+        if ',,' in line
+    ]
+    if double_comma_lines:
+        errors.append(
+            f"DOUBLE-COMMA SYNTAX ERROR — {len(double_comma_lines)} line(s) contain ',,' "
+            f"which creates undefined array holes and will crash the app:\n"
+            + "\n".join(double_comma_lines[:5])
+        )
+
     return errors
 
 
@@ -1112,7 +1126,7 @@ def cmd_validate(args):
     # - stem/opts/ans structural errors: always fatal
     # - ref warnings: informational only, not a commit gate
     mismatch_errors   = [e for e in errors if "BLOCK/TOPIC MISMATCH" in e]
-    structural_errors = [e for e in errors if any(k in e for k in ("stem/opts", "stem/ans", "q/a mismatch", "LEARN entries missing"))]
+    structural_errors = [e for e in errors if any(k in e for k in ("stem/opts", "stem/ans", "q/a mismatch", "LEARN entries missing", "DOUBLE-COMMA"))]
     ref_warnings      = [e for e in errors if e not in mismatch_errors and e not in structural_errors]
 
     mismatch_count = 0
