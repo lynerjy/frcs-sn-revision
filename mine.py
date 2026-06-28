@@ -819,6 +819,21 @@ def validate_content_js():
             + "\n".join(double_comma_lines[:5])
         )
 
+    # Check for missing comma between adjacent SBA/card objects.
+    # Pattern: line ending with } immediately followed by line starting with {
+    # — JavaScript parse error ("Unexpected token '{'").
+    missing_comma_lines = [
+        f"  line {i+1}: ...{lines[i].rstrip()[-60:]}"
+        for i in range(len(lines) - 1)
+        if lines[i].rstrip().endswith('}') and lines[i+1].strip().startswith('{')
+    ]
+    if missing_comma_lines:
+        errors.append(
+            f"MISSING-COMMA SYNTAX ERROR — {len(missing_comma_lines)} adjacent object(s) "
+            f"lack a separating comma and will crash JS parse:\n"
+            + "\n".join(missing_comma_lines[:5])
+        )
+
     return errors
 
 
