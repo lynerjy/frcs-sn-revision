@@ -1823,3 +1823,32 @@ Source pages used this session: p2, p3, p4, p5, p6, p7, p8, p9, p11, p14, p16, p
 1. Continue A&C — next batch is Section 2C (Clinical Neurology, pp.84–109) or Section 3C (Neuroanatomy, pp.140–168)
 2. After A&C at ≥50 SBAs: Shaya top-10 pass
 3. Then Birinyi/Harbaugh
+
+---
+
+## 2026-06-29 (continued) — A&C Section 2C mined: 16 SBAs from pp.84–109
+
+### What was mined
+- A&C Section 2C (Clinical Neurology answers, pp.84–109)
+- 16 SBAs sourced from extracted text only (per CARDINAL RULE)
+- A&C running total: 30 → 46 SBAs (from 434pp)
+- Total SBAs: 804 → 820
+
+### SBAs by topic
+- cranial-anatomy (+5): INO/nystagmus type classification (bilateral INO = MS, downbeat = cervicomedullary, bobbing = pons, seesaw = parasellar); Horner pharmacology (cocaine confirms, hydroxyamphetamine fails = 3rd-order postganglionic); diabetic CN3 (painful + pupil-sparing + centre infarction); Adie's tonic pupil (ciliary ganglion degeneration, 0.1% pilocarpine denervation hypersensitivity); Gerstmann syndrome (dominant parietal — finger agnosia + left-right confusion + acalculia + agraphia)
+- vascular-ich (+1): Wallenberg syndrome — IPSILATERAL Horner's (not contralateral; classic exam trap)
+- carotid (+1): carotid dissection — CN palsies via extracranial vasa nervorum (dysgeusia, CN XII weakness, Horner's) without intracranial extension
+- epilepsy-surgery (+2): 3Hz spike-and-wave = absence seizures; AED half-lives (valproate 8h shortest → phenobarbital 96h longest)
+- peripheral-nerve (+4): Eaton-Lambert (anti-VGCC, incrementing EMG, men 5:1, small-cell); MG + thymoma (older 50-60, male predominance); myotonic dystrophy congenital form always maternal; subscapular nerve (posterior cord → teres major + subscapularis)
+- functional (+1): Huntington chromosome 4 short arm, decreased GABA + acetylcholine in striatum
+- neurophysiology (+2): EMG fibrillation (destruction, 1-5ms, positive sharp waves, 10-25 days) vs fasciculation (irritability, 3-5 phases); sleep stages (stage 2 = K complexes, stage 4 = somnambulism, REM = desynchronisation)
+
+### Tech note
+- One missing comma (pre-existing SBA at line 907 in cranial-anatomy block had no trailing comma after previous session's insertions) — fixed before commit
+- mine.py validate baseline 527 unchanged
+
+### What's next
+1. Continue A&C — Section 3C (Neuroanatomy pp.140–168): cranial anatomy, peripheral nerve anatomy
+2. Section 5C (Neuropathology pp.251–293): neuropathology, paeds
+3. Section 7C (Critical Care pp.385–402): neuro-icu
+4. After A&C reaches ≥60 SBAs: begin Shaya top-10 pass (0 SBAs from 256pp)
