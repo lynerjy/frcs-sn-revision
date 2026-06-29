@@ -26,6 +26,24 @@ ref:"cerebral-physiology.pdf p6" // Aberdeen PDF: filename + page
 
 No page number = not acceptable. No source = not acceptable.
 
+### Q&A book mining — variation, not verbatim
+
+When the source is a Q&A / MCQ board review book (Alleyne/Citow, Shaya, Birinyi, Harbaugh, etc.), do **not** copy questions verbatim. Instead:
+
+1. Extract the source text (`mine.py extract <id> <pages>`) to read the questions, answer keys, and explanations.
+2. Identify the underlying fact being tested.
+3. Rewrite as a **new FRCS-style 5-option clinical scenario SBA** that tests the same knowledge.
+   - The stem should be a clinical presentation or scenario (not a direct definition question).
+   - Distractors should be plausible, not trivially wrong.
+   - The explanation must be grounded in the extracted source text — quote it in your working before writing.
+4. The `ref` must cite the source book and page number as extracted.
+
+**Why variations:** (a) the source books are US board review format — different style from FRCS SN; (b) seeing the same fact in a different framing is better exam prep; (c) copyright.
+
+The factual content (correct answer, explanation) must still be traceable to the extracted source page — no invention allowed.
+
+---
+
 ### claude-ai SBAs — keep, don't replace
 
 Policy changed: do NOT rewrite or replace claude-ai SBAs when mining a real source. Keep them. Only correct a claude-ai SBA if the source you just read clearly contradicts it. They are displayed with an amber ⚠ AI warning in the app and can be toggled off in Sources.
@@ -55,14 +73,16 @@ Mine textbooks in this exact sequence:
 9. neuro-icu (22R) — all textbooks done ✓
 10. head-injury (19R) — all textbooks done ✓
 
-**CURRENT NEXT TARGET: Birinyi / Harbaugh — apply top-10 scan. Then expand to topics 11–20.**
+**CURRENT NEXT TARGET: Alleyne/Citow (underrepresented — only 11 SBAs from 434pp), then Shaya, Birinyi, Harbaugh — all at 0 SBAs. Apply top-10 scan for each.**
 
-**Textbook top-10 pass status (updated 2026-06-25):**
+**Textbook top-10 pass status (updated 2026-06-29):**
 - Greenberg 10e: COMPLETE (ethics absent from Greenberg)
 - TJones (Aberdeen): FULLY MINED (all 79pp done)
 - Infographic Guide 2025: COMPLETE (ethics + cranial-anatomy + head-injury absent)
-- Alleyne & Citow 3e: COMPLETE (ethics absent; 11 SBAs added)
-- Birinyi / Harbaugh: **NEXT** — 0 SBAs currently
+- Alleyne & Citow 3e: NOMINALLY COMPLETE but underrepresented (only 11 SBAs from 434pp) — **expand next**
+- Shaya (Practice Q&A 2nd ed): **NOT STARTED** — 256pp, 0 SBAs
+- Birinyi (Board Prep): **NOT STARTED** — 450pp, 0 SBAs
+- Harbaugh (Knowledge Update): **NOT STARTED** — 985pp, 0 SBAs
 
 **What went wrong (sessions 5 and 34):** Continuing to mine gaps in topics that already have textbook coverage (e.g. more neuro-onco Greenberg when neuro-onco already has 62 SBAs matching 87 recalls). The fix: always run this checklist before mining.
 

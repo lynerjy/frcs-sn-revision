@@ -1783,3 +1783,43 @@ Source pages used this session: p2, p3, p4, p5, p6, p7, p8, p9, p11, p14, p16, p
 1. Resume Alleyne & Citow expansion — Sections 1C (cont'd), 3C, 5C, 7C — target ≥10 SBAs/topic
 2. After Alleyne: Birinyi/Harbaugh top-10 pass
 3. After all 5 textbooks at ≥10/topic: expand to topics 11–20
+
+---
+
+## Session 2026-06-29
+
+**Focus:** Alleyne & Citow expansion + Wolverine chibi UI feature
+
+### Mining: Alleyne & Citow pp.36–54 (Section 1C continued)
+- Extracted Section 1 questions (pp.36–40) and answers/explanations (pp.44–54)
+- Wrote and inserted **19 new SBAs** from source text
+- A&C total: 11 → **30 SBAs**
+- Topics covered this session:
+  - cranial-anatomy: Parkinson's triangle, Kawase's triangle, thalamostriate vein occlusion, basilar impression (4 SBAs)
+  - peripheral-nerve: palmar sensory conduction CTS, CRPS II (hypesthesia NOT a feature), axillary nerve (3 SBAs)
+  - neuro-onco-cranial: epidermoid vs dermoid, acoustic neuroma middle fossa approach, WBRT 30Gy/10# for brain mets (3 SBAs)
+  - spinal-trauma: Type II odontoid + TAL disruption → C1-C2 fusion, SCIWORA (MRI not always normal), ASIA C ~75% ambulatory (3 SBAs)
+  - pituitary: macroprolactinoma prolactin 650 → dopamine agonist first line (1 SBA)
+  - degenerative-spine: thoracic disc laminectomy 45% deterioration/no-benefit risk (1 SBA)
+  - paeds: primary neurulation sequence + timing (day 13/17/22/24/26), Sprengel's + Klippel-Feil (2 SBAs)
+  - neuro-icu: CSW vs SIADH distinguished by volume status (1 SBA)
+  - functional: spasmodic torticollis — upper cervical ventral rhizotomies 81–97% best outcome (1 SBA)
+- Validated: no new structural errors, mismatch baseline unchanged at 527
+
+### Policy written to CLAUDE.md
+- Q&A book mining policy: extract source text first, write FRCS-style 5-option clinical scenario variations (not verbatim), ref + page mandatory
+
+### UI: Wolverine chibi (PXWOLVERINE)
+- Wolverine sprite (16×20, scale 3×) from LynLog sprites.js (existing b64 asset, no re-extraction needed)
+- `PXWOLVERINE` IIFE added to index.html (after PXBRAIN)
+- Behaviour: random appearances every 30–120s, walks in from screen edge, stops mid-screen, displays speech bubble for ~4s, walks off
+- Speech bubble: 11 Wolverine-phrase → encouragement lines (e.g. "Snikt! That question didn't stand a chance.", "Healing factor — your brain retains everything.")
+- FX toggle: `PXWOLVERINE.stop()` / `.start()` wired into `toggleAnim()` alongside PXBRAIN
+- First appearance: 12–30 seconds after page load
+
+**Counts:** 804 total SBAs | 444 flashcards
+
+**Next:**
+1. Continue A&C — next batch is Section 2C (Clinical Neurology, pp.84–109) or Section 3C (Neuroanatomy, pp.140–168)
+2. After A&C at ≥50 SBAs: Shaya top-10 pass
+3. Then Birinyi/Harbaugh

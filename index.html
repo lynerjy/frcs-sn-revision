@@ -1483,13 +1483,123 @@ function devResetGame(){
   gameState={xp:0,level:0,combo:0,dailyCounts:{},achievements:{}};
   saveGameState();updateXPBar();renderDailyHoops();
 }
+const WLVB64="iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAYAAACEYr13AAACc0lEQVR4nG1Ty2oVQRA9VT09fR+5KrgQBBF3RggBH+hKkPyAitGFuPcXXAgh+g8u/AHRhUvBP1BzLxLIJO4EUT/AaO69M9NHqmeSSUIKqmFquupUnToNAGz9iInk9FBKhuTH/+/nyLFkERE6JZSAj0CpzaVZB5NyVBUxRjkoICLoeUIi8GfTYC2qKd7AlRgtRuwRFiE7QCHbTzWkIodDBIWgGLxdF4hUiBD0LleomQGoUgE9OriVPotatO3WTksmCMGZJStiZmeTKoc7sKDN/6/IoawgYiO4VGZ4ZYp5bHtPgzeHkhQjZJ/YGIHR4gwlzoPWOkucXpxiXneDH1pCY6rGebNOSzF3IpzuDNn3oGsmal2SW+eWK+gsBRya2xGKoBVIRWUcEFASdXdfjhcABInfHIoZIwKQEgiLRhiVZaefZNmRfKMiGlLEr8+vMCqJykXsSYZLN59iZlzFRiEnWjD9ZQsMTphrM3sQsGeL8DlVwkmSbiwD6AAWnz7wb7HM3eIi+wCHAu5uLVFy4e+NN/SJwER6ZyIg8sCf43f0NrIIfQDLYsB5MWDum9iPjdfc3PxIaJ/absEs8YvsFP2jNYoKzwF8e+ca68lVzr8u8/3tGwyWoBkHj18QfpAKHhSYjMcEMsJ5DuD4fWeFt1aeEA/XqQ9e8vrKKsUHOtOAC6Y8fpmMExhaQdCJUgEGBefbfZbfeoQMKN5zur3AcusCw76YbGTzQ5Z+BBdSF1muzBJRpkgrbsggNG+frVDs0Rw8qUYYMiPRu/cc4e46qiQKSk1ITcXw/hpGq8+ATGlaYB1PUKLN1IZM0LETDRNUghGg6sT0H+mFPnYy9CWJAAAAAElFTkSuQmCC";
+const PXWOLVERINE=(function(){
+  const SC=3,SPW=16,SPH=20,DW=SPW*SC,DH=SPH*SC;
+  const CVH=DH+65;
+  const LINES=[
+    "I'm the best there is at what I do. So are you becoming.",
+    "Snikt! That question didn't stand a chance.",
+    "Healing factor — your brain retains everything.",
+    "I've survived worse than a viva. You've got this.",
+    "Welcome to the exam. Hope you survive — and ace it.",
+    "You've got adamantium in your spine. Keep going.",
+    "Sometimes the only option is the hard way. Worth it.",
+    "The exam doesn't know what's coming. You do.",
+    "Don't quit. That's not what we do.",
+    "One more question, bub. One more.",
+    "Best there is — that's the goal, and you're getting there.",
+  ];
+  let cv,cx,img,raf=null,x=0,dir=1,state='hidden';
+  let talkT=0,talkLine='',talkOp=0,walkTarget=0;
+  let schedT=null,running=false;
+  function make(){
+    cv=document.createElement('canvas');
+    cv.id='wlv-canvas';
+    cv.width=window.innerWidth;cv.height=CVH;
+    cv.style.cssText='position:fixed;bottom:0;left:0;pointer-events:none;z-index:997;';
+    document.body.appendChild(cv);
+    cx=cv.getContext('2d');cx.imageSmoothingEnabled=false;
+    window.addEventListener('resize',()=>{if(cv)cv.width=window.innerWidth;});
+  }
+  function bubble(){
+    const bW=190,bH=46;
+    const bX=Math.min(Math.max(x-bW/2+DW/2,8),cv.width-bW-8);
+    const bY=CVH-DH-bH-14,r=7;
+    const tX=Math.min(Math.max(x+DW/2,bX+r+6),bX+bW-r-6);
+    cx.globalAlpha=talkOp;
+    cx.fillStyle='#1a1a1a';
+    cx.beginPath();
+    cx.moveTo(bX+r,bY);cx.lineTo(bX+bW-r,bY);
+    cx.quadraticCurveTo(bX+bW,bY,bX+bW,bY+r);
+    cx.lineTo(bX+bW,bY+bH-r);
+    cx.quadraticCurveTo(bX+bW,bY+bH,bX+bW-r,bY+bH);
+    cx.lineTo(tX+7,bY+bH);cx.lineTo(tX,bY+bH+11);cx.lineTo(tX-7,bY+bH);
+    cx.lineTo(bX+r,bY+bH);cx.quadraticCurveTo(bX,bY+bH,bX,bY+bH-r);
+    cx.lineTo(bX,bY+r);cx.quadraticCurveTo(bX,bY,bX+r,bY);cx.closePath();cx.fill();
+    cx.strokeStyle='#f59e0b';cx.lineWidth=1;cx.stroke();
+    cx.fillStyle='#f5f5f5';cx.font='9px ui-monospace,monospace';cx.textAlign='center';
+    const words=talkLine.split(' ');let ln='',lns=[],mW=bW-14;
+    for(let w of words){const t=ln+(ln?' ':'')+w;if(cx.measureText(t).width>mW&&ln){lns.push(ln);ln=w;}else ln=t;}
+    if(ln)lns.push(ln);
+    const sy=bY+14+(bH-14-lns.length*12)/2;
+    for(let i=0;i<lns.length;i++)cx.fillText(lns[i],bX+bW/2,sy+i*12);
+    cx.globalAlpha=1;
+  }
+  function draw(){
+    if(!cv||!cx||!img)return;
+    cx.clearRect(0,0,cv.width,CVH);
+    if(state==='hidden')return;
+    const sy=CVH-DH;
+    cx.save();
+    if(dir<0){cx.scale(-1,1);cx.drawImage(img,-(x+DW),sy,DW,DH);}
+    else{cx.drawImage(img,x,sy,DW,DH);}
+    cx.restore();
+    if((state==='talking')&&talkOp>0)bubble();
+  }
+  function tick(){
+    if(!running){raf=null;return;}
+    raf=requestAnimationFrame(tick);
+    if(state==='walking'){
+      const spd=1.5;
+      x+=dir*spd;
+      const arrived=dir>0?x>=walkTarget:x<=walkTarget;
+      if(arrived){
+        const offscreen=walkTarget>window.innerWidth+DW||walkTarget<-DW-10;
+        if(offscreen){state='hidden';cx.clearRect(0,0,cv.width,CVH);sched();return;}
+        state='talking';talkLine=LINES[Math.floor(Math.random()*LINES.length)];talkOp=0;talkT=0;
+      }
+    } else if(state==='talking'){
+      talkT++;
+      if(talkT<15)talkOp=talkT/15;
+      else if(talkT<110)talkOp=1;
+      else if(talkT<130)talkOp=(130-talkT)/20;
+      else{state='walking';walkTarget=dir>0?window.innerWidth+DW+10:-DW-10;talkOp=0;}
+    }
+    draw();
+  }
+  function sched(){
+    if(!running)return;
+    schedT=setTimeout(spawn,30000+Math.random()*90000);
+  }
+  function spawn(){
+    if(!running||!img||!cv)return;
+    cv.width=window.innerWidth;
+    dir=Math.random()>0.5?1:-1;
+    if(dir>0){x=-DW-2;walkTarget=window.innerWidth*0.15+Math.random()*window.innerWidth*0.6;}
+    else{x=window.innerWidth+DW+2;walkTarget=window.innerWidth*0.15+Math.random()*window.innerWidth*0.6;}
+    state='walking';
+    if(!raf)tick();
+  }
+  return{
+    init(b64){
+      make();
+      img=new Image();img.src='data:image/png;base64,'+b64;
+      running=true;
+      schedT=setTimeout(spawn,12000+Math.random()*18000);
+      if(!raf)raf=requestAnimationFrame(tick);
+    },
+    stop(){running=false;if(schedT){clearTimeout(schedT);schedT=null;}state='hidden';if(cv&&cx)cx.clearRect(0,0,cv.width,CVH);},
+    start(){if(running)return;running=true;schedT=setTimeout(spawn,3000+Math.random()*7000);if(!raf)raf=requestAnimationFrame(tick);},
+  };
+})();
 function animEnabled(){return !document.body.classList.contains("no-anim");}
 function toggleAnim(){
   const off=document.body.classList.toggle("no-anim");
   localStorage.setItem("frcs_anim",off?"off":"on");
   const btn=document.getElementById("anim-btn");
   if(btn){btn.textContent=off?"⚡ FX OFF":"⚡ FX ON";btn.classList.toggle("off",off);}
-  if(off)PXBRAIN.stop();else PXBRAIN.start();
+  if(off){PXBRAIN.stop();PXWOLVERINE.stop();}else{PXBRAIN.start();PXWOLVERINE.start();}
 }
 function triggerBrainDunk(cb){if(animEnabled())PXBRAIN.dunk(getDailyCount()%5===0,cb||null);else if(cb)cb();}
 function triggerBrainMiss(){if(animEnabled())PXBRAIN.miss();}
@@ -1576,7 +1686,8 @@ goalInp.addEventListener("change",()=>{const v=Math.max(1,Math.min(50,parseInt(g
     if(btn){btn.textContent="⚡ FX OFF";btn.classList.add("off");}
   }
   PXBRAIN.init();
-  if(animOff)PXBRAIN.stop();
+  PXWOLVERINE.init(WLVB64);
+  if(animOff){PXBRAIN.stop();PXWOLVERINE.stop();}
   // Adjust sticky nav top to actual header height after fonts load
   function syncHdrHeight(){
     const h=document.querySelector("header");
