@@ -1562,8 +1562,8 @@ const PXWOLVERINE=(function(){
     } else if(state==='talking'){
       talkT++;
       if(talkT<15)talkOp=talkT/15;
-      else if(talkT<110)talkOp=1;
-      else if(talkT<130)talkOp=(130-talkT)/20;
+      else if(talkT<290)talkOp=1;
+      else if(talkT<310)talkOp=(310-talkT)/20;
       else{state='walking';walkTarget=dir>0?window.innerWidth+DW+10:-DW-10;talkOp=0;}
     }
     draw();
