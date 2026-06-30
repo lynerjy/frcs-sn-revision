@@ -1852,3 +1852,55 @@ Source pages used this session: p2, p3, p4, p5, p6, p7, p8, p9, p11, p14, p16, p
 2. Section 5C (Neuropathology pp.251–293): neuropathology, paeds
 3. Section 7C (Critical Care pp.385–402): neuro-icu
 4. After A&C reaches ≥60 SBAs: begin Shaya top-10 pass (0 SBAs from 256pp)
+
+---
+
+## 2026-06-29 (continued 2) — A&C Sections 3C, 5C, 7C mined: 30 more SBAs
+
+### What was mined
+- A&C Section 3C (Neuroanatomy pp.140–168): 10 SBAs
+- A&C Section 5C pp.251–280: 12 SBAs
+- A&C Section 5C pp.281–293 (remainder): 8 SBAs
+- A&C Section 7C pp.401–417 (Critical Care): 4 SBAs
+- **Total added this sub-session: 34 SBAs**
+- A&C running total: 46 → **80 SBAs** (from 434pp)
+- Total SBAs: 820 → **854** | Flashcards: 444 (unchanged)
+
+### SBAs by batch
+
+**Section 3C (pp.140–168) — 10 SBAs**
+- cranial-anatomy (+6): foramen magnum clockwise from anterior (anterior = hypoglossal; posterior = posterior condylar emissary); pretemporal transcavernous approach (Parkinson triangle); subchoroidal transvelum approach (septo-choroidal triangle); basilar impression diagnosis (McRae/Chamberlain/McGregor lines); tentorial incisura anatomy (trochlear nerve at free edge); falx cerebri orientation + vascularisation
+- functional (+1): pain pathway — thalamic pain (CPSP) targets include VPL/VPM nuclei; Wallerian vs anterograde degeneration distinction
+- peripheral-nerve (+2): phrenic nerve C3-C5, travels on anterior scalene, enters thorax anterior to subclavian artery; brachial plexus structure (trunks → divisions → cords → branches mnemonic)
+- neuro-icu (+1): neurogenic diabetes insipidus — ADH deficiency, dilute urine (osmolality <300), hypernatraemia; DDAVP is treatment
+
+**Section 5C (pp.251–280) — 12 SBAs**
+- neuropathology (+10): prion disease PrP(Sc) (protease resistant, no nucleic acid, CJD patterns); GBM IDH-wildtype vs astrocytoma IDH-mutant WHO 2021 classification; MS pathology (Dawson fingers, periventricular, EBV link, HLA-DR2, cortical perivenous); HIV encephalitis (multinucleated giant cells, HIV-1 p24 antigen); PML (JC virus, oligodendrocyte nuclei, CD4<200, reversible if ART); subdural empyema (parafalcine enhancement, emergency craniotomy); cavernous malformation (haemosiderin halo, angiographically occult, familial CCM1/KRIT1); subarachnoid haemorrhage pathology (traumatic vs. aneurysmal xanthochromia)
+- vascular-ich (+1): hypertensive ICH localisation — putamen most common (>60%), then thalamus, pons, cerebellum; FUNC vs ICH scores for outcome prediction
+- neuro-onco-cranial (+1): meningioma WHO 2021 grading — WHO grade 2 features (brain invasion, 4+ mitoses/10HPF, or ≥3 of: hypercellularity, necrosis, prominent nucleoli, sheeting, small cells)
+
+**Section 5C pp.281–293 — 8 SBAs**
+- neuro-onco-cranial (+4): oligodendroglioma 1p/19q co-deletion (survival benefit + PCV sensitivity); haemangioblastoma VHL (chromosome 3, cyst-mural nodule, vacuolated stromal cells); GBM WHO grade IV criteria (EITHER MVP OR necrosis required); chordoma physaliphorous cells from notochord remnants
+- pituitary (+1): craniopharyngioma subtypes — adamantinomatous (children, calcification, stellate cells) vs papillary (adults, no calcification, BRAF V600E 95%)
+- paeds (+1): medulloblastoma Homer-Wright rosettes (granulofibrillar core), WNT/SHH/Group3/Group4 subtypes, Gorlin syndrome (PTCH1 chr9)
+- neuropathology (+2): Friedreich ataxia GAA repeat, frataxin chr9, HCM 80% (primary cause of death); CO poisoning globus pallidus necrosis (240× O2 affinity, delayed neurological syndrome)
+
+**Section 7C (pp.401–417) — 4 SBAs**
+- neuro-icu (+4): inhalational anaesthetics (all increase CBF; thiopental decreases CMRO2+CBF, CMRO2 reduction>CBF); ketamine contraindicated in raised ICP (increases CBF+CMRO2+ICP); propofol infusion syndrome (bradycardia+hyperlipidaemia+rhabdomyolysis+lactic acidosis → discontinue immediately); brainstem respiratory patterns (apneustic=basilar/low pons/2-3s pause in full inspiration; Biot=dorsomedial medulla; Cheyne-Stokes=cerebral-brainstem isolation; central neurogenic hyperventilation=lower midbrain/upper pons); Cushing's reflex (sympathetic hypertension+bradycardia+abnormal breathing = Cushing's triad)
+
+### Mining policy note
+- Strictly followed CARDINAL RULE: all 34 SBAs sourced from extracted text only
+- All commit messages include page ranges and topic breakdown
+- Validation: mismatch baseline unchanged at 527 throughout
+
+### A&C Top-10 Pass Status (per TOP-N BATCH CYCLING RULE)
+All top-10 recall topics now have ≥1 A&C SBA:
+neuro-onco-cranial(7), degenerative-spine(1), paeds(3+), cranial-anatomy(12), ethics(absent-all-textbooks), functional(3), vascular-aneurysm(1), hydrocephalus(1), neuro-icu(6), head-injury(1)
+→ **A&C top-10 pass: COMPLETE**
+
+### What's next
+1. **Shaya top-10 pass** (shaya-practice-questions, 256pp, 0 SBAs) — start next session
+   - Extract TOC first to identify which sections map to top-10 topics
+   - Apply same top-N cycling rule: mine only top-10 topics with 0 Shaya SBAs
+2. After Shaya top-10: Birinyi and Harbaugh top-10 passes
+3. A&C can be expanded further (Section 4C spine, Section 6C neuroradiology) once all 3 remaining sources have top-10 coverage
