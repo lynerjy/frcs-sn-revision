@@ -735,11 +735,12 @@ def parse_content_js():
     return topics
 
 
-# Baseline mismatch count established 2026-06-22.  Represents pre-existing TJones
-# SBAs stored in catch-all blocks with cross-topic tags.  These are a known
-# remediation task (moving ~527 TJones SBAs to their correct topic blocks).
-# The pre-commit hook fails only if the count INCREASES above this baseline.
-MISMATCH_BASELINE = 527
+# Mismatch baseline: 0 after 2026-06-30 remediation.
+# The original 527 were false-positives (RECALL array entries scanned past the LEARN boundary)
+# plus 48 real TJones SBAs that were misplaced in spinal-anatomy and other wrong blocks.
+# All 48 were relocated to their correct topic blocks on 2026-06-30.
+# The pre-commit hook fails if the count increases above this baseline.
+MISMATCH_BASELINE = 0
 
 def validate_content_js():
     """Check for common structural errors in content.js."""
@@ -784,11 +785,22 @@ def validate_content_js():
 
     # Check: SBAs with explicit topic: field must be inside the matching block.
     # This catches the recurring bug where SBAs are inserted into the wrong block.
+    # IMPORTANT: only scan within the LEARN object (ends at '^};' after the last topic block).
+    # The RECALL array that follows also uses topic: fields — scanning past LEARN produces
+    # hundreds of false positives (every RECALL entry gets attributed to the last topic block).
     block_pattern = re.compile(r'"([a-z][a-z-]+)":\{src:"[^"]+",c:\[')
     lines = text.splitlines()
+
+    # Find the line that closes the LEARN object: the first '^};' after 'const LEARN={'
+    learn_start = next((i for i, l in enumerate(lines) if re.match(r'const LEARN\s*=\s*\{', l)), None)
+    learn_end   = next((i for i, l in enumerate(lines)
+                        if i > (learn_start or 0) and re.match(r'^\};', l)), len(lines))
+
     current_block = None
     misplaced = []
     for lineno, line in enumerate(lines, 1):
+        if lineno - 1 > learn_end:
+            break  # past end of LEARN — stop, or we false-positive on RECALL entries
         bm = block_pattern.search(line)
         if bm:
             current_block = bm.group(1)
