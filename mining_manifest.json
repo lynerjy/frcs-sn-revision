@@ -1129,6 +1129,22 @@
           "cards": 4
         }
       ]
+    },
+    "shaya-practice-questions": {
+      "pages_done": [
+        [
+          13,
+          189
+        ]
+      ],
+      "cards_added": 8,
+      "sessions": [
+        {
+          "date": "2026-06-29",
+          "pages": "13-189",
+          "cards": 8
+        }
+      ]
     }
   },
   "sessions": []
