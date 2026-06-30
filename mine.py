@@ -14,6 +14,7 @@ Usage:
   python3 mine.py validate            # Check content.js for structural errors
   python3 mine.py stats               # Card counts by topic and korky tag
   python3 mine.py refs                # List all ref strings (spot missing pages)
+  python3 mine.py coverage            # SBA coverage matrix by source×topic (CANONICAL — use this, not grep)
 """
 
 import json
@@ -1222,6 +1223,122 @@ def cmd_refs(args):
     print()
 
 
+def cmd_coverage(args):
+    """
+    Show SBA coverage matrix: counts per source per top-10 topic, by BLOCK POSITION.
+
+    Counts SBAs physically inside each topic's q:[] array — the same way the
+    website counts them.  Tag-based grep undercounts (many old SBAs have no
+    topic: field) and overcounts for misplaced SBAs.  Always use this command,
+    never grep by tag.
+
+    Threshold = 8 SBAs per topic per source (first-pass completion target).
+    """
+    THRESHOLD = 8
+
+    TOP10 = [
+        "neuro-onco-cranial",
+        "degenerative-spine",
+        "paeds",
+        "cranial-anatomy",
+        "ethics",
+        "functional",
+        "vascular-aneurysm",
+        "hydrocephalus",
+        "neuro-icu",
+        "head-injury",
+    ]
+
+    TRACKED_SOURCES = [
+        ("greenberg",                "Greenberg"),
+        ("infographic-2025",         "Infographic"),
+        ("aberdeen-tjones-revision", "TJones"),
+        ("alleyne-board-review",     "Alleyne"),
+        ("shaya-practice-questions", "Shaya"),
+        ("birinyi-board-prep",       "Birinyi"),
+        ("harbaugh-neurosurgery",    "Harbaugh"),
+    ]
+
+    lines = CONTENT.read_text().splitlines()
+
+    # Find ALL block boundaries by detecting header lines
+    all_blocks = []
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped.startswith('"') and ':{src:' in stripped:
+            try:
+                tid = stripped[1:stripped.index('"', 1)]
+                all_blocks.append((i, tid))
+            except ValueError:
+                pass
+
+    # Build topic → (start_line, end_line) ranges
+    topic_ranges = {}
+    for j, (start_line, tid) in enumerate(all_blocks):
+        end_line = all_blocks[j + 1][0] if j + 1 < len(all_blocks) else len(lines)
+        topic_ranges[tid] = (start_line, end_line)
+
+    # For each top-10 topic, count SBAs per tracked source in q:[] section
+    def count_sources(topic_id):
+        if topic_id not in topic_ranges:
+            return {sid: 0 for sid, _ in TRACKED_SOURCES}
+        start, end = topic_ranges[topic_id]
+        block_text = "\n".join(lines[start:end])
+        q_m = re.search(r'\],q:\[', block_text)
+        if not q_m:
+            return {sid: 0 for sid, _ in TRACKED_SOURCES}
+        q_section = block_text[q_m.end():]
+        return {sid: q_section.count(f'src_id:"{sid}"') for sid, _ in TRACKED_SOURCES}
+
+    results = {t: count_sources(t) for t in TOP10}
+
+    # Print table
+    col_w = 10
+    src_labels = [label for _, label in TRACKED_SOURCES]
+    header = f"  {'Topic':<25}" + "".join(f"{lbl:>{col_w}}" for lbl in src_labels)
+    print()
+    print(f"  SBA coverage by physical block position  (✓ = ≥{THRESHOLD})")
+    print("  " + "─" * (25 + col_w * len(TRACKED_SOURCES)))
+    print(header)
+    print("  " + "─" * (25 + col_w * len(TRACKED_SOURCES)))
+
+    gaps = []
+    for t in TOP10:
+        counts = results[t]
+        row_parts = []
+        for sid, label in TRACKED_SOURCES:
+            n = counts[sid]
+            if n >= THRESHOLD:
+                cell = f"{'✓':>{col_w}}"
+            elif n == 0:
+                cell = f"{'—':>{col_w}}"
+            else:
+                cell = f"{n:>{col_w}}"
+            row_parts.append(cell)
+            if n < THRESHOLD:
+                gaps.append((t, label, n, THRESHOLD - n))
+        print(f"  {t:<25}" + "".join(row_parts))
+
+    print("  " + "─" * (25 + col_w * len(TRACKED_SOURCES)))
+    print(f"\n  Threshold: {THRESHOLD} SBAs per topic per source")
+
+    # Gaps summary
+    if gaps:
+        print(f"\n  GAPS (need ≥{THRESHOLD}, sorted by source then topic):")
+        by_src = {}
+        for t, src_label, have, need in gaps:
+            by_src.setdefault(src_label, []).append((t, have, need))
+        for src_label in [lbl for _, lbl in TRACKED_SOURCES]:
+            if src_label in by_src:
+                print(f"\n    {src_label}:")
+                for t, have, need in by_src[src_label]:
+                    bar = "▓" * have + "░" * need
+                    print(f"      {t:<25} {have}/{THRESHOLD}  {bar}")
+    else:
+        print(f"\n  All top-10 topics have ≥{THRESHOLD} SBAs from every tracked source!")
+    print()
+
+
 # ── MAIN ──────────────────────────────────────────────────────────────────────
 COMMANDS = {
     "status":   cmd_status,
@@ -1231,6 +1348,7 @@ COMMANDS = {
     "validate": cmd_validate,
     "stats":    cmd_stats,
     "refs":     cmd_refs,
+    "coverage": cmd_coverage,
 }
 
 if __name__ == "__main__":

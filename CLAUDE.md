@@ -54,37 +54,48 @@ Policy changed: do NOT rewrite or replace claude-ai SBAs when mining a real sour
 
 Greenberg must be mined by **recall-bank frequency**, not by whatever claude-ai SBAs happen to exist.
 
-**CARDINAL RULE — TOP-N BATCH CYCLING (N=10, updated 2026-06-25):**
+**CARDINAL RULE — TOP-N BATCH CYCLING (N=10, threshold updated 2026-06-30):**
+
+**THRESHOLD = 10 SBAs per topic per textbook source.** A topic is "done" for a given textbook once it has ≥10 SBAs from that source. Do NOT declare done at 1 — this was the prior (wrong) rule.
 
 Mine textbooks in this exact sequence:
-1. For each textbook (Greenberg → TJones → Infographic → Alleyne/Citow → Birinyi/Harbaugh), scan the **top 10 recall topics** in order.
-2. For each topic: if it has **zero** content from this textbook → mine it. If it has **any** content → skip.
+1. For each textbook (Greenberg → TJones → Infographic → Alleyne/Citow → Shaya → Birinyi → Harbaugh), scan the **top 10 recall topics** in order.
+2. For each topic: if it has **≥10** SBAs from this textbook → skip. If it has **<10** → mine it (target ≥10).
 3. Complete the full top-10 pass for ALL textbooks before expanding to topics 11–20.
+4. Exception: if a textbook genuinely has no content for a topic, record it as "exempt" (not blocking) — but verify before declaring exempt.
 
 **Top 10 topics by recall count (RECALL array only — matches quiz site NR badges):**
-1. neuro-onco-cranial (62R) — all textbooks done ✓
-2. degenerative-spine (52R) — all textbooks done ✓
-3. paeds (46R) — all textbooks done ✓
-4. cranial-anatomy (42R) — all textbooks done ✓ (absent from Infographic; foramen magnum clockwise from Alleyne)
-5. ethics (36R) — absent from ALL textbooks; needs separate source (GMC/BMA guidelines or TJones)
-6. functional (30R) — all textbooks done ✓
-7. vascular-aneurysm (26R) — all textbooks done ✓
-8. hydrocephalus (24R) — all textbooks done ✓
-9. neuro-icu (22R) — all textbooks done ✓
-10. head-injury (19R) — all textbooks done ✓
+1. neuro-onco-cranial (62R)
+2. degenerative-spine (52R)
+3. paeds (46R)
+4. cranial-anatomy (42R)
+5. ethics (36R)
+6. functional (30R)
+7. vascular-aneurysm (26R)
+8. hydrocephalus (24R)
+9. neuro-icu (22R)
+10. head-injury (19R)
 
-**CURRENT NEXT TARGET: Alleyne/Citow (underrepresented — only 11 SBAs from 434pp), then Shaya, Birinyi, Harbaugh — all at 0 SBAs. Apply top-10 scan for each.**
+**Coverage matrix — run `python3 mine.py coverage` for the live version. Do NOT maintain a manual copy here; it will go stale.**
 
-**Textbook top-10 pass status (updated 2026-06-29):**
-- Greenberg 10e: COMPLETE (ethics absent from Greenberg)
-- TJones (Aberdeen): FULLY MINED (all 79pp done)
-- Infographic Guide 2025: COMPLETE (ethics + cranial-anatomy + head-injury absent)
-- Alleyne & Citow 3e: NOMINALLY COMPLETE but underrepresented (only 11 SBAs from 434pp) — **expand next**
-- Shaya (Practice Q&A 2nd ed): **NOT STARTED** — 256pp, 0 SBAs
-- Birinyi (Board Prep): **NOT STARTED** — 450pp, 0 SBAs
-- Harbaugh (Knowledge Update): **NOT STARTED** — 985pp, 0 SBAs
+As of 2026-06-30 (run `mine.py coverage` to get current numbers):
+- Greenberg: 9/10 done (only ethics missing)
+- Infographic: 7/10 done (cranial-anatomy, ethics, head-injury gaps)
+- TJones: 0/10 done at threshold — most SBAs misplaced in `spinal-anatomy` block (remediation needed)
+- Alleyne: 1/10 done (only cranial-anatomy ≥8)
+- Shaya/Birinyi/Harbaugh: all gaps
 
-**What went wrong (sessions 5 and 34):** Continuing to mine gaps in topics that already have textbook coverage (e.g. more neuro-onco Greenberg when neuro-onco already has 62 SBAs matching 87 recalls). The fix: always run this checklist before mining.
+**What went wrong (sessions 5, 34, and the "1-per-topic" Shaya/Birinyi passes):** The prior skip rule was "skip if ≥1 entry" — far too shallow. The fix: threshold is now ≥8 per topic per source.
+
+### MANDATORY: Before every mining session
+
+```
+python3 mine.py coverage
+```
+
+This is the **only** canonical source of truth. It counts SBAs by **physical block position** — the same way the website counts them. Never use grep or tag-based counting; those give wrong numbers because (a) many old SBAs lack a `topic:` tag, and (b) misplaced SBAs inflate the wrong topic counts.
+
+After inserting new SBAs, re-run `python3 mine.py coverage` to confirm the counts moved correctly.
 
 ---
 
