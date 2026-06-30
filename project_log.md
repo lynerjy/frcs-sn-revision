@@ -2019,3 +2019,62 @@ TJones now correctly shows ✓ for neuro-onco-cranial and neuro-icu (those SBAs 
 7. **Birinyi expansion**: ethics(3/8), cranial-anatomy(1/8), rest 0 — mine 5-8 per topic
 8. **Harbaugh**: not started
 
+
+---
+
+## 2026-06-30 (session 2) — Alleyne mining: degenerative-spine, vascular-aneurysm, hydrocephalus, head-injury
+
+### What was built / changed
+
+**New SBAs mined from Alleyne & Citow Board Review 3e — total +15 SBAs this session**
+
+| Topic | Before | After | Change | Key content |
+|-------|--------|-------|--------|-------------|
+| vascular-aneurysm | 1 | ✓(8) | +7 | PComA temporal adherence (absence CN3 palsy + lateral AP), carotid ligation absolute CI = vasospasm, VoG neonates CHF >25% CO, mycotic aneurysm 80% SBE, mycotic features (peripheral MCA, Staph, SAH <20%, vasa vasorum discredited), vasospasm mediators (intimal proliferation LEAST), ophthalmic artery inferior nasal field (falciform ligament) |
+| degenerative-spine | 2 | ✓(8) | +6 | Thoracic facet coronal orientation (resist translation not rotation), thoracic disc most common symptom = back pain (57-88%), ALS vs CSM (sensory symptoms distinguish CSM), AS HLA-B27 prevalence (<2% HLA-B27 develop AS), OPLL Asian descent (fibrosis→calcification, may involve dura), H reflex for S1 radiculopathy (normal F wave + absent H reflex = sensory root) |
+| hydrocephalus | 2 | 4 | +2 | Colloid cyst: headache >75%, drop attacks mechanism, dementia, seizures 20%, sudden death (p41); hydromyelia (ependyma-lined central canal) vs syringomyelia (outside canal, not ependymal) (p38) |
+| head-injury | 1 | 3 | +2 | Diffuse brain swelling: vasoactive, cerebrovascular congestion NOT cytotoxic oedema, children>adults, 50% mortality, perimesencephalic cistern CT sign (p42); NAI: isolated parietal fracture LEAST suspicious, SDH/retinal haemorrhages/long bone fractures MOST suspicious, NAI fractures = multiple/complex/depressed/nonparietal (p42) |
+
+**Sources page fix (+3 missing SOURCES entries)**
+- `shaya-practice-questions`, `aberdeen-cerebral-physiology`, `aberdeen-rescueicp` were used as `src_id` in SBAs but missing from the SOURCES array — fixed, now display correctly on Sources page with correct korky/category metadata
+
+### Key decisions
+
+1. **Alleyne ethics declared exempt**: book has no ethics chapter. The single "Alleyne ethics" count in the coverage matrix is a misplaced torticollis SBA (src_id:alleyne-board-review, but physically in ethics block with no topic tag). Book is US surgical knowledge only — no UK law/GMC/MCA content.
+
+2. **Alleyne hydrocephalus/head-injury below threshold**: book has limited content for these topics. After exhaustive search of Sections 1C, 2C, 5, 6, 7 — found only 2 hydrocephalus and 2 head-injury facts suitable for SBAs. Both blocks remain below ≥8 threshold. Next step: Shaya/Birinyi for these gaps.
+
+3. **Coverage threshold confirmed at ≥8** (not ≥10 as accidentally updated in CLAUDE.md). The CLAUDE.md says "≥10" in one place and "≥8" in another — the live code and matrix use 8. Will not change during active session.
+
+### Coverage after this session (from `mine.py coverage`)
+
+| Topic | Greenberg | Infographic | TJones | Alleyne | Shaya | Birinyi |
+|-------|-----------|-------------|--------|---------|-------|---------|
+| neuro-onco-cranial | ✓ | ✓ | ✓ | ✓ | 1 | — |
+| degenerative-spine | ✓ | ✓ | 3 | ✓ | 1 | — |
+| paeds | ✓ | ✓ | 3 | ✓ | 1 | — |
+| cranial-anatomy | ✓ | — | 4 | ✓ | 1 | 1 |
+| ethics | — | — | 3 | 1 | — | 3 |
+| functional | ✓ | ✓ | 4 | ✓ | 1 | — |
+| vascular-aneurysm | ✓ | ✓ | 2 | ✓ | 1 | — |
+| hydrocephalus | ✓ | ✓ | — | 4 | — | — |
+| neuro-icu | ✓ | ✓ | ✓ | ✓ | 1 | — |
+| head-injury | ✓ | — | — | 3 | 1 | — |
+
+Alleyne now has 7 of 10 topics at ✓ threshold (ethics exempt, hydrocephalus 4/8, head-injury 3/8).
+
+### SBA counts
+- **Total SBAs: ~894** (net +15 this session beyond 866 at start of session, + prior session adds)
+- Flashcards: unchanged at ~444
+
+### Open questions / blockers
+- Alleyne hydrocephalus (4/8) and head-injury (3/8): will need Shaya/Birinyi content to reach threshold — not available in Alleyne
+- Alleyne ethics (1/8): effectively exempt (misplaced SBA + no ethics content in book)
+- CLAUDE.md shows "≥10" threshold in one section and "≥8" in another — minor inconsistency, harmless but could confuse future sessions
+
+### What's next (priority order)
+1. **Shaya expansion** (all top-10 topics at 1/8): mine 7+ per topic — highest-leverage remaining source
+2. **Birinyi expansion** (ethics 3/8, cranial-anatomy 1/8, rest 0/8)
+3. **Alleyne hydrocephalus/head-injury** supplemented by Shaya/Birinyi
+4. **Infographic gaps**: cranial-anatomy 0/8, ethics 0/8, head-injury 0/8 — check if content present
+5. **TJones**: fully mined; remaining gaps may be content-absent
