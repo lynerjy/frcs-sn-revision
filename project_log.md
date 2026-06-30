@@ -1948,3 +1948,74 @@ All 3 ethics SBAs cite Birinyi p.320/322/324 (Chapter 20). The source is reliabl
    - Relevant chapters: Ch.3 Adult Neurosurgery (pp.20–38 Q + pp.180–198 A), Ch.4 Pediatric (pp.39–47 Q + pp.199–204 A), Ch.9 Critical Care (pp.138–148 Q + pp.292–303 A)
 2. **After Birinyi top-10 complete**: Harbaugh top-10 pass (985pp, 0 SBAs)
 3. **Then expand A&C**: Section 4C (Spine pp.169–250) and Section 6C (Neuroradiology pp.294–384)
+
+---
+
+## 2026-06-30 — Coverage tooling overhaul + TJones relocation + mining rule update
+
+### What was built / changed
+
+**1. `python3 mine.py coverage` — new canonical coverage command**
+- Counts SBAs by **physical block position** in content.js, matching exactly how the website counts them
+- Replaces all prior grep/tag-based counting (which undercounted because many old SBAs have no `topic:` tag, and miscounted because misplaced SBAs appeared in the wrong topic)
+- Shows a source×topic matrix with ▓/░ gap bars and a gaps list sorted by source priority
+- This is now the **mandatory pre-session check** — run before every mining session
+
+**2. Fixed `validate_content_js` false-positive mismatches**
+- Root cause: the validate function kept scanning past the end of the LEARN object into the RECALL array; every RECALL entry with a `topic:` field was counted as a block mismatch (attributed to the last topic block = spinal-anatomy)
+- Fix: detect the line closing the LEARN object (`^};`) and stop mismatch scanning there
+- Result: 527 → 48 real mismatches revealed
+
+**3. Relocated 48 misplaced TJones SBAs to correct topic blocks**
+- 45 TJones SBAs were physically in `spinal-anatomy`'s q:[] but tagged for other topics (neuro-onco-cranial ×9, neuro-icu ×7, epilepsy-surgery ×6, functional ×4, cranial-anatomy ×4, etc.) — invisible to those topic pages on the website
+- 2 TJones SBAs in degenerative-spine block tagged pituitary; 1 in vascular-avm block tagged cranial-anatomy
+- All 48 moved to correct blocks via `relocate_tjones.py`
+- MISMATCH_BASELINE lowered from 527 → 0
+
+**4. Mining threshold updated: ≥1 → ≥8 per topic per source**
+- Old rule (skip if ≥1) was far too shallow
+- New rule: a topic is "done" for a given textbook when it has **≥8** SBAs from that source
+- CLAUDE.md and memory files updated accordingly
+
+### Key decisions
+
+- `mine.py coverage` is the only authoritative source; manual tables in memory files will no longer be maintained (they always went stale)
+- Threshold = 8 (not 10) because several sources already had 8 for some topics
+- The 392 ref fields missing page numbers are a pre-existing warning (mostly NICE guidelines that cite section numbers, not page numbers) — not blocking
+
+### Coverage after relocation (threshold ≥8)
+
+| Topic | Greenberg | Infographic | TJones | Alleyne | Shaya | Birinyi |
+|-------|-----------|-------------|--------|---------|-------|---------|
+| neuro-onco-cranial | ✓ | ✓ | ✓ | 7 | 1 | 0 |
+| degenerative-spine | ✓ | ✓ | 3 | 2 | 1 | 0 |
+| paeds | ✓ | ✓ | 3 | 5 | 1 | 0 |
+| cranial-anatomy | ✓ | 0 | 4 | ✓ | 1 | 1 |
+| ethics | 0 | 0 | 3 | 1 | 0 | 3 |
+| functional | ✓ | ✓ | 4 | 3 | 1 | 0 |
+| vascular-aneurysm | ✓ | ✓ | 2 | 1 | 1 | 0 |
+| hydrocephalus | ✓ | ✓ | 0 | 2 | 0 | 0 |
+| neuro-icu | ✓ | ✓ | ✓ | 6 | 1 | 0 |
+| head-injury | ✓ | 0 | 0 | 1 | 1 | 0 |
+
+TJones now correctly shows ✓ for neuro-onco-cranial and neuro-icu (those SBAs were there all along, just misplaced).
+
+### SBA / flashcard counts
+- Total SBAs: **866** (unchanged — no new content mined today)
+- Total flashcards: **444** (unchanged)
+
+### Open questions
+- Infographic: cranial-anatomy, ethics, head-injury showing 0 — are these genuinely absent from that source, or are there relevant pages unmined?
+- TJones: fully mined (all 79pp), but degenerative-spine(3), cranial-anatomy(4), functional(4), vascular-aneurysm(2) still below threshold — content may simply not exist in TJones for these topics
+- Greenberg ethics (0/8) — likely absent; Greenberg doesn't have a dedicated ethics chapter
+
+### What's next (in order)
+1. **Alleyne neuro-onco-cranial**: 7/8 — need just 1 more SBA (Section 1C pp.1-99)
+2. **Alleyne neuro-icu**: 6/8 — need 2 more (Section 7C pp.385-417, partially mined)
+3. **Alleyne paeds**: 5/8 — need 3 more (Section 2C pp.100-168)
+4. **Alleyne degenerative-spine**: 2/8 — need 6 more (Section 4C pp.169-250, unmined)
+5. **Alleyne remaining gaps**: functional(3/8), vascular-aneurysm(1/8), hydrocephalus(2/8), head-injury(1/8)
+6. **Shaya expansion**: all topics at 1/8 — mine 7+ more per topic across all top-10 topics
+7. **Birinyi expansion**: ethics(3/8), cranial-anatomy(1/8), rest 0 — mine 5-8 per topic
+8. **Harbaugh**: not started
+
