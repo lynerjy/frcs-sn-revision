@@ -1904,3 +1904,47 @@ neuro-onco-cranial(7), degenerative-spine(1), paeds(3+), cranial-anatomy(12), et
    - Apply same top-N cycling rule: mine only top-10 topics with 0 Shaya SBAs
 2. After Shaya top-10: Birinyi and Harbaugh top-10 passes
 3. A&C can be expanded further (Section 4C spine, Section 6C neuroradiology) once all 3 remaining sources have top-10 coverage
+
+---
+
+## 2026-06-29 (continued 3) — Shaya + Birinyi top-10 passes started
+
+### What was mined
+
+**Shaya 2nd ed top-10 pass: 8 SBAs (pp.13–189)**
+- One SBA per top-10 recall topic with 0 Shaya coverage:
+  - vascular-aneurysm: Spetzler-Martin grading (nidus 3-6cm=2pts, non-eloquent=0, superficial drainage=0 → grade 2)
+  - head-injury: basilar skull fracture → Strep pneumoniae most common pathogen, typically within first few days
+  - neuro-onco-cranial: primary vs secondary GBM (primary = 10x commoner, older mean age 62y; secondary = younger 45y, longer survival; LOH 10p/10q in primary)
+  - cranial-anatomy: clinoidal triangle = CN II medially + CN III laterally
+  - degenerative-spine: Torg-Pavlov ratio = spinal canal/vertebral body; normal ~1.0; stenosis <0.8
+  - paeds: Apert vs Crouzon (both AD, both bilateral coronal synostosis; Apert = MORE SEVERE mental retardation)
+  - neuro-icu: mannitol pharmacodynamics (peak at 15min; duration 4h; mannitol + furosemide > either alone)
+  - functional: hypothalamic hamartoma = sexual precocity (most common) + gelastic seizures
+- Shaya top-10 pass: **COMPLETE**
+- Total SBAs: 854 → 862
+
+**Birinyi Board Prep partial top-10 pass: 4 SBAs**
+- ethics (+3): FIRST ETHICS SBAs FROM ANY TEXTBOOK SOURCE (ethics = rank 5 recall, previously 0 SBAs from all sources)
+  - Wrong-level surgery: duty of candour, disclose to family + complete correct level + notify risk management
+  - Organ donation vs family refusal: Uniform Anatomical Gift Act — registered donor's wishes prevail; third party cannot revoke
+  - Blood transfusion in JW child: act in best interest of minor in emergencies despite parental religious objection; document in notes
+- cranial-anatomy (+1): Vidian nerve = GSPN (preganglionic parasympathetics from CN VII) + deep petrosal nerve (sympathetics from ICA plexus); innervates pterygopalatine ganglion
+- Birinyi top-10 pass: **PARTIAL** — ethics + cranial-anatomy done; 8 topics pending
+- Total SBAs: 862 → 866
+
+### Mining stats as of end of session
+- A&C: 80 SBAs (top-10 pass: COMPLETE)
+- Shaya: 8 SBAs (top-10 pass: COMPLETE)
+- Birinyi: 4 SBAs (top-10 pass: PARTIAL — 8 topics pending)
+- Harbaugh: 0 SBAs (not started)
+- **Total SBAs: 866** | Flashcards: 444
+
+### Ethics SBAs — source details
+All 3 ethics SBAs cite Birinyi p.320/322/324 (Chapter 20). The source is reliable for ethics content. The UK context notes in the explanations were derived from the FRCS SN exam context (not from Birinyi directly) but the underlying principles are consistent.
+
+### What's next
+1. **Birinyi top-10 pass completion** — need SBAs for: neuro-onco-cranial, degenerative-spine, paeds, functional, vascular-aneurysm, hydrocephalus, neuro-icu, head-injury
+   - Relevant chapters: Ch.3 Adult Neurosurgery (pp.20–38 Q + pp.180–198 A), Ch.4 Pediatric (pp.39–47 Q + pp.199–204 A), Ch.9 Critical Care (pp.138–148 Q + pp.292–303 A)
+2. **After Birinyi top-10 complete**: Harbaugh top-10 pass (985pp, 0 SBAs)
+3. **Then expand A&C**: Section 4C (Spine pp.169–250) and Section 6C (Neuroradiology pp.294–384)
