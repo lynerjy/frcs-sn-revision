@@ -592,6 +592,11 @@ CONTENT_SOURCE_MAP = {
     "aberdeen-aeds":                 "aberdeen-aeds",
     "aberdeen-tjones-revision":      "aberdeen-tjones-revision",
     "aberdeen-tjones-exam":          "aberdeen-tjones-exam",
+    "alleyne-board-review":          "alleyne-board-review",
+    "shaya-practice-questions":      "shaya-practice-questions",
+    "birinyi-board-prep":            "birinyi-board-prep",
+    "harbaugh-knowledge-update":     "harbaugh-knowledge-update",
+    "infographic-2025":              "infographic-2025",
     # Future papers — add entry here when source is added to content.js SOURCES array
 }
 
