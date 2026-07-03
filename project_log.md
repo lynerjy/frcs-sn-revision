@@ -2124,3 +2124,77 @@ Completed comprehensive mining of Shaya (Neurosurgery Practice Questions & Answe
 3. **TJones gaps** — hydrocephalus 0/8, head-injury 0/8, vascular-aneurysm 2/8
 4. **Infographic gaps** — cranial-anatomy 0/8, ethics 0/8, head-injury 0/8
 5. **Greenberg ethics** — only remaining Greenberg gap (0/8)
+
+---
+
+## 2026-07-03 (session 2) — Birinyi mining pass (partial)
+
+### What was done
+Started comprehensive Birinyi mining across all 10 top recall topics. 5 of 10 topics completed before session end.
+
+**Birinyi topics completed this session:**
+- cranial-anatomy: 1 → ✓ (8 SBAs)
+- functional: 0 → ✓ (8 SBAs)
+- paeds: 0 → ✓ (8 SBAs)
+- neuro-icu: 0 → ✓ (8 SBAs)
+- ethics: 3 → ✓ (8 SBAs)
+
+**Birinyi topics NOT YET DONE (forks were running but session ended):**
+- neuro-onco-cranial: 0/8
+- degenerative-spine: 0/8
+- vascular-aneurysm: 0/8
+- head-injury: 0/8
+- hydrocephalus: 0/8
+
+**Also fixed:** Shaya SOURCES entry — was still showing "1 SBA per top-10 topic" and `partial:true`; updated to reflect 71 SBAs and removed partial flag.
+
+### Decisions
+- Birinyi has good chapter structure (Physiology, Anatomy, Adult Neuro, Paeds, Neurology, Radiology, Pathology, Critical Care, Competencies) — easier to mine by topic than Shaya
+- Ethics from Birinyi: biostatistics and general medical ethics content is usable (not US-specific law)
+- Two forks hit session limit during first attempt; relaunched successfully for remaining work
+
+### What is next (priority order)
+1. **Birinyi remaining 5 topics** — neuro-onco-cranial, degenerative-spine, vascular-aneurysm, head-injury, hydrocephalus (all 0/8)
+2. **Harbaugh** — all 10 topics at 0/8
+3. **TJones gaps** — hydrocephalus 0/8, head-injury 0/8, vascular-aneurysm 2/8
+4. **Infographic gaps** — cranial-anatomy 0/8, ethics 0/8, head-injury 0/8
+5. **Greenberg ethics** — only remaining Greenberg gap (0/8)
+
+---
+
+## Session 39 — 2026-07-03 — Birinyi full mining pass complete
+
+### What was done
+- Completed the full Birinyi mining pass across ALL 10 top recall topics (threshold ≥8 per topic)
+- 80 total Birinyi SBAs inserted into content.js
+
+### Birinyi SBAs by topic (all ✓ at ≥8):
+| Topic | Count | Source chapters |
+|-------|-------|----------------|
+| neuro-onco-cranial | 8 | Ch3 Adult Neuro, Ch6 Radiology, Ch7 Pathology |
+| degenerative-spine | 8 | Ch3 Adult Neuro (Q5,6,16,20,22,46,66,67) |
+| paeds | 8 | Ch4 Pediatric |
+| cranial-anatomy | 8 | Ch2 Anatomy |
+| ethics | 8 | Ch10 Competencies |
+| functional | 8 | Ch1 Physiology, Ch3 Adult Neuro |
+| vascular-aneurysm | 8 | Ch3 Adult Neuro, Ch6 Radiology |
+| hydrocephalus | 8 | Ch3 Adult Neuro (Q1,40) + Ch4 Pediatric (Q8,17,31,45,48,57) |
+| neuro-icu | 8 | Ch9 Critical Care |
+| head-injury | 8 | Ch3 Adult Neuro (Q3,21,57,76) + Ch9 Critical Care (Q25,31,41,43) |
+
+### Key decisions
+- Birinyi PDF page offset: +16 from book page numbers
+- Hydrocephalus content drawn from BOTH Adult Neuro and Pediatric chapters (ETV, aqueductal stenosis, shunt infections, Chiari 2)
+- Head-injury content drawn from BOTH Adult Neuro and Critical Care chapters (ICH score, BCVI, hyperventilation, post-traumatic meningitis, normothermia)
+- All SBAs rewritten as FRCS-style clinical scenarios (not verbatim from source)
+
+### Coverage after this session (Birinyi column):
+All 10 topics ✓ — Birinyi is COMPLETE
+
+### What is next (priority order)
+1. **Harbaugh** — all 10 topics at 0/8
+2. **TJones gaps** — hydrocephalus 0/8, head-injury 0/8, vascular-aneurysm 2/8
+3. **Infographic gaps** — cranial-anatomy 0/8, ethics 0/8, head-injury 0/8
+4. **Greenberg ethics** — only remaining Greenberg gap (0/8)
+5. **Alleyne gaps** — ethics 1/8, hydrocephalus 4/8, head-injury 3/8
+6. **Shaya gaps** — ethics 0/8, head-injury 6/8 (content-limited)
