@@ -2127,42 +2127,7 @@ Completed comprehensive mining of Shaya (Neurosurgery Practice Questions & Answe
 
 ---
 
-## 2026-07-03 (session 2) — Birinyi mining pass (partial)
-
-### What was done
-Started comprehensive Birinyi mining across all 10 top recall topics. 5 of 10 topics completed before session end.
-
-**Birinyi topics completed this session:**
-- cranial-anatomy: 1 → ✓ (8 SBAs)
-- functional: 0 → ✓ (8 SBAs)
-- paeds: 0 → ✓ (8 SBAs)
-- neuro-icu: 0 → ✓ (8 SBAs)
-- ethics: 3 → ✓ (8 SBAs)
-
-**Birinyi topics NOT YET DONE (forks were running but session ended):**
-- neuro-onco-cranial: 0/8
-- degenerative-spine: 0/8
-- vascular-aneurysm: 0/8
-- head-injury: 0/8
-- hydrocephalus: 0/8
-
-**Also fixed:** Shaya SOURCES entry — was still showing "1 SBA per top-10 topic" and `partial:true`; updated to reflect 71 SBAs and removed partial flag.
-
-### Decisions
-- Birinyi has good chapter structure (Physiology, Anatomy, Adult Neuro, Paeds, Neurology, Radiology, Pathology, Critical Care, Competencies) — easier to mine by topic than Shaya
-- Ethics from Birinyi: biostatistics and general medical ethics content is usable (not US-specific law)
-- Two forks hit session limit during first attempt; relaunched successfully for remaining work
-
-### What is next (priority order)
-1. **Birinyi remaining 5 topics** — neuro-onco-cranial, degenerative-spine, vascular-aneurysm, head-injury, hydrocephalus (all 0/8)
-2. **Harbaugh** — all 10 topics at 0/8
-3. **TJones gaps** — hydrocephalus 0/8, head-injury 0/8, vascular-aneurysm 2/8
-4. **Infographic gaps** — cranial-anatomy 0/8, ethics 0/8, head-injury 0/8
-5. **Greenberg ethics** — only remaining Greenberg gap (0/8)
-
----
-
-## Session 39 — 2026-07-03 — Birinyi full mining pass complete
+## Session 39 — 2026-07-03 — Shaya complete + Birinyi full mining pass
 
 ### What was done
 - Completed the full Birinyi mining pass across ALL 10 top recall topics (threshold ≥8 per topic)
