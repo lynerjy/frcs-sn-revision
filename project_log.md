@@ -2078,3 +2078,49 @@ Alleyne now has 7 of 10 topics at ✓ threshold (ethics exempt, hydrocephalus 4/
 3. **Alleyne hydrocephalus/head-injury** supplemented by Shaya/Birinyi
 4. **Infographic gaps**: cranial-anatomy 0/8, ethics 0/8, head-injury 0/8 — check if content present
 5. **TJones**: fully mined; remaining gaps may be content-absent
+
+---
+
+## 2026-07-03 — Shaya full mining pass (top-10 topics)
+
+### What was done
+Completed comprehensive mining of Shaya (Neurosurgery Practice Questions & Answers, 2nd ed) across all 10 top recall topics. 71 total Shaya SBAs now in content.js (up from ~10 at start of session).
+
+**Topics mined this session:**
+- neuro-onco-cranial: 1 → ✓ (8 SBAs, from prior + this session)
+- cranial-anatomy: 1 → ✓ (8 SBAs: pterion, Parkinson triangle, Kawase triangle, foramen spinosum, annulus of Zinn, internal capsule, subcommissural organ, + 1 prior)
+- functional: 1 → ✓ (8 SBAs: thalamotomy for ET, Vim electrode confirmation, thalamotomy complications, pallidotomy limitations, pallidotomy optic tract testing, bilateral tremor Vim DBS, MST principle, + 1 prior)
+- vascular-aneurysm: 1 → ✓ (8 SBAs: incidental aneurysm, Charcot-Bouchard, gyrus rectus resection, haematoma vs vasospasm, CCBs in SAH, DVA prevalence, AComA hyponatraemia, + 1 prior)
+- hydrocephalus: 0 → ✓ (8 SBAs: Kocher point, VA shunt nephritis, vein of Galen, proximal revision infection risk, non-choroid CSF production, chordoid glioma, CSF reabsorption valves, hydromyelia vs syringomyelia)
+- neuro-icu: 1 → ✓ (9 SBAs: CPP threshold, ICP waveform dicrotic notch, barbiturate neuroprotection, DIC fibrinogen, volatile anaesthetics CMR/CBF, ischaemic penumbra, triphasic DI, ketamine CMRO2, + 1 prior mannitol)
+- head-injury: 1 → 6 (paediatric EDH source, CSF leak 85%, lucid interval 1/3, GCS calculation, growing skull fracture, + 1 prior Q17 meningitis; book lacks enough content for 8)
+- degenerative-spine: 1 → ✓ (inserted by subagent fork)
+- paeds: 1 → ✓ (inserted by subagent fork)
+- ethics: 0 — exempt from Shaya (US board book, no UK law/GMC/MCA content)
+
+### Coverage summary (Shaya column)
+| Topic | Shaya |
+|-------|-------|
+| neuro-onco-cranial | ✓ |
+| degenerative-spine | ✓ |
+| paeds | ✓ |
+| cranial-anatomy | ✓ |
+| functional | ✓ |
+| vascular-aneurysm | ✓ |
+| hydrocephalus | ✓ |
+| neuro-icu | ✓ |
+| head-injury | 6/8 |
+| ethics | exempt |
+
+### Decisions
+- Head-injury capped at 6/8: Shaya genuinely lacks sufficient head-injury content for 8 SBAs
+- Ethics exempt: Shaya is a US board review book with no UK-specific law, GMC, or MCA 2005 content
+- Skipped duplicate SBAs where same Shaya question was already covered in a different topic block (Q17, Q29, Q135, Q204)
+- All SBAs rewritten as FRCS-style clinical scenario SBAs (not verbatim from Shaya)
+
+### What is next (priority order)
+1. **Birinyi expansion** — next textbook in priority order; all top-10 topics at 0-3/8
+2. **Harbaugh** — all 10 topics at 0/8
+3. **TJones gaps** — hydrocephalus 0/8, head-injury 0/8, vascular-aneurysm 2/8
+4. **Infographic gaps** — cranial-anatomy 0/8, ethics 0/8, head-injury 0/8
+5. **Greenberg ethics** — only remaining Greenberg gap (0/8)
