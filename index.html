@@ -517,6 +517,29 @@ function cardMastery(id){
   if(c.seen>=3&&c.correct/c.seen>=0.7)return 2;
   return 1;
 }
+// SBA mastery: same thresholds as cardMastery but keyed by topic+stem
+function sbaMastery(topicId,stem){
+  const s=state.sbaResults[sbaId(topicId,stem)];
+  if(!s||!s.seen)return 0;
+  if(s.seen>=3&&s.correct/s.seen>=0.7)return 2;
+  return 1;
+}
+// Build weighted quiz pool: unseen first (always), wrong with ~25% chance, mastered excluded.
+// qs: array of SBA objects. topicId: string (pass null for mixed-topic pools built externally).
+// For mixed-topic use, call buildWeightedPool([{q,tid},...]) variant below.
+function buildWeightedPool(pairs){
+  // pairs: [{q, tid}]
+  const unseen=[],wrong=[];
+  pairs.forEach(({q,tid})=>{
+    const m=sbaMastery(tid,q.stem);
+    if(m===0)unseen.push(q);
+    else if(m===1)wrong.push(q);
+    // mastered (m===2): excluded
+  });
+  const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+  const wrongSample=shuffle(wrong).filter(()=>Math.random()<0.05);
+  return [...shuffle(unseen),...shuffle(wrongSample)];
+}
 // Sort cards: wrong/unseen first, mastered last. Within each group, least recently seen first.
 function smartSortCards(cards,topicId){
   return [...cards].sort((a,b)=>{
@@ -963,7 +986,11 @@ function startTopicQuiz(){
   const ld=currentLearnTopicData();if(!ld)return;
   const pool=ld.q.filter(srcEnabled);
   if(!pool.length){alert("No questions for this topic yet.");return;}
-  tqState={qs:[...pool].sort(()=>Math.random()-.5),idx:0,correct:0,answered:false};
+  const pairs=pool.map(q=>({q,tid:currentLearnTopic}));
+  let qs=buildWeightedPool(pairs);
+  // fallback: if all mastered, show full pool shuffled
+  if(!qs.length)qs=[...pool].sort(()=>Math.random()-.5);
+  tqState={qs,idx:0,correct:0,answered:false};
   renderTQ();
 }
 function renderTQ(){
@@ -1038,9 +1065,12 @@ function renderQuizTopicCheckboxes(){
 function toggleQuizTopic(id,v){if(v)quizTopics.add(id);else quizTopics.delete(id);}
 function selectAllQuizTopics(v){quizTopics=v?new Set(TOPICS.map(t=>t.id)):new Set();renderQuizTopicCheckboxes();}
 function startQuiz(){
-  let pool=[];TOPICS.forEach(t=>{if(quizTopics.has(t.id)&&LEARN[t.id]){const qs=filteredQs(LEARN[t.id].q);pool=[...pool,...qs];}});
-  if(!pool.length){alert("No questions available. Select at least one topic with quiz content.");return;}
-  quizState={qs:pool.sort(()=>Math.random()-.5),idx:0,correct:0,answered:false};
+  let pairs=[];TOPICS.forEach(t=>{if(quizTopics.has(t.id)&&LEARN[t.id]){const qs=filteredQs(LEARN[t.id].q);qs.forEach(q=>pairs.push({q,tid:t.id}));}});
+  if(!pairs.length){alert("No questions available. Select at least one topic with quiz content.");return;}
+  let qs=buildWeightedPool(pairs);
+  // fallback: if all mastered, show full pool shuffled
+  if(!qs.length)qs=pairs.map(p=>p.q).sort(()=>Math.random()-.5);
+  quizState={qs,idx:0,correct:0,answered:false};
   document.getElementById("quiz-topic-select").style.display="none";
   document.getElementById("quiz-area").style.display="block";
   renderGQ();

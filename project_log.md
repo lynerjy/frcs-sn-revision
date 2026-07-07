@@ -2163,3 +2163,22 @@ All 10 topics ✓ — Birinyi is COMPLETE
 4. **Greenberg ethics** — only remaining Greenberg gap (0/8)
 5. **Alleyne gaps** — ethics 1/8, hydrocephalus 4/8, head-injury 3/8
 6. **Shaya gaps** — ethics 0/8, head-injury 6/8 (content-limited)
+
+---
+
+## Session 2026-07-07
+
+### What was built
+- **Weighted quiz pool logic** — replaced the flat random shuffle in both `startTopicQuiz()` and `startQuiz()` (global quiz) with a priority-ordered pool
+- New helper: `sbaMastery(topicId, stem)` — same thresholds as flashcard mastery (seen ≥ 3, accuracy ≥ 70% = mastered), keyed off `state.sbaResults`
+- New helper: `buildWeightedPool(pairs)` — takes `{q, tid}` pairs, buckets into unseen / wrong / mastered, returns: unseen shuffled first, then 5% random sample of wrong questions, mastered excluded entirely
+- Fallback: if pool is empty (all mastered), shows full pool shuffled so user is never stuck
+
+### Key decisions
+- **Mastered = never resurface**: seen ≥ 3 times AND accuracy ≥ 70% — excluded from pool
+- **Wrong = 5% resurfacing chance**: each previously-wrong question has a 5% chance of appearing in a given session (sampled per question independently)
+- **Unseen = always included, always first**: unseen questions always appear before any wrong-question samples
+- **Per-user scoping**: mastery derived from `state.sbaResults`, which is already user-scoped via `frcs_state_{username}` — no cross-account bleed
+
+### What is next
+- Same as prior session: Harbaugh mining is top priority
